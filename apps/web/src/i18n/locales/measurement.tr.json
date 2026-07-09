@@ -1,0 +1,91 @@
+{
+  "section": {
+    "title": "Ölçümler",
+    "newButton": "Yeni ölçüm",
+    "allTypes": "Tüm tipler",
+    "loading": "Yükleniyor…",
+    "empty": "Henüz ölçüm kaydı yok."
+  },
+  "table": {
+    "measuredAt": "Tarih/Saat",
+    "type": "Tip",
+    "value": "Değer",
+    "measuredBy": "Kaydeden"
+  },
+  "form": {
+    "createTitle": "Yeni ölçüm",
+    "editTitle": "Ölçümü düzenle",
+    "description": "Ölçüm tipini seçin, OD/OS değerlerini girin. Aynı gün içinde düzenlenebilir; sonrasında sadece yönetici override edebilir.",
+    "submit": "Kaydet",
+    "update": "Değişiklikleri kaydet",
+    "submitting": "Kaydediliyor…",
+    "fields": {
+      "type": "Ölçüm tipi",
+      "eyeSide": "Göz tarafı",
+      "measuredAt": "Ölçüm tarihi/saati",
+      "valuesTitle": "Değerler",
+      "notes": "Not"
+    }
+  },
+  "eyeSide": {
+    "od": "Sağ (OD)",
+    "os": "Sol (OS)",
+    "ou": "Her iki (OU)"
+  },
+  "types": {
+    "visual_acuity": "Görme keskinliği",
+    "intraocular_pressure": "Göz içi basıncı (GİB)",
+    "refraction": "Refraksiyon",
+    "biometry": "Biyometri",
+    "keratometry": "Keratometri",
+    "topography": "Topografi",
+    "pachymetry": "Pakimetri",
+    "perimetry": "Perimetri",
+    "fundus_photo": "Fundus fotoğrafı",
+    "oct": "OCT"
+  },
+  "fields": {
+    "visual_acuity": {
+      "od": "OD (sağ göz)",
+      "os": "OS (sol göz)"
+    },
+    "intraocular_pressure": {
+      "od": "OD GİB",
+      "os": "OS GİB"
+    },
+    "refraction": {
+      "odSph": "OD Sferik",
+      "odCyl": "OD Silindir",
+      "odAxis": "OD Aks",
+      "osSph": "OS Sferik",
+      "osCyl": "OS Silindir",
+      "osAxis": "OS Aks"
+    },
+    "keratometry": {
+      "odK1": "OD K1",
+      "odK2": "OD K2",
+      "odAxis": "OD Aks",
+      "osK1": "OS K1",
+      "osK2": "OS K2",
+      "osAxis": "OS Aks"
+    }
+  },
+  "errors": {
+    "invalidDate": "Geçerli bir tarih/saat girin.",
+    "sameDayExpired": "Aynı gün düzenleme süresi doldu. Sadece yönetici sonradan değişiklik yapabilir.",
+    "onlyOwnerOrAdmin": "Sadece ölçümü yapan kullanıcı veya yönetici bu kaydı düzenleyebilir.",
+    "systemRecordOnlyAdmin": "Sistem tarafından kaydedilen ölçümleri yalnızca yönetici düzenleyebilir.",
+    "unknown": "Beklenmeyen hata."
+  },
+  "toast": {
+    "created": "Ölçüm kaydedildi.",
+    "updated": "Ölçüm güncellendi."
+  },
+  "trend": {
+    "title": "Ölçüm Trendi",
+    "empty": "Trend için yeterli sayısal ölçüm yok (en az 2 nokta gerekir).",
+    "loadError": "Trend verisi yüklenemedi",
+    "od": "Sağ (OD)",
+    "os": "Sol (OS)"
+  }
+}

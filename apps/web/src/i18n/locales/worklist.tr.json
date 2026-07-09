@@ -1,0 +1,131 @@
+{
+  "page": {
+    "title": "İş Kuyruğum",
+    "description": "Bugün size yönlendirilen hastalar",
+    "empty": "Kuyruğunuzda hasta yok",
+    "loading": "Yükleniyor…",
+    "loadFailed": "Kuyruk alınamadı: {{message}}"
+  },
+  "columns": {
+    "patient": "Hasta",
+    "stage": "Durum",
+    "waiting": "Bekleme",
+    "appointment": "Randevu",
+    "action": "İşlem"
+  },
+  "filter": {
+    "allDoctors": "Tüm doktorlar",
+    "doctorLabel": "Doktor"
+  },
+  "widget": {
+    "title": "İş Kuyruğum",
+    "empty": "Kuyrukta hasta yok"
+  },
+  "stage": {
+    "registered": "Kayıt açıldı",
+    "awaitingExamPayment": "Muayene ödemesi bekliyor",
+    "waitingDoctor": "Doktor bekliyor",
+    "inExam": "Muayenede",
+    "awaitingMeasurementPayment": "Ölçüm ödemesi bekliyor",
+    "inMeasurement": "Ölçümde",
+    "measurementReady": "Ölçüm hazır",
+    "awaitingSurgerySales": "Ameliyat satışta",
+    "done": "Tamamlandı",
+    "cancelled": "İptal"
+  },
+  "queue": {
+    "title": "Muayene Sırası",
+    "waitingPatients": "Bekleyen Hastalar",
+    "search": "Hasta ara",
+    "empty": "Bu sekmede hasta yok",
+    "readyCount": "{{count}} ölçüm hazır",
+    "examCap": "{{count}}/{{cap}} muayenede",
+    "examCapHint": "Eşzamanlı muayene limiti: {{cap}}",
+    "tabs": {
+      "sirada": "Sırada",
+      "ready": "Ölçüm hazır",
+      "unpaid": "Ödenmemiş"
+    },
+    "onlyActionable": "Sadece aksiyon alınabilecekler"
+  },
+  "status": {
+    "inLine": "Sırada",
+    "inMeasurement": "Ölçümde",
+    "measurementReady": "Ölçüm hazır",
+    "unpaid": "Ödenmemiş",
+    "surgerySales": "Ameliyat satışta"
+  },
+  "detail": {
+    "selectPrompt": "Soldan bir hasta seçin",
+    "yearsOld": "yaş",
+    "arrival": "Geliş",
+    "appointmentAt": "Randevu",
+    "allergies": "Alerji",
+    "anticoagulants": "Antikoagülan",
+    "ready": "Hazır",
+    "history": "Öykü & Şikâyet",
+    "pastExams": "Geçmiş Muayeneler",
+    "complaint": "Şikâyet",
+    "historyLabel": "Öykü",
+    "treatmentPlan": "Tedavi planı",
+    "prescription": "Reçete",
+    "procedures": "İşlemler",
+    "surgery": "Ameliyat",
+    "measurement": "Ölçüm",
+    "done": "yapıldı",
+    "planned": "planlı",
+    "noExtra": "Ek detay yok",
+    "measurements": "Ölçüm Sonuçları",
+    "noHistory": "Öykü kaydı yok",
+    "noMeasurements": "Ölçüm sonucu yok",
+    "col": {
+      "test": "Test",
+      "right": "Sağ",
+      "left": "Sol"
+    }
+  },
+  "meas": {
+    "va": "Görme keskinliği (VA)",
+    "iop": "Göz içi basıncı (GİB)",
+    "refraction": "Otorefraktometri",
+    "keratometry": "Keratometri",
+    "biometry": "Biyometri (AKG)",
+    "topography": "Topografi",
+    "pachymetry": "Pakimetri",
+    "perimetry": "Görme alanı (Perimetri)",
+    "fundusPhoto": "Fundus fotoğrafı",
+    "oct": "OKT"
+  },
+  "gender": {
+    "male": "Erkek",
+    "female": "Kadın",
+    "other": "Diğer"
+  },
+  "reasonFallback": "Muayene",
+  "priority": {
+    "urgent": "ACİL",
+    "vip": "VIP"
+  },
+  "toast": {
+    "completed": "Muayene tamamlandı",
+    "examStarted": "Muayene başlatıldı",
+    "recalled": "Hasta geri çağrıldı"
+  },
+  "action": {
+    "startExam": "Muayeneye başla",
+    "orderMeasurement": "Ölçüm iste",
+    "newMeasurement": "Yeni Ölçüm İste",
+    "prescription": "Reçete Yaz",
+    "suggestSurgery": "Ameliyat Öner",
+    "complete": "Muayeneyi Tamamla",
+    "capReachedHint": "Eşzamanlı muayene limiti doldu — önce bir muayeneyi tamamlayın",
+    "completeStageHint": "Yalnız muayenedeki (in_exam) hasta tamamlanabilir",
+    "recall": "Geri çağır"
+  },
+  "decision": {
+    "title": "Sıradaki adım",
+    "prescription": "Reçete yaz",
+    "measurement": "Ölçüm iste",
+    "surgery": "Ameliyat (satışa)"
+  }
+}

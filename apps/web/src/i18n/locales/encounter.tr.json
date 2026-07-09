@@ -1,0 +1,47 @@
+{
+  "publicMonitor": {
+    "title": "Bekleme Listesi",
+    "subtitle": "Sıra geldiğinde resepsiyondan çağrılacaksınız.",
+    "empty": "Şu an bekleyen hasta yok.",
+    "nowCalling": "Şu an çağrılıyor",
+    "vip": "VIP",
+    "measurement": "Ölçüm",
+    "toDoctor": "Doktor",
+    "morePatients": "+{{count}} kişi daha",
+    "fullscreen": "Tam ekran",
+    "exitFullscreen": "Tam ekrandan çık",
+    "displayLanguage": "Ekran dili",
+    "setupRequired": "Bu ekran için kurulum gerekli. Yönetici: Ayarlar → Bekleme Ekranı.",
+    "invalidKey": "Yayın bağlantısı geçersiz. Yönetici yeni bağlantı oluşturmalı.",
+    "connecting": "Bağlanılıyor…",
+    "reconnecting": "Yeniden bağlanılıyor…",
+    "refreshNote": "Her 10 saniyede güncellenir"
+  },
+  "stage": {
+    "registered": "Yeni",
+    "awaitingExamPayment": "Ödeme bekliyor",
+    "waitingDoctor": "Doktora hazır",
+    "inExam": "Muayenede",
+    "awaitingMeasurementPayment": "Ölçüm ödeme",
+    "inMeasurement": "Ölçümde",
+    "measurementReady": "Sonuç hazır",
+    "awaitingSurgerySales": "Ameliyat satışta",
+    "done": "Tamamlandı",
+    "cancelled": "İptal",
+    "emergencyBypass": "Acil bypass"
+  },
+  "bypass": {
+    "activateTitle": "Acil Durum Bypass'ı Aktive Et",
+    "activateDescription": "Ödeme kuralı geçici olarak askıya alınır. Sebep zorunlu, audit log'a yazılır. Hizmet sonrası fatura kapatılır.",
+    "closeTitle": "Acil Durum Bypass'ını Kapat",
+    "closeDescription": "Bypass kapatılınca normal akışa dönülür ve fatura/tahsilat süreci başlar.",
+    "reasonLabel": "Sebep (acil durumu açıkla)",
+    "reasonPlaceholder": "Örn: Kimyasal yanık, ani görme kaybı, travma sonrası akut müdahale gerekli...",
+    "reasonHint": "{{count}}/500 karakter (en az 10)",
+    "reasonTooShort": "Sebep en az 10 karakter olmalı",
+    "activateSubmit": "Bypass'ı Aktive Et",
+    "closeSubmit": "Bypass'ı Kapat",
+    "activated": "Acil bypass aktive edildi",
+    "closed": "Acil bypass kapatıldı"
+  }
+}

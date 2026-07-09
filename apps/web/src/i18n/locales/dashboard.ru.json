@@ -1,0 +1,97 @@
+{
+  "title": "Панель администратора",
+  "description": "Прямой обзор работы клиники",
+  "registerPatient": {
+    "title": "Регистрация пациента",
+    "description": "Создать новую карту пациента"
+  },
+  "loading": "Загрузка…",
+  "error": "Не удалось загрузить метрики.",
+  "filters": {
+    "dateFrom": "Начало",
+    "dateTo": "Конец",
+    "doctor": "Врач",
+    "allDoctors": "Все врачи",
+    "preset": {
+      "today": "Сегодня",
+      "week": "Эта неделя",
+      "month": "Этот месяц",
+      "quarter": "Последние 3 месяца"
+    }
+  },
+  "today": {
+    "title": "Сегодня",
+    "appointments": "Сегодняшние записи",
+    "examinations": "Завершённые осмотры",
+    "surgeries": "Проведённые операции",
+    "newPatients": "Новые пациенты"
+  },
+  "kpi": {
+    "totalAppointments": "Всего записей",
+    "completed": "Завершено",
+    "noShowRate": "Доля неявок",
+    "examinations": "Осмотры",
+    "surgeries": "Операции",
+    "complicationRate": "Доля осложнений",
+    "newPatients": "Новые пациенты"
+  },
+  "charts": {
+    "appointmentTrend": {
+      "title": "Тренд записей",
+      "yLabel": "Количество записей"
+    },
+    "doctorPerformance": {
+      "title": "Эффективность врачей",
+      "completed": "Завершено",
+      "noShow": "Неявка",
+      "rate": "Доля завершённых"
+    },
+    "noData": "Нет данных в этом диапазоне."
+  },
+  "widget": {
+    "dailyHuddle": {
+      "title": "Ежедневная сводка",
+      "error": "Не удалось загрузить сводку",
+      "todayAppointments": "Записи на сегодня",
+      "inExam": "На приёме",
+      "awaitingMeasurement": "Ожидают измерения",
+      "awaitingSurgerySales": "В продаже",
+      "activeBypass": "{{count}} активных экстренных обходов"
+    },
+    "doctorLag": {
+      "title": "Время ожидания врачей",
+      "error": "Не удалось загрузить время ожидания",
+      "empty": "Сегодня нет активных визитов.",
+      "avgMax": "ср {{avg}}мин / макс {{max}}мин"
+    },
+    "paymentCompliance": {
+      "title": "Соблюдение «сначала оплата»",
+      "error": "Не удалось загрузить данные",
+      "unpaidActive": "неоплаченных активных услуг",
+      "activeBypass": "Активные обходы:",
+      "totalBypassToday": "Всего обходов сегодня:",
+      "goToCash": "В кассу →"
+    },
+    "pendingApprovals": {
+      "title": "Ожидающие согласования",
+      "error": "Не удалось загрузить число согласований",
+      "discountApproval": "согласование скидки",
+      "awaitingResponse": "ожидает ответа"
+    },
+    "quickActions": {
+      "title": "Быстрый доступ",
+      "newPatient": "Новый пациент",
+      "newPatientDesc": "Создать запись пациента",
+      "patientList": "Список пациентов",
+      "patientListDesc": "Открыть поиск",
+      "changePassword": "Сменить пароль",
+      "changePasswordDesc": "Оставайтесь в безопасности"
+    },
+    "todayAppointments": {
+      "title": "Записи на сегодня",
+      "error": "Не удалось загрузить записи",
+      "empty": "Нет записей на сегодня",
+      "checkIn": "регистрация:"
+    }
+  }
+}

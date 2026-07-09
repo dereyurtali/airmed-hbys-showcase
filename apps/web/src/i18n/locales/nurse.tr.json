@@ -1,0 +1,23 @@
+{
+  "session": {
+    "startButton": "Doktor seç (asistan modu)",
+    "pickDoctor": "Bugün hangi doktorun asistanısın?",
+    "noDoctors": "Aktif doktor yok",
+    "actingForLabel": "Şu an adına çalışıyorsun:",
+    "unknownDoctor": "Bilinmeyen doktor",
+    "end": "Sonlandır",
+    "started": "Asistan session'ı başladı",
+    "ended": "Asistan session'ı sonlandı",
+    "assistingShort": "{{name}} adına",
+    "noActiveShort": "Doktor seçilmedi",
+    "confirmStart": "{{name}} adına vardiya başlatılsın mı? Bu oturumdaki tüm işlemler bu doktor adına kaydedilir.",
+    "change": "Değiştir",
+    "confirmChange": "{{name}} adına geçilsin mi? Mevcut asiste oturumu kapanır.",
+    "examLoad": "{{count}}/{{cap}} aktif",
+    "examLoadHint": "Doktorun aktif muayene sayısı (cap {{cap}})"
+  },
+  "doctorAssistants": {
+    "label": "Aktif asistan(lar):",
+    "noActive": "Aktif asistan yok"
+  }
+}

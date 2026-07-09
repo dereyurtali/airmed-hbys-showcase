@@ -1,0 +1,193 @@
+{
+  "list": {
+    "title": "Hastalar",
+    "countDescription": "{{count}} kayıt",
+    "newPatient": "Yeni hasta",
+    "searchPlaceholder": "Ad, soyad, MRN veya son 4 hane ile ara",
+    "columns": {
+      "mrn": "MRN",
+      "fullName": "Ad Soyad",
+      "birthDate": "Doğum",
+      "phone": "Telefon",
+      "createdAt": "Kayıt"
+    },
+    "loadFailed": "Liste yüklenemedi: {{message}}",
+    "noResultsForQuery": "\"{{query}}\" için sonuç bulunamadı.",
+    "empty": "Henüz hasta yok. Yeni hasta ekleyin.",
+    "filterByTag": "Etikete göre filtrele",
+    "visitingScopeNote": "Misafir doktor: yalnızca kendi hastalarınız listelenir (klinik geneli arama kapalı).",
+    "visitingNoAccessHint": "Bu hasta listenizde yok — erişim için yöneticinize başvurun."
+  },
+  "form": {
+    "createTitle": "Yeni hasta",
+    "editTitle": "Hastayı düzenle",
+    "createDescription": "Klinik kayıtlarına yeni hasta ekle.",
+    "editDescription": "Mevcut bilgileri güncelle.",
+    "sections": {
+      "emergency": "Acil durum",
+      "tags": "Etiketler",
+      "leadSource": "Hasta kaynağı",
+      "medical": "Tıbbi bilgiler",
+      "pediatric": "Pediatrik veli"
+    },
+    "leadSourceNotePlaceholder": "Kampanya, doktor adı vb.",
+    "medicalHint": "Ameliyat ve reçete sırasında kullanılacak hayati bilgiler. Boş bırakılabilir; mümkün olduğunca doldurulması önerilir.",
+    "allergiesHint": "Bilinen tüm ilaç ve madde alerjilerini ekle (örn. penisilin, lateks).",
+    "allergiesPlaceholder": "Enter ile ekle...",
+    "anticoagulantsHint": "Hasta kullandığı kan sulandırıcı ilaçlar (warfarin, aspirin, klopidogrel vb.).",
+    "anticoagulantsPlaceholder": "Enter ile ekle...",
+    "pediatricHint": "Hasta 18 yaşından küçük. Bilgilendirilmiş onam için veli imzası gerekir.",
+    "pediatricBadge": "Pediatrik ({{age}} yaş)",
+    "fields": {
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "birthDate": "Doğum tarihi",
+      "gender": "Cinsiyet",
+      "phone": "Telefon",
+      "email": "E-posta",
+      "identityNo": "Kimlik no",
+      "passportNo": "Pasaport no",
+      "emergencyName": "Yakını",
+      "emergencyPhone": "Yakını telefonu",
+      "address": "Adres",
+      "notes": "Notlar",
+      "leadSource": "Kanal",
+      "leadSourceNote": "Açıklama",
+      "allergies": "Alerjiler",
+      "anticoagulants": "Antikoagülan ilaçlar",
+      "bloodType": "Kan grubu",
+      "guardianName": "Veli adı soyadı",
+      "guardianPhone": "Veli telefonu",
+      "guardianRelationship": "Yakınlık",
+      "genderPlaceholder": "Seçin…"
+    },
+    "submitCreate": "Kaydet",
+    "submitUpdate": "Güncelle",
+    "loadFailed": "Hasta yüklenemedi: {{message}}",
+    "duplicates": {
+      "title": "Olası mükerrer kayıt",
+      "reason": "{{id}} — eşleşme nedeni: {{reason}}",
+      "dismiss": "Vazgeç",
+      "force": "Yine de kaydet"
+    }
+  },
+  "detail": {
+    "fields": {
+      "birthDate": "Doğum tarihi",
+      "gender": "Cinsiyet",
+      "phone": "Telefon",
+      "email": "E-posta",
+      "identityNo": "Kimlik no",
+      "passportNo": "Pasaport no",
+      "emergencyName": "Yakını",
+      "emergencyPhone": "Yakını telefonu",
+      "address": "Adres",
+      "notes": "Notlar",
+      "leadSource": "Kanal",
+      "leadSourceNote": "Kanal notu",
+      "bloodType": "Kan grubu",
+      "createdAt": "Kayıt tarihi",
+      "updatedAt": "Son güncelleme"
+    },
+    "allergiesWarning": "Alerji uyarısı",
+    "anticoagulantsWarning": "Antikoagülan ilaç uyarısı",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "newAppointment": "Randevu oluştur",
+    "notFound": "Hasta bulunamadı",
+    "notFoundWithMessage": "Hasta bulunamadı: {{message}}",
+    "confirm": {
+      "title": "Hastayı silmek istediğinize emin misiniz?",
+      "description": "Soft-delete uygulanır; veriler tutulur ancak listede görünmez ve aramada çıkmaz.",
+      "cancel": "Vazgeç",
+      "confirm": "Evet, sil"
+    }
+  },
+  "gender": {
+    "female": "Kadın",
+    "male": "Erkek",
+    "other": "Diğer"
+  },
+  "leadSource": {
+    "unset": "Belirsiz",
+    "instagram": "Instagram",
+    "telegram": "Telegram",
+    "whatsapp": "WhatsApp",
+    "doctor_referral": "Doktor yönlendirmesi",
+    "returning_patient": "Eski hasta",
+    "optic_partner": "Optik ortağı",
+    "corporate_contract": "Kurumsal anlaşma",
+    "field_rep": "Saha temsilcisi",
+    "walk_in": "Doğrudan başvuru",
+    "other": "Diğer",
+    "second_opinion": "İkinci görüş"
+  },
+  "leadFunnel": {
+    "title": "Hasta kaynağı hunisi",
+    "description": "Hangi kanalın randevu, muayene ve ameliyata dönüştüğünü gör.",
+    "from": "Başlangıç",
+    "to": "Bitiş",
+    "quickFilter": "Hızlı filtre:",
+    "clearFilter": "Filtreyi temizle",
+    "empty": "Bu aralıkta veri yok.",
+    "allSources": "Tüm kanallar",
+    "stages": {
+      "lead": "Kayıt",
+      "appointment": "Randevu",
+      "examination": "Muayene",
+      "surgery": "Ameliyat",
+      "surgery_refused": "Ameliyat reddi"
+    },
+    "columns": {
+      "source": "Kanal",
+      "conversion": "Dönüşüm"
+    }
+  },
+  "bloodType": {
+    "unset": "Bilinmiyor",
+    "a_pos": "A Rh+",
+    "a_neg": "A Rh-",
+    "b_pos": "B Rh+",
+    "b_neg": "B Rh-",
+    "ab_pos": "AB Rh+",
+    "ab_neg": "AB Rh-",
+    "o_pos": "0 Rh+",
+    "o_neg": "0 Rh-",
+    "unknown": "Bilinmiyor"
+  },
+  "guardianRelationship": {
+    "unset": "Seçilmedi",
+    "mother": "Anne",
+    "father": "Baba",
+    "legal_guardian": "Vasi",
+    "grandparent": "Büyükanne / büyükbaba",
+    "sibling": "Kardeş",
+    "other": "Diğer"
+  },
+  "tags": {
+    "vip": "VIP",
+    "risk_high": "Yüksek risk",
+    "risk_low": "Düşük risk",
+    "follow_up": "Yakın takip",
+    "chronic": "Kronik hasta",
+    "no_show_risk": "Geç gelir",
+    "insurance": "Sigortalı",
+    "pediatric": "Çocuk hasta",
+    "geriatric": "Yaşlı hasta",
+    "hint": "Hastayı sınıflandırmak için bir veya birden fazla etiket seçin.",
+    "pickerLabel": "Etiket seç"
+  },
+  "clinicalLists": {
+    "title": "Problemler ve İlaçlar",
+    "problems": "Problemler",
+    "medications": "İlaçlar",
+    "noProblems": "Kayıtlı problem yok",
+    "noMedications": "Kayıtlı ilaç yok",
+    "resolve": "Çözüldü işaretle",
+    "stop": "Bırak",
+    "problemPlaceholder": "Problem / tanı",
+    "medPlaceholder": "İlaç adı",
+    "dose": "Doz",
+    "frequency": "Sıklık"
+  }
+}

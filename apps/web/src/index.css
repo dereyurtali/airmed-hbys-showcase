@@ -1,0 +1,136 @@
+/* #1018 UX turu — Inter Variable (self-host, @fontsource): TR/RU/TG tam kapsam
+   (cyrillic-ext: Ӣ Қ Ҳ Ҷ Ӯ Ғ). CDN yok → klinik LAN offline'da da yüklenir. */
+@import '@fontsource-variable/inter';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --primary: 200 98% 32%;
+    --primary-foreground: 0 0% 100%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 200 98% 32%;
+    --radius: 0.5rem;
+
+    /* ── Bölüm 24.1 — Kanonik durum + nötr token seti (hex/rgba) ──────────
+       hsl semantik token'lara EK; değerler görsel kanon (airmed-tasarim-
+       sistemi.html) ile birebir. Durum = tint zemin + ince kenar + metin. */
+    --crit-bg: #fff1f0;
+    --crit-bd: #ffd1ce;
+    --crit-tx: #b42318;
+    --crit-pure: #ff3b30;
+    --warn-bg: rgba(255, 149, 0, 0.12);
+    --warn-bd: rgba(255, 149, 0, 0.26);
+    --warn-tx: #8a4b00;
+    --suc-bg: rgba(52, 199, 89, 0.1);
+    --suc-bd: rgba(52, 199, 89, 0.22);
+    --suc-tx: #1e7a39;
+    --info-bg: rgba(1, 102, 168, 0.06);
+    --info-bd: rgba(1, 102, 168, 0.18);
+    --info-tx: #015a94;
+    --neutral-tint: rgba(15, 23, 42, 0.06);
+    --hover: rgba(15, 23, 42, 0.04);
+    --row-hover: rgba(15, 23, 42, 0.03);
+    --minor: rgba(15, 23, 42, 0.08);
+    --in-bd: #c9d2de;
+    --in-bd-h: #aebbcd;
+    --ro: #f1f3f6;
+    --ph: #94a3b8;
+    --ease-swift: cubic-bezier(0.2, 0, 0, 1);
+
+    font-family: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+
+  /* Respect the OS "reduce motion" setting: collapse animations/transitions. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* ── Bölüm 24 — paylaşılan yüzey util'leri ───────────────────────────── */
+
+  /* Tek focus-visible ring (marine halo + yüzey-renkli offset). Fare
+     tıklamasında ring YOK — yalnız klavye. Her bileşende AYNI. */
+  .focus-ring {
+    outline: none;
+  }
+  .focus-ring:focus-visible {
+    outline: none;
+    border-color: hsl(var(--primary));
+    box-shadow:
+      0 0 0 2px rgba(1, 102, 168, 0.35),
+      0 0 0 4px hsl(var(--background));
+  }
+
+  /* Tek gölge — yalnız yüzen yüzeyde (dialog/menü/toast/popover).
+     Satır/kartta hover'da gölge YOK. */
+  .shadow-float {
+    box-shadow:
+      0 1px 2px rgba(15, 23, 42, 0.06),
+      0 12px 28px rgba(15, 23, 42, 0.08);
+  }
+
+  /* Tek motion — tüm ephemeral UI (menü/popover/dialog/toast giriş).
+     120ms opacity + 4px translate; reduced-motion = kapalı (base layer). */
+  .motion-pop {
+    animation: motion-pop 120ms var(--ease-swift);
+  }
+  @keyframes motion-pop {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Touch-friendly range slider: larger thumb + taller hit area (≥24px thumb, ~44px row). */
+  .slider-touch {
+    height: 1.5rem;
+    cursor: pointer;
+  }
+  .slider-touch::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 9999px;
+    background: hsl(var(--primary));
+    border: 2px solid hsl(var(--background));
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
+  }
+  .slider-touch::-moz-range-thumb {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 9999px;
+    background: hsl(var(--primary));
+    border: 2px solid hsl(var(--background));
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "section": {
+    "title": "Обследования",
+    "new": "Добавить обследование",
+    "empty": "Нет записей обследований для этого пациента."
+  },
+  "filter": {
+    "allTypes": "Все типы",
+    "allSources": "Клиника + внешние"
+  },
+  "table": {
+    "performedAt": "Дата",
+    "type": "Тип",
+    "source": "Источник",
+    "summary": "Результат",
+    "createdBy": "Записал"
+  },
+  "form": {
+    "createTitle": "Новое обследование",
+    "editTitle": "Изменить обследование",
+    "description": "Внутреннее (офтальмологическое) или внешнее лабораторное.",
+    "source": "Источник",
+    "testType": "Тип теста",
+    "performedAt": "Дата проведения",
+    "od": "OD (правый глаз)",
+    "os": "OS (левый глаз)",
+    "mdPsd": "MD / PSD",
+    "externalLab": "Название лаборатории",
+    "externalLabPlaceholder": "Напр. ABC Лаб Душанбе",
+    "file": "Файл отчёта (PDF/JPG/PNG)",
+    "notes": "Примечания",
+    "submitCreate": "Сохранить",
+    "submitUpdate": "Обновить"
+  },
+  "biometry": {
+    "axialLength": "AL (аксиальная длина, мм)",
+    "k1": "K1 (D)",
+    "k2": "K2 (D)",
+    "acd": "ACD (глубина передней камеры, мм)",
+    "aConstant": "A-константа",
+    "targetRefraction": "Целевая рефракция (D)",
+    "od": "OD (правый глаз)",
+    "os": "OS (левый глаз)",
+    "outOfRange": "Вне диапазона: {{min}}–{{max}} {{unit}}",
+    "iolPower": "Рекомендуемая сила ИОЛ: {{power}} D",
+    "iolCaveat": "MVP · проверяет хирург"
+  },
+  "source": {
+    "internal": "Клиника",
+    "external": "Внешняя лаборатория"
+  },
+  "types": {
+    "visual_field": "Поле зрения",
+    "oct_macula": "ОКТ — макула",
+    "oct_optic_nerve": "ОКТ — зрительный нерв",
+    "topography": "Топография",
+    "pachymetry": "Пахиметрия",
+    "biometry": "Биометрия",
+    "fluorescein_angiography": "ФАГ",
+    "iop_curve": "Кривая ВГД",
+    "blood_test": "Анализ крови",
+    "ekg": "ЭКГ",
+    "chest_xray": "Рентген грудной клетки",
+    "urinalysis": "Анализ мочи",
+    "other": "Другое"
+  },
+  "actions": {
+    "edit": "Изменить",
+    "download": "Скачать отчёт"
+  },
+  "toast": {
+    "created": "Обследование сохранено",
+    "updated": "Обследование обновлено",
+    "fileFailed": "Файл не загружен: {{message}}"
+  },
+  "errors": {
+    "unknown": "Непредвиденная ошибка",
+    "sameDayExpired": "24-часовое окно редактирования истекло",
+    "onlyOwnerOrAdmin": "Изменять может только записавший или администратор",
+    "systemRecordOnlyAdmin": "Системные записи изменяет только администратор",
+    "mimeNotAllowed": "Тип файла не поддерживается (PDF или изображение)",
+    "tooLarge": "Файл слишком большой (макс. 25 МБ)"
+  },
+  "thresholds": {
+    "title": "Лабораторные референсные диапазоны",
+    "description": "Пороги low/high для клиники. Автоматический флаг abnormal на экране ввода результатов.",
+    "newButton": "Новый порог",
+    "saved": "Сохранено",
+    "form": {
+      "testCode": "Код теста",
+      "testCodePlaceholder": "напр. CRP, HbA1c",
+      "sex": "Пол",
+      "ageMin": "Возраст мин",
+      "ageMax": "Возраст макс",
+      "lowLimit": "Low",
+      "highLimit": "High",
+      "unit": "Единица",
+      "unitPlaceholder": "mg/L",
+      "notes": "Примечание",
+      "submit": "Сохранить"
+    },
+    "sex": {
+      "any": "Все",
+      "male": "Мужской",
+      "female": "Женский"
+    },
+    "table": {
+      "testCode": "Код теста",
+      "sex": "Пол",
+      "age": "Возраст",
+      "low": "Low",
+      "high": "High",
+      "unit": "Единица",
+      "notes": "Примечание",
+      "actions": "Действия"
+    },
+    "empty": "Пока нет порогов. Добавьте через \"Новый порог\".",
+    "deleteDialog": {
+      "title": "Удалить порог?",
+      "description": "Порог {{testCode}} будет удалён. Действие необратимо.",
+      "confirm": "Да, удалить",
+      "cancel": "Отмена"
+    }
+  }
+}

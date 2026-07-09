@@ -1,0 +1,98 @@
+{
+  "section": {
+    "title": "Onamlar",
+    "signButton": "Onam imzala",
+    "empty": "Bu hasta için henüz imzalı onam yok.",
+    "view": "Görüntüle",
+    "revoke": "İptal et",
+    "revoked": "İptal edildi",
+    "witness": "Tanık",
+    "showRevoked": "İptal edilenleri göster"
+  },
+  "dialog": {
+    "title": "Yeni onam imzala",
+    "description": "Hastanın okuyup anladığı şablonu seçin, gerekirse tanık adını girin, ekran imza alanını imzalatın.",
+    "procedureType": "İşlem tipi",
+    "language": "Dil",
+    "template": "Şablon",
+    "noTemplate": "Bu işlem ve dilde aktif şablon yok",
+    "preview": "Şablon önizleme",
+    "witnessName": "Tanık adı (opsiyonel)",
+    "witnessPlaceholder": "ör. Refakatçi: Aile üyesi",
+    "signature": "Hasta imzası",
+    "signatureHint": "Tablet veya touchscreen'de parmakla imzalanabilir. Temizlemek için 'Temizle'.",
+    "clearSignature": "Temizle",
+    "submit": "Onamı kaydet"
+  },
+  "revoke": {
+    "reasonLabel": "İptal nedeni",
+    "submit": "Onamı iptal et"
+  },
+  "view": {
+    "content": "Onam metni (imza anındaki kayıt)",
+    "signature": "İmza görüntüsü",
+    "signedAt": "İmzalandı",
+    "signedBy": "Kayda alan",
+    "witness": "Tanık"
+  },
+  "procedure": {
+    "cataract": "Katarakt",
+    "retina": "Retina",
+    "laser": "Lazer",
+    "intravitreal": "İntravitreal enjeksiyon",
+    "refractive": "Refraktif",
+    "general": "Genel"
+  },
+  "templates": {
+    "pageTitle": "Onam şablonları",
+    "newButton": "Yeni şablon",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "deactivate": "Pasifleştir",
+    "activate": "Aktifleştir",
+    "version": "Sürüm",
+    "active": "Aktif",
+    "inactive": "Pasif",
+    "empty": "Henüz şablon eklenmemiş.",
+    "form": {
+      "title": "Başlık",
+      "content": "İçerik (metin)",
+      "save": "Kaydet",
+      "cancel": "İptal"
+    },
+    "deleteTitle": "Onam şablonu sil",
+    "deleteConfirm": "\"{{title}}\" şablonu silinsin mi? Bu işlem geri alınamaz."
+  },
+  "toast": {
+    "signed": "Onam başarıyla kaydedildi",
+    "revoked": "Onam iptal edildi",
+    "templateCreated": "Şablon oluşturuldu",
+    "templateUpdated": "Şablon güncellendi",
+    "templateDeleted": "Şablon silindi"
+  },
+  "errors": {
+    "unknown": "Beklenmedik hata",
+    "noTemplate": "Şablon seçin",
+    "signatureEmpty": "İmza alanı boş — hastadan imza alın",
+    "shortSignature": "İmza çok kısa — daha tam bir imza alın",
+    "guardianNameRequired": "Veli adı zorunlu (reşit olmayan hasta)",
+    "guardianRelationshipRequired": "Yakınlık seçimi zorunlu"
+  },
+  "pediatric": {
+    "title": "Pediatrik hasta ({{age}} yaş) — veli imzası zorunlu",
+    "description": "Hasta reşit değil. Bilgilendirilmiş onam yasal olarak veli/vasi imzası gerektirir.",
+    "guardianName": "Veli adı soyadı",
+    "relationship": "Yakınlık",
+    "relationshipUnset": "Seçilmedi",
+    "identityNo": "Veli kimlik no (opsiyonel)",
+    "identityPlaceholder": "TC kimlik, pasaport vb.",
+    "rel": {
+      "mother": "Anne",
+      "father": "Baba",
+      "legal_guardian": "Vasi",
+      "grandparent": "Büyükanne / büyükbaba",
+      "sibling": "Kardeş",
+      "other": "Diğer"
+    }
+  }
+}

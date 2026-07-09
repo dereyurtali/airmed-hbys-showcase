@@ -1,0 +1,193 @@
+{
+  "list": {
+    "title": "Беморон",
+    "countDescription": "{{count}} сабт",
+    "newPatient": "Бемори нав",
+    "searchPlaceholder": "Бо ном, насаб, MRN ё 4 рақами охирин ҷустуҷӯ",
+    "columns": {
+      "mrn": "MRN",
+      "fullName": "Ному насаб",
+      "birthDate": "Таваллуд",
+      "phone": "Телефон",
+      "createdAt": "Сабт"
+    },
+    "loadFailed": "Рӯйхат бор нашуд: {{message}}",
+    "noResultsForQuery": "Барои «{{query}}» натиҷа ёфт нашуд.",
+    "empty": "Ҳоло бемор нест. Бемори нав илова кунед.",
+    "filterByTag": "Бо нишона филтр кардан",
+    "visitingScopeNote": "Духтури меҳмон: танҳо беморони шумо нишон дода мешаванд (ҷустуҷӯи клиникавӣ хомӯш).",
+    "visitingNoAccessHint": "Ин бемор дар рӯйхати шумо нест — барои дастрасӣ ба маъмур муроҷиат кунед."
+  },
+  "form": {
+    "createTitle": "Бемори нав",
+    "editTitle": "Таҳрири бемор",
+    "createDescription": "Ба сабтҳои клиника бемори нав илова кунед.",
+    "editDescription": "Маълумоти мавҷударо нав кунед.",
+    "sections": {
+      "emergency": "Тамоси фавқулодда",
+      "tags": "Нишонаҳо",
+      "leadSource": "Манбаи бемор",
+      "medical": "Маълумоти тиббӣ",
+      "pediatric": "Парастори бачагона"
+    },
+    "leadSourceNotePlaceholder": "Компания, номи духтур ва ғ.",
+    "medicalHint": "Маълумоти ҳаётан муҳим, ки ҳангоми ҷарроҳӣ ва навиштани дору истифода мешавад. Ҳатмӣ нест, аммо пур кардан тавсия мешавад.",
+    "allergiesHint": "Ҳамаи аллергияҳои маълум ба дору ва маводҳо (масалан: пенициллин, латекс).",
+    "allergiesPlaceholder": "Бо Enter илова кунед...",
+    "anticoagulantsHint": "Доруҳои хунравишакунанда, ки бемор истифода мекунад (варфарин, аспирин, клопидогрел ва ғ.).",
+    "anticoagulantsPlaceholder": "Бо Enter илова кунед...",
+    "pediatricHint": "Бемор аз 18 сола камтар аст. Барои розигии огоҳона имзои парастори қонунӣ лозим аст.",
+    "pediatricBadge": "Бачагона ({{age}} сола)",
+    "fields": {
+      "firstName": "Ном",
+      "lastName": "Насаб",
+      "birthDate": "Санаи таваллуд",
+      "gender": "Ҷинс",
+      "phone": "Телефон",
+      "email": "Почтаи электронӣ",
+      "identityNo": "Шиноснома",
+      "passportNo": "Раводид",
+      "emergencyName": "Хеши наздик",
+      "emergencyPhone": "Телефони хеш",
+      "address": "Суроға",
+      "notes": "Эзоҳҳо",
+      "leadSource": "Канал",
+      "leadSourceNote": "Тавсиф",
+      "allergies": "Аллергияҳо",
+      "anticoagulants": "Доруҳои антикоагулянт",
+      "bloodType": "Гурӯҳи хун",
+      "guardianName": "Ному насаби парастор",
+      "guardianPhone": "Телефони парастор",
+      "guardianRelationship": "Дараҷаи хешутаборӣ",
+      "genderPlaceholder": "Интихоб…"
+    },
+    "submitCreate": "Захира кардан",
+    "submitUpdate": "Нав кардан",
+    "loadFailed": "Бемор бор нашуд: {{message}}",
+    "duplicates": {
+      "title": "Эҳтимоли сабти такрорӣ",
+      "reason": "{{id}} — сабаби мутобиқат: {{reason}}",
+      "dismiss": "Бекор кардан",
+      "force": "Бо вуҷуди ин захира кардан"
+    }
+  },
+  "detail": {
+    "fields": {
+      "birthDate": "Санаи таваллуд",
+      "gender": "Ҷинс",
+      "phone": "Телефон",
+      "email": "Почтаи электронӣ",
+      "identityNo": "Шиноснома",
+      "passportNo": "Раводид",
+      "emergencyName": "Хеши наздик",
+      "emergencyPhone": "Телефони хеш",
+      "address": "Суроға",
+      "notes": "Эзоҳҳо",
+      "leadSource": "Канал",
+      "leadSourceNote": "Эзоҳи канал",
+      "bloodType": "Гурӯҳи хун",
+      "createdAt": "Санаи сабт",
+      "updatedAt": "Навсозии охирин"
+    },
+    "allergiesWarning": "Огоҳии аллергия",
+    "anticoagulantsWarning": "Огоҳии антикоагулянт",
+    "edit": "Таҳрир кардан",
+    "delete": "Ҳазф кардан",
+    "newAppointment": "Қабули нав",
+    "notFound": "Бемор ёфт нашуд",
+    "notFoundWithMessage": "Бемор ёфт нашуд: {{message}}",
+    "confirm": {
+      "title": "Беморро ҳазф мекунед?",
+      "description": "Ҳазфи мулоим татбиқ мешавад; маълумот нигоҳ дошта мешавад, аммо дар рӯйхат ва ҷустуҷӯ намоиш дода намешавад.",
+      "cancel": "Бекор кардан",
+      "confirm": "Бале, ҳазф кунед"
+    }
+  },
+  "gender": {
+    "female": "Зан",
+    "male": "Мард",
+    "other": "Дигар"
+  },
+  "leadSource": {
+    "unset": "Номуайян",
+    "instagram": "Instagram",
+    "telegram": "Telegram",
+    "whatsapp": "WhatsApp",
+    "doctor_referral": "Равонкунии духтур",
+    "returning_patient": "Бемори такрорӣ",
+    "optic_partner": "Шарики оптикӣ",
+    "corporate_contract": "Шартномаи корпоративӣ",
+    "field_rep": "Намояндаи саҳроӣ",
+    "walk_in": "Муроҷиати мустақилона",
+    "other": "Дигар",
+    "second_opinion": "Фикри дуюм"
+  },
+  "leadFunnel": {
+    "title": "Воронкаи манбаи беморон",
+    "description": "Кадом канал ба қабул, муоина ва ҷарроҳӣ мерасонад.",
+    "from": "Аз",
+    "to": "То",
+    "quickFilter": "Филтри тез:",
+    "clearFilter": "Тоза кардани филтр",
+    "empty": "Дар ин давра маълумот нест.",
+    "allSources": "Ҳамаи каналҳо",
+    "stages": {
+      "lead": "Лид",
+      "appointment": "Қабул",
+      "examination": "Муоина",
+      "surgery": "Ҷарроҳӣ",
+      "surgery_refused": "Радди ҷарроҳӣ"
+    },
+    "columns": {
+      "source": "Канал",
+      "conversion": "Табдилёбӣ"
+    }
+  },
+  "bloodType": {
+    "unset": "Номуайян",
+    "a_pos": "A Rh+",
+    "a_neg": "A Rh-",
+    "b_pos": "B Rh+",
+    "b_neg": "B Rh-",
+    "ab_pos": "AB Rh+",
+    "ab_neg": "AB Rh-",
+    "o_pos": "0 Rh+",
+    "o_neg": "0 Rh-",
+    "unknown": "Номаълум"
+  },
+  "guardianRelationship": {
+    "unset": "Интихоб нашудааст",
+    "mother": "Модар",
+    "father": "Падар",
+    "legal_guardian": "Парастор",
+    "grandparent": "Бибӣ / бобо",
+    "sibling": "Бародар / хоҳар",
+    "other": "Дигар"
+  },
+  "tags": {
+    "vip": "VIP",
+    "risk_high": "Хатари баланд",
+    "risk_low": "Хатари паст",
+    "follow_up": "Назоратӣ",
+    "chronic": "Музмин",
+    "no_show_risk": "Дер меояд",
+    "insurance": "Суғурта",
+    "pediatric": "Бачагона",
+    "geriatric": "Куҳансол",
+    "hint": "Барои гурӯҳбандии бемор як ё якчанд нишона интихоб кунед.",
+    "pickerLabel": "Нишона интихоб кунед"
+  },
+  "clinicalLists": {
+    "title": "Мушкилот ва доруҳо",
+    "problems": "Мушкилот",
+    "medications": "Доруҳо",
+    "noProblems": "Мушкилоти сабтшуда нест",
+    "noMedications": "Доруи сабтшуда нест",
+    "resolve": "Ҳалшуда қайд кунед",
+    "stop": "Қатъ",
+    "problemPlaceholder": "Мушкилот / ташхис",
+    "medPlaceholder": "Номи дору",
+    "dose": "Воя",
+    "frequency": "Басомад"
+  }
+}

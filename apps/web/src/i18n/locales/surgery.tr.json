@@ -1,0 +1,148 @@
+{
+  "section": {
+    "title": "Ameliyatlar",
+    "newButton": "Yeni ameliyat",
+    "loading": "Yükleniyor…",
+    "empty": "Henüz ameliyat kaydı yok."
+  },
+  "day": {
+    "title": "Ameliyat Günü Merkezi",
+    "description": "Bugünkü tüm cerrahilerin pipeline görünümü: güvenlik kontrolü, lens kaydı, post-op randevu zinciri.",
+    "empty": "Bugün planlı ameliyat yok.",
+    "complication": "Komplikasyon",
+    "goToPatient": "Hastaya git",
+    "safetyPending": "Güvenlik bekliyor",
+    "safetyComplete": "Güvenlik tamam",
+    "safetyGateTooltip": "WHO güvenlik kontrol listesi tamamlanmadan ameliyat tamamlanamaz.",
+    "stage": {
+      "planned": "Planlandı",
+      "lens_pending": "Lens bekleniyor",
+      "ready": "Hazır",
+      "done": "Tamamlandı",
+      "cancelled": "İptal"
+    },
+    "req": {
+      "title": "Tamamlamak için eksikler",
+      "checklist": "Güvenlik kontrol listesi",
+      "consent": "İmzalı onam",
+      "lens": "Lens kaydı"
+    },
+    "completeGateTooltip": "Tamamlamak için eksik: {{missing}}",
+    "registerLens": "Lens kaydı",
+    "complete": "Tamamlandı + taburcu"
+  },
+  "timeout": {
+    "title": "Cerrahi Time-Out · Tamamla",
+    "description": "Tamamlamadan önce hasta, göz tarafı ve lensi ekiple sesli teyit edin. İkinci kimlik doğrulaması zorunludur.",
+    "loadFailed": "Ameliyat bilgisi yüklenemedi.",
+    "birthDate": "Doğum tarihi",
+    "doctor": "Cerrah",
+    "procedure": "İşlem",
+    "eyeSide": "Göz tarafı",
+    "eyeMissing": "Belirtilmemiş",
+    "lens": "Lens / IOL",
+    "lensFromLot": "Lot lensi kayıtlı",
+    "noLens": "Lenssiz",
+    "safetyOk": "WHO güvenlik kontrol listesi tamamlandı.",
+    "safetyBlocked": "WHO güvenlik kontrol listesi tamamlanmadı (sign-in / time-out / sign-out). Önce güvenlik kontrolünü tamamlayın.",
+    "identityLabel": "İkinci kimlik doğrulaması — hasta MRN veya doğum tarihi (GG.AA.YYYY)",
+    "identityOk": "Kimlik doğrulandı",
+    "identityMismatch": "MRN veya doğum tarihi eşleşmiyor",
+    "autoSchedule": "Post-op kontrolleri otomatik planla (1.gün / 1.hafta / 1.ay / 3.ay)",
+    "slotHour": "Kontrol saati",
+    "submit": "Tamamla + taburcu",
+    "success": "Ameliyat tamamlandı.",
+    "successScheduled": "Ameliyat tamamlandı. {{count}} post-op kontrol randevusu açıldı."
+  },
+  "form": {
+    "createTitle": "Yeni ameliyat",
+    "doctorRecommendNote": "Ameliyat tarihi ve paketi ameliyat satış tarafından belirlenir. Siz hangi ameliyatın gerektiğini kaydedip önerirsiniz.",
+    "editTitle": "Ameliyat düzenle",
+    "description": "Ameliyat tipi, planlama, öncesi/sırasında/sonrası bilgilerini kaydedin. Ameliyat gerçekleştirildikten sonra aynı gün içinde düzenlenebilir; sonrasında sadece yönetici override edebilir.",
+    "submit": "Kaydet",
+    "update": "Değişiklikleri kaydet",
+    "submitting": "Kaydediliyor…",
+    "fields": {
+      "type": "Ameliyat tipi",
+      "doctor": "Cerrah",
+      "status": "Durum",
+      "scheduledAt": "Planlanan tarih/saat",
+      "performedAt": "Gerçekleşme tarihi/saati",
+      "preOpTitle": "Ameliyat öncesi (Pre-op)",
+      "intraOpTitle": "Ameliyat sırasında (Intra-op)",
+      "postOpTitle": "Ameliyat sonrası (Post-op)",
+      "complicationFlag": "Komplikasyon var",
+      "complicationNotes": "Komplikasyon notları"
+    }
+  },
+  "status": {
+    "planned": "Planlandı",
+    "performed": "Gerçekleşti",
+    "cancelled": "İptal",
+    "postponed": "Ertelendi",
+    "refused": "Hasta reddetti"
+  },
+  "refusal": {
+    "title": "Cerrahi reddi",
+    "description": "Hasta önerilen ameliyatı yapmaktan vazgeçti. Sebep + opsiyonel not lead funnel analizine kaydedilir.",
+    "button": "Cerrahi reddi",
+    "reasonLabel": "Sebep",
+    "notesLabel": "Notlar (opsiyonel)",
+    "notesPlaceholder": "Hastanın açıklaması veya bağlam notları…",
+    "notesRequiredHint": "\"Diğer\" seçildiğinde notlar zorunlu (en az 10 karakter)",
+    "submit": "Reddi kaydet",
+    "cancel": "Vazgeç",
+    "success": "Cerrahi reddi kaydedildi",
+    "reasons": {
+      "financial": "Maddi sebep",
+      "medical_concern": "Tıbbi endişe",
+      "family": "Aile kararı",
+      "second_opinion": "İkinci görüş arıyor",
+      "other": "Diğer"
+    }
+  },
+  "preOp": {
+    "laterality": "Taraf (OD/OS/OU)",
+    "anesthesia": "Anestezi",
+    "lens": "Lens/IOL",
+    "notes": "Notlar"
+  },
+  "intraOp": {
+    "duration": "Süre (dk)",
+    "technique": "Teknik",
+    "notes": "Notlar"
+  },
+  "postOp": {
+    "immediate": "Hemen sonrası gözlem",
+    "medications": "İlaç protokolü",
+    "notes": "Notlar"
+  },
+  "errors": {
+    "invalidDate": "Geçerli bir tarih/saat girin.",
+    "sameDayExpired": "Aynı gün düzenleme süresi doldu. Sadece yönetici sonradan değişiklik yapabilir.",
+    "onlyOwnerOrAdmin": "Sadece ameliyatı yapan cerrah veya yönetici bu kaydı düzenleyebilir.",
+    "unknown": "Beklenmeyen hata.",
+    "typeRequired": "Ameliyat tipi gerekli."
+  },
+  "toast": {
+    "created": "Ameliyat kaydedildi.",
+    "updated": "Ameliyat güncellendi."
+  },
+  "warning": {
+    "noExamination": "Uyarı: Bu hastanın muayene kaydı yok — cerrahi yine de kaydedildi.",
+    "handoffNotAdvanced": "Bilgi: Aktif ziyaret satış kuyruğuna ilerletilemedi; gerekirse manuel devredin."
+  },
+  "lensRegister": {
+    "title": "Lens kaydı (intra-op)",
+    "description": "Barkod scanner ile serial no okutun veya manuel girin. Stok lot otomatik düşer.",
+    "success": "Lens kaydedildi (stok düşüldü)",
+    "barcodeLabel": "Barkod (opsiyonel)",
+    "barcodePlaceholder": "Scanner odaklı",
+    "serialLabel": "Seri no",
+    "serialPlaceholder": "A-Z 0-9 - · 6-20 karakter",
+    "overrideLabel": "Pre-op'tan farklı / stok dışı (override)",
+    "overrideReasonLabel": "Override sebebi (≥10 karakter)",
+    "cancel": "Vazgeç",
+    "submit": "Lens kaydet"
+  }
+}

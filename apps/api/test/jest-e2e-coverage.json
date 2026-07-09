@@ -1,0 +1,22 @@
+{
+  "rootDir": "..",
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "testRegex": "test/.*\\.e2e\\.spec\\.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "testEnvironment": "node",
+  "globalSetup": "<rootDir>/test/setup.ts",
+  "setupFiles": ["<rootDir>/test/per-worker-db.ts"],
+  "setupFilesAfterEnv": ["<rootDir>/test/e2e-retry.ts"],
+  "testTimeout": 90000,
+  "forceExit": true,
+  "collectCoverageFrom": [
+    "src/**/*.ts",
+    "!src/**/*.module.ts",
+    "!src/**/*.d.ts",
+    "!src/main.ts",
+    "!src/**/index.ts"
+  ],
+  "coverageDirectory": "<rootDir>/coverage"
+}

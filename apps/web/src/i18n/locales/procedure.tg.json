@@ -1,0 +1,99 @@
+{
+  "section": {
+    "title": "Процедураҳо",
+    "newButton": "Процедураи нав",
+    "loading": "Бор шуда истодааст…",
+    "empty": "Ҳанӯз процедураҳо сабт нашудаанд."
+  },
+  "listPage": {
+    "title": "Процедураҳо",
+    "description": "Сӯзандорӯҳо, лазерҳо ва процедураҳои хурд.",
+    "allTypes": "Ҳамаи навъҳо",
+    "fromDate": "Аз",
+    "toDate": "То",
+    "empty": "Натиҷае ёфт нашуд.",
+    "cols": {
+      "performedAt": "Сана",
+      "patient": "Бемор",
+      "type": "Навъ",
+      "eyeSide": "Чашм",
+      "doctor": "Духтур",
+      "status": "Ҳолат"
+    }
+  },
+  "types": {
+    "intravitreal_injection": "Сӯзандоруи интравитреалӣ",
+    "yag_capsulotomy": "YAG-капсулотомия",
+    "argon_laser": "Лазери аргон",
+    "retina_laser_prp": "Лазери ретина (ПРП)",
+    "slt": "СЛТ (трабекулопластика)",
+    "cross_linking": "Кросс-линкинг",
+    "minor": "Процедураи хурд"
+  },
+  "status": {
+    "planned": "Банақшагирифташуда",
+    "performed": "Иҷрошуда",
+    "cancelled": "Бекоркардашуда"
+  },
+  "eyeSide": {
+    "od": "Рост (OD)",
+    "os": "Чап (OS)",
+    "ou": "Ҳарду (OU)"
+  },
+  "anesthesia": {
+    "topical": "Топикӣ",
+    "local": "Маҳаллӣ",
+    "none": "Нест"
+  },
+  "settings": {
+    "energy_mj": "Энергия",
+    "energy_mw": "Қувва",
+    "pulse_count": "Шумораи импулсҳо",
+    "spot_count": "Шумораи нуқтаҳо",
+    "spot_size_um": "Андозаи доғ",
+    "duration_ms": "Давомнокӣ",
+    "duration_min": "Давомнокӣ",
+    "protocol": "Протокол",
+    "description": "Тавсиф"
+  },
+  "form": {
+    "title": "Процедураи нав",
+    "description": "Сабтро эҷод ва дар сурати зарурӣ қабули назоратиро таъин кунед.",
+    "submit": "Захира",
+    "sections": {
+      "drug": "Дору",
+      "settings": "Параметрҳо"
+    },
+    "fields": {
+      "type": "Навъ",
+      "doctor": "Духтур",
+      "eyeSide": "Чашм",
+      "anesthesia": "Анестезия",
+      "performedAt": "Сана / соат",
+      "status": "Ҳолат",
+      "drugUsed": "Дору",
+      "drugDose": "Доз",
+      "findings": "Натиҷаҳо",
+      "complications": "Мушкилот",
+      "notes": "Эзоҳҳо",
+      "autoFollowUp": "Қабули назоратиро худкор созед",
+      "followUpDays": "Пас аз чанд рӯз:"
+    },
+    "placeholders": {
+      "drugUsed": "Lucentis / Eylea / Avastin…"
+    }
+  },
+  "list": {
+    "followUp": "Назорат: {{date}}"
+  },
+  "toast": {
+    "created": "Процедура захира карда шуд.",
+    "savedFollowUpSkipped": "Процедура захира шуд; қабули назоратӣ аз сабаби бархӯрд таъин нашуд."
+  },
+  "errors": {
+    "unknown": "Амалиёт ноком шуд.",
+    "forbidden": "Танҳо духтури амалкунанда ё мудир метавонад тағйир диҳад.",
+    "notFound": "Сабт ёфт нашуд.",
+    "selectDoctor": "Лутфан духтурро интихоб кунед."
+  }
+}

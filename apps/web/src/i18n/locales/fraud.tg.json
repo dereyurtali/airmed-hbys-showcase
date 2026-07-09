@@ -1,0 +1,62 @@
+{
+  "title": "Ошкоркунии суиистифода",
+  "description": "Огоҳиҳои фаъолияти ғайримуқаррарӣ + санҷиш.",
+  "tabs": {
+    "alerts": "Огоҳиҳои фаъол",
+    "rules": "Қоидаҳо"
+  },
+  "actions": {
+    "scanNow": "Ҳозир скан",
+    "startReview": "Ба санҷиш гирифтан",
+    "resolve": "Ҳалшуда",
+    "markFalsePositive": "Хатои сохта",
+    "notePlaceholder": "Эзоҳ (ихтиёрӣ)",
+    "confirm": {
+      "resolved": "Ҳалшуда сабт",
+      "false_positive": "Хатои сохта сабт"
+    }
+  },
+  "filters": {
+    "status": "Ҳолат",
+    "severity": "Шиддат",
+    "rule": "Қоида",
+    "all": "Ҳама"
+  },
+  "severity": {
+    "low": "Паст",
+    "medium": "Миёна",
+    "high": "Баланд"
+  },
+  "status": {
+    "new": "Нав",
+    "reviewing": "Санҷиш",
+    "resolved": "Ҳалшуда",
+    "false_positive": "Хатои сохта"
+  },
+  "rule": {
+    "night_operations": "Амалиёт дар вақти шаб",
+    "stock_consume_without_surgery": "Партови анбор бе амалиёт",
+    "multi_ip_login": "Воридшавӣ аз чанд IP",
+    "frequent_patient_appointment": "Як бемор қабули зиёд",
+    "active": "Фаъол",
+    "inactive": "Ғайрифаъол"
+  },
+  "ruleDescription": {
+    "night_operations": "Тағиротҳои 22:00-06:00 (Asia/Dushanbe) қайд мешавад.",
+    "stock_consume_without_surgery": "Партови ИОЛ бе амалиёт огоҳӣ медиҳад.",
+    "multi_ip_login": "Як корбар, 2+ IP дар як соат.",
+    "frequent_patient_appointment": "Як бемор, 6+ қабул дар 30 рӯз."
+  },
+  "alert": {
+    "actor": "Корбар"
+  },
+  "emptyAlerts": "Огоҳии фаъол нест.",
+  "toast": {
+    "statusUpdated": "Ҳолат нав шуд.",
+    "ruleToggled": "Қоида нав шуд.",
+    "scanned": "Скан анҷом ёфт: {{count}} огоҳии нав."
+  },
+  "errors": {
+    "unknown": "Иҷро нашуд."
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "title": "Cerrahi Güvenlik Kontrol Listesi",
+  "fullyComplete": "Tamamlandı",
+  "phase": {
+    "sign_in": "Giriş (anestezi öncesi)",
+    "time_out": "Time-Out (insizyon öncesi)",
+    "sign_out": "Kapanış",
+    "markComplete": "{{phase}} fazını tamamla",
+    "markedComplete": "Faz tamamlandı",
+    "lockedHint": "Önceki fazı tamamlayın"
+  },
+  "item": {
+    "check": "Onayla",
+    "uncheck": "Onayı kaldır",
+    "optional": "Opsiyonel"
+  },
+  "items": {
+    "signIn": {
+      "patientIdentity": "Hasta kimliği doğrulandı mı?",
+      "siteMarked": "Ameliyat olacak göz (R/L) işaretlendi mi?",
+      "anesthesiaSafetyCheck": "Anestezi güvenlik kontrolü tamam mı?",
+      "pulseOximeter": "Pulse oksimetre çalışıyor mu?",
+      "allergiesKnown": "Bilinen alerjiler doğrulandı mı?",
+      "difficultAirwayRisk": "Zor hava yolu / aspirasyon riski değerlendirildi mi?",
+      "bloodLossRisk": ">500 ml kan kaybı riski değerlendirildi mi?"
+    },
+    "timeOut": {
+      "teamIntroduced": "Tüm ekip tanıştı mı (ad + rol)?",
+      "patientProcedureSiteConfirmed": "Hasta + işlem + göz tarafı son onayı (cerrah/anestezi/hemşire)?",
+      "surgeonCriticalSteps": "Cerrah: kritik adımlar, beklenen kayıp, hasta özel notları?",
+      "anesthesiaPatientSpecific": "Anestezi: ASA / vital monitör hazır mı?",
+      "nursingSterilityEquipment": "Hemşire: sterilite + ekipman tam mı?",
+      "antibioticProphylaxis": "Antibiyotik proflaksisi son 60 dakikada verildi mi?",
+      "imagingDisplayed": "Gerekli görüntüleme (OCT, biyometri) hazır mı?",
+      "iolLotVerified": "IOL lot/seri numarası ve diyoptri doğrulandı mı?",
+      "eyeSideFinalCheck": "Ameliyat edilecek göz (R/L) son kez doğrulandı mı?"
+    },
+    "signOut": {
+      "procedureRecorded": "Yapılan prosedür sözlü olarak teyit edilip kaydedildi mi?",
+      "instrumentCount": "Alet / iğne / sünger sayımı doğru mu?",
+      "specimenLabeled": "Numune varsa adı + hasta etiketi doğru mu?",
+      "equipmentIssues": "Ekipman sorunları (varsa) ekibe bildirildi mi?",
+      "postOpPlanDiscussed": "Post-op plan cerrah + anestezi + hemşire ile konuşuldu mu?"
+    }
+  },
+  "errors": {
+    "loadFailed": "Kontrol listesi yüklenemedi: {{message}}"
+  }
+}

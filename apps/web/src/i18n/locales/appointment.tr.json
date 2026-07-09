@@ -1,0 +1,168 @@
+{
+  "page": {
+    "title": "Randevu takvimi",
+    "description": "Doktor takvimleri, randevu durumları, tip filtresi.",
+    "empty": "Bu gün için henüz randevu yok.",
+    "loading": "Yükleniyor…",
+    "loadFailed": "Takvim yüklenemedi: {{message}}",
+    "comingSoon": "Haftalık görünüm PR-4'te aktive olacak.",
+    "newAppointment": "Yeni randevu"
+  },
+  "view": {
+    "daily": "Günlük",
+    "weekly": "Haftalık"
+  },
+  "filters": {
+    "doctors": "Doktor",
+    "types": "Tip",
+    "allDoctors": "Hepsi",
+    "clearAll": "Temizle",
+    "selectedCount": "{{count}} seçili",
+    "noDoctors": "Doktor bulunamadı"
+  },
+  "legend": {
+    "title": "Tip rehberi",
+    "expand": "Genişlet",
+    "collapse": "Daralt"
+  },
+  "date": {
+    "today": "Bugün",
+    "previous": "Önceki gün",
+    "next": "Sonraki gün",
+    "pick": "Tarih seç"
+  },
+  "type": {
+    "consultation": "Muayene",
+    "control": "Kontrol",
+    "examination": "Tetkik",
+    "surgery": "Ameliyat",
+    "injection": "Enjeksiyon",
+    "laser": "Lazer",
+    "preOp": "Pre-op",
+    "postOp": "Post-op"
+  },
+  "status": {
+    "scheduled": "Planlandı",
+    "checkedIn": "Giriş yapıldı",
+    "inProgress": "Devam ediyor",
+    "completed": "Tamamlandı",
+    "cancelled": "İptal edildi",
+    "noShow": "Gelmedi"
+  },
+  "dialog": {
+    "create": {
+      "title": "Yeni randevu",
+      "description": "Hasta seçin, tip ve saat girin. Çakışan randevu varsa otomatik engellenir.",
+      "submit": "Randevuyu kaydet",
+      "submitting": "Kaydediliyor…",
+      "cancel": "Vazgeç"
+    },
+    "edit": {
+      "title": "Randevuyu düzenle",
+      "description": "Hasta ve doktor değiştirilemez. Tip, saat ve notları güncelleyebilirsiniz.",
+      "submit": "Değişiklikleri kaydet",
+      "submitting": "Kaydediliyor…"
+    },
+    "fields": {
+      "patient": "Hasta",
+      "doctor": "Doktor",
+      "type": "Tip",
+      "startTime": "Başlangıç",
+      "endTime": "Bitiş",
+      "notes": "Notlar",
+      "notesPlaceholder": "Hasta için kısa not (opsiyonel)…",
+      "locked": "Değiştirilemez",
+      "date": "Tarih",
+      "anyDoctor": "Doktor fark etmez (havuz)"
+    },
+    "errors": {
+      "patientRequired": "Hasta seçimi zorunlu.",
+      "doctorRequired": "Doktor seçimi zorunlu.",
+      "endBeforeStart": "Bitiş saati başlangıç saatinden sonra olmalı.",
+      "conflict": "Bu zaman dilimi başka bir randevuyla çakışıyor."
+    },
+    "warnings": {
+      "onLeave": "Seçilen saat doktorun izin aralığına denk geliyor — kayıt engellenecek.",
+      "outsideWindow": "Seçilen saat misafir doktorun geliş penceresi dışında — kayıt engellenecek.",
+      "noWindow": "Bu misafir doktor için geliş tarihi tanımlı değil — randevuya kapalı."
+    },
+    "slots": {
+      "title": "Boş saatler",
+      "loading": "Boş saatler yükleniyor…",
+      "empty": "Bu gün için boş saat yok.",
+      "more": "+{{remaining}} daha"
+    }
+  },
+  "commandPicker": {
+    "searchPlaceholder": "Hasta ara (ad, soyad, MRN, telefon)…",
+    "loading": "Aranıyor…",
+    "noResults": "Eşleşen hasta bulunamadı.",
+    "minChars": "Aramak için en az 2 karakter girin.",
+    "change": "Değiştir"
+  },
+  "quickAdd": {
+    "cta": "Yeni hasta ekle",
+    "ctaNamed": "\"{{name}}\" adıyla yeni hasta ekle",
+    "title": "Hızlı hasta kaydı",
+    "hint": "Yalnız zorunlu bilgiler. Kalan detayları sonra hasta kartından tamamlayabilirsiniz.",
+    "submit": "Ekle ve seç",
+    "cancel": "Vazgeç",
+    "created": "{{name}} eklendi"
+  },
+  "actions": {
+    "checkIn": "Giriş yap",
+    "markDone": "Tamamlandı",
+    "cancel": "İptal et",
+    "markNoShow": "Gelmedi",
+    "illegalTransition": "Bu durumdan geçiş mümkün değil",
+    "confirmIrreversible": "Bu işlem geri alınamaz. Devam edilsin mi?"
+  },
+  "toast": {
+    "created": "Randevu oluşturuldu.",
+    "updated": "Randevu güncellendi.",
+    "statusUpdated": "Durum güncellendi.",
+    "conflict": "Bu zaman dilimi başka bir randevuyla çakışıyor.",
+    "unknownError": "Beklenmeyen hata."
+  },
+  "leave": {
+    "label": "İzinli",
+    "noReason": "Sebep belirtilmedi",
+    "tooltipPrefix": "İzinli"
+  },
+  "visitingClosed": {
+    "label": "Geliş penceresi dışı",
+    "tooltip": "Misafir doktor bu tarihte klinikte değil — randevuya kapalı"
+  },
+  "detail": {
+    "title": "Randevu detayı",
+    "loading": "Yükleniyor…",
+    "patient": "Hasta",
+    "doctor": "Doktor",
+    "specialty": "Uzmanlık",
+    "time": "Saat",
+    "type": "Tip",
+    "status": "Durum",
+    "notes": "Notlar",
+    "actions": "İşlemler",
+    "startExam": "Muayeneye başla",
+    "editAction": "Düzenle",
+    "anyDoctor": "Havuz (atanmadı)"
+  },
+  "series": {
+    "button": "Seri Randevu",
+    "title": "Seri Randevu",
+    "description": "Birden çok hastayı ardışık ayrı saatlere dağıtır. Her hasta kendi slotuna gider (tek-saat disiplini korunur).",
+    "startLabel": "Başlangıç",
+    "intervalLabel": "Aralık (dk)",
+    "addPatient": "Hasta ekle",
+    "submit": "{{count}} randevu ver",
+    "createdToast": "{{count}} randevu oluşturuldu",
+    "someFailed": "{{count}} randevu oluşturulamadı (çakışma/müsaitlik)"
+  },
+  "history": {
+    "title": "Randevu Geçmişi",
+    "empty": "Bu hasta için randevu kaydı yok.",
+    "summary": "{{total}} randevu · {{noShow}} gelmedi",
+    "loadError": "Randevu geçmişi yüklenemedi"
+  }
+}

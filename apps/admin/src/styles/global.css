@@ -1,0 +1,103 @@
+/* #1094 — Inter Variable self-host (apps/web ile aynı; CDN yok → offline uyumlu,
+   cyrillic-ext Tacik karakterleri kapsar). 2026-07-04 UI turu kanonu. */
+@import '@fontsource-variable/inter';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* DNA Platform Admin — airmed-design Bölüm 24 kanonik token seti (ışık tema).
+   apps/web/src/index.css ile aynı değerler; platform admin iç araç → dark yok. */
+@layer base {
+  :root {
+    --background: 0 0% 100%; /* kart / yüzey */
+    --foreground: 222 47% 11%; /* #0F172A birincil metin */
+    --primary: 200 98% 32%; /* #0166A8 marine aksan */
+    --primary-foreground: 0 0% 100%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%; /* #64748B ikincil/muted metin */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 200 98% 32%;
+    --radius: 0.5rem;
+
+    /* Doğrudan hex/rgba (hsl değil) — görsel kanonla birebir */
+    --canvas: #f6f7f9; /* sayfa zemini */
+    --border: #d9dee7; /* kart kenarı */
+    --input: #c9d2de; /* input kenarı */
+
+    --crit-bg: #fff1f0;
+    --crit-bd: #ffd1ce;
+    --crit-tx: #b42318;
+    --crit-pure: #ff3b30;
+    --warn-bg: rgba(255, 149, 0, 0.12);
+    --warn-bd: rgba(255, 149, 0, 0.26);
+    --warn-tx: #8a4b00;
+    --suc-bg: rgba(52, 199, 89, 0.1);
+    --suc-bd: rgba(52, 199, 89, 0.22);
+    --suc-tx: #1e7a39;
+    --info-bg: rgba(1, 102, 168, 0.06);
+    --info-bd: rgba(1, 102, 168, 0.18);
+    --info-tx: #015a94;
+    --hover: rgba(15, 23, 42, 0.04);
+    --row-hover: rgba(15, 23, 42, 0.03);
+    --minor: rgba(15, 23, 42, 0.08);
+    --ease-swift: cubic-bezier(0.2, 0, 0, 1);
+
+    font-family:
+      'Inter Variable',
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      Roboto,
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--canvas);
+    color: hsl(var(--foreground));
+    font-size: 15px;
+    line-height: 1.4;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Tek focus-visible ring (marine halo + yüzey-renkli offset). Fare
+     tıklamasında ring YOK — yalnız klavye. Her bileşende AYNI. */
+  .focus-ring:focus-visible {
+    outline: none;
+    border-color: hsl(var(--primary));
+    box-shadow:
+      0 0 0 2px rgba(1, 102, 168, 0.35),
+      0 0 0 4px hsl(var(--background));
+  }
+
+  /* Tek gölge — yalnız yüzen yüzeyde (dialog/menü/toast/popover). */
+  .shadow-float {
+    box-shadow:
+      0 1px 2px rgba(15, 23, 42, 0.06),
+      0 12px 28px rgba(15, 23, 42, 0.08);
+  }
+
+  /* Tek motion — tüm ephemeral UI girişi; reduced-motion = kapalı (base). */
+  .motion-pop {
+    animation: motion-pop 120ms var(--ease-swift);
+  }
+}

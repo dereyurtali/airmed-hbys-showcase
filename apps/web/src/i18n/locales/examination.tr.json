@@ -1,0 +1,53 @@
+{
+  "section": {
+    "title": "Muayeneler",
+    "newButton": "Yeni muayene",
+    "loading": "Yükleniyor…",
+    "empty": "Henüz muayene kaydı yok."
+  },
+  "form": {
+    "createTitle": "Yeni muayene",
+    "editTitle": "Muayene düzenle",
+    "description": "Şikayet, öykü, bulgular, tanı, plan ve reçeteyi kaydedin. Aynı gün içinde düzenlenebilir; sonrasında sadece yönetici override edebilir.",
+    "submit": "Kaydet",
+    "update": "Değişiklikleri kaydet",
+    "submitting": "Kaydediliyor…",
+    "fields": {
+      "examinedAt": "Muayene tarihi/saati",
+      "chiefComplaint": "Şikayet",
+      "history": "Öykü",
+      "findingsTitle": "Bulgular",
+      "diagnosis": "Tanı",
+      "icd10": "ICD-10 tanı kodları",
+      "treatmentPlan": "Tedavi planı",
+      "prescription": "Reçete"
+    },
+    "saveDraft": "Taslak kaydet",
+    "saveAndFinish": "Kaydet + Muayeneyi Bitir",
+    "saveOnly": "Sadece Kaydet"
+  },
+  "icd": {
+    "searchPlaceholder": "ICD-10 kodu veya açıklama yazın (örn. H25 veya katarakt)",
+    "noMatch": "Eşleşen kod yok",
+    "remove": "{{code}} kaldır"
+  },
+  "findings": {
+    "odVa": "OD görme keskinliği",
+    "osVa": "OS görme keskinliği",
+    "anteriorSegment": "Ön segment",
+    "fundus": "Fundus"
+  },
+  "errors": {
+    "invalidDate": "Geçerli bir tarih/saat girin.",
+    "sameDayExpired": "Aynı gün düzenleme süresi doldu. Sadece yönetici sonradan değişiklik yapabilir.",
+    "onlyOwnerOrAdmin": "Sadece muayeneyi yapan doktor veya yönetici bu kaydı düzenleyebilir.",
+    "unknown": "Beklenmeyen hata."
+  },
+  "toast": {
+    "created": "Muayene kaydedildi.",
+    "updated": "Muayene güncellendi.",
+    "draftSaved": "Taslak kaydedildi",
+    "savedAndFinished": "Muayene kaydedildi ve ziyaret tamamlandı.",
+    "savedNotFinished": "Muayene kaydedildi; ziyaret kapatılamadı, worklist’ten Tamamla ile kapatın."
+  }
+}

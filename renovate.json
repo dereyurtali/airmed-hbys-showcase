@@ -1,0 +1,69 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    "group:monorepos",
+    "group:recommended",
+    "npm:unpublishSafe"
+  ],
+  "timezone": "Europe/Istanbul",
+  "schedule": ["before 9am on saturday"],
+  "prConcurrentLimit": 4,
+  "prHourlyLimit": 2,
+  "rangeStrategy": "bump",
+  "labels": ["dependencies"],
+  "semanticCommits": "enabled",
+  "semanticCommitType": "chore",
+  "semanticCommitScope": "deps",
+  "automergeStrategy": "squash",
+  "platformAutomerge": false,
+  "postUpdateOptions": ["npmDedupe"],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 9am on saturday"],
+    "automerge": true
+  },
+  "vulnerabilityAlerts": {
+    "labels": ["security", "dependencies"],
+    "schedule": ["at any time"],
+    "automerge": false
+  },
+  "packageRules": [
+    {
+      "description": "devDependency minor+patch'i tek PR'da grupla (gürültü + CI dakikası azalt)",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "dev-dependencies (non-major)"
+    },
+    {
+      "description": "Patch/pin/digest → CI yeşilse otomatik merge",
+      "matchUpdateTypes": ["patch", "pin", "digest"],
+      "automerge": true
+    },
+    {
+      "description": "devDependency minor de otomatik (test-only, runtime'a girmez)",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor"],
+      "automerge": true
+    },
+    {
+      "description": "GitHub Actions sürümlerini SHA'ya pinle + otomatik",
+      "matchManagers": ["github-actions"],
+      "pinDigests": true,
+      "automerge": true
+    },
+    {
+      "description": "Major güncellemeler her zaman elle inceleme",
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "labels": ["dependencies", "major"]
+    },
+    {
+      "description": "DB/runtime omurgası (Prisma, NestJS) major → Dependency Dashboard onayı bekler",
+      "matchPackageNames": ["prisma", "@prisma/client", "@nestjs/**"],
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    }
+  ]
+}

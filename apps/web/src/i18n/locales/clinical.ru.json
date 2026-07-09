@@ -1,0 +1,29 @@
+{
+  "eyeSide": {
+    "label": "Сторона глаза",
+    "od": "Правый (OD)",
+    "os": "Левый (OS)",
+    "ou": "Оба (OU)",
+    "odColumn": "Правый глаз (OD)",
+    "osColumn": "Левый глаз (OS)",
+    "linkBoth": "Оба глаза одинаково (OU)"
+  },
+  "confirm": {
+    "defaultPhrase": "УДАЛИТЬ",
+    "typePrompt": "Введите \"{{phrase}}\" для подтверждения",
+    "reasonLabel": "Причина",
+    "reasonPlaceholder": "Причина (не менее {{min}} символов)",
+    "confirm": "Подтвердить",
+    "undo": "Отменить"
+  },
+  "banner": {
+    "allergy": "Аллергия",
+    "anticoagulant": "Антикоагулянт",
+    "years": "лет",
+    "gender": {
+      "male": "Мужчина",
+      "female": "Женщина",
+      "other": "Другое"
+    }
+  }
+}

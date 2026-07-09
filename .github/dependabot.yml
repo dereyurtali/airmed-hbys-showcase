@@ -1,0 +1,107 @@
+# Bağımlılık otomasyonu — haftalık, gruplu (PR gürültüsünü azaltır).
+# CLAUDE.md "Renovate merkezden getirir" der; fiilen Dependabot kullanıyoruz (GitHub-native,
+# ek servis/token gerektirmez). minor+patch tek PR'da toplanır; major ayrı PR (breaking riski).
+# Lockfile çakışmasını önlemek için bağımlılıkları ELLE bump etme — bu boru hattından gelsin.
+version: 2
+updates:
+  # ── npm workspaces (tek root lockfile tüm apps/ + packages/ kapsar) ──────────
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: Europe/Istanbul
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      npm-minor-patch:
+        update-types:
+          - minor
+          - patch
+    # Kırıcı major'lar bilinçli/ayrı iş olarak ele alınır (drive-by PR açma):
+    # vite 5→8 = config breaking; typescript major = monorepo tip hatası riski.
+    # (PR #616/#619 bu yüzden kapatıldı.) Major isteyince elle bump + dedikli test.
+    #
+    # @nestjs framework çekirdeği (common/core/platform-*/websockets/testing) lockstep
+    # sürümlenir ve minor/patch bile bizde tip regresyonu çıkarabilir: 11.1.19→11.1.27
+    # bump'ı `NestFactory.create<NestExpressApplication>`'i kırdı (TS2344 — INestApplication
+    # kısıtı sağlanmıyor; @types/express v5 hizalaması da çözmedi). main 11.1.19'da yeşil.
+    # Bu yüzden framework minor/patch'i drive-by alınmaz → bilinçli NestJS yükseltmesi
+    # (main.ts + ekosistem uyumu) yapılınca bu ignore kaldırılır. (PR #626 bu yüzden hold'landı.)
+    # ── Major hold (GLOBAL) ──────────────────────────────────────────────────
+    # Politika: minor/patch gruplu otomatik gelir; **major'lar ASLA drive-by**.
+    # Her major (vite config / typescript monorepo tip / zod 4 z.record+hookform5
+    # peer / eslint 10 flat-config / prisma 7 / vitest 4 / vite-plugin 6 / jsdom 29 ...)
+    # breaking + dedikli test ister. Tek tek ignore = whack-a-mole → global major
+    # ignore ile dependabot yalnız minor/patch açar; major isteyince ELLE bump +
+    # dedikli doğrulama (ignore'u geçici kaldırmadan da bump edilebilir).
+    # (PR #616/#619/#864/#865/#866/#870-874 bu yüzden kapatıldı.)
+    ignore:
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@nestjs/common'
+        update-types:
+          ['version-update:semver-minor', 'version-update:semver-patch']
+      - dependency-name: '@nestjs/core'
+        update-types:
+          ['version-update:semver-minor', 'version-update:semver-patch']
+      - dependency-name: '@nestjs/platform-express'
+        update-types:
+          ['version-update:semver-minor', 'version-update:semver-patch']
+      - dependency-name: '@nestjs/platform-socket.io'
+        update-types:
+          ['version-update:semver-minor', 'version-update:semver-patch']
+      - dependency-name: '@nestjs/websockets'
+        update-types:
+          ['version-update:semver-minor', 'version-update:semver-patch']
+      - dependency-name: '@nestjs/testing'
+        update-types:
+          ['version-update:semver-minor', 'version-update:semver-patch']
+    labels:
+      - dependencies
+
+  # ── GitHub Actions (workflow'larda kullanılan action versiyonları) ───────────
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: Europe/Istanbul
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: ci
+    groups:
+      gha-all:
+        update-types:
+          - minor
+          - patch
+    labels:
+      - dependencies
+      - ci
+
+  # ── Docker base image'lar (apps/*/Dockerfile) ───────────────────────────────
+  - package-ecosystem: docker
+    directories:
+      - '/apps/api'
+      - '/apps/web'
+      - '/apps/admin'
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: Europe/Istanbul
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: build
+    # node base image major'ı CI (NODE_VERSION) + engines + 3 Dockerfile birlikte
+    # değişmeli → drive-by alınmaz (PR #608/#612/#614 kapatıldı). LTS bump'ı bilinçli iş.
+    ignore:
+      - dependency-name: node
+        update-types: ['version-update:semver-major']
+    labels:
+      - dependencies
+      - docker

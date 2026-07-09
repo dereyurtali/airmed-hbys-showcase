@@ -1,0 +1,1154 @@
+{
+  "app": {
+    "name": "AirMed HBYS",
+    "tagline": "Hastane Bilgi Yönetim Sistemi",
+    "footer": "© DNA Software Solutions",
+    "versionChannel": "Demo"
+  },
+  "phReturn": {
+    "complianceBanner": "İade stok ve kasaya anında yansır; gün sonu kasa kapanışında finans mutabakatında görünür. Ayrı finans onayı gerekmez."
+  },
+  "pos": {
+    "buyer": "Alıcı",
+    "buyerAnonymous": "Anonim satış · walk-in",
+    "buyerKvkk": "Kişisel veri kaydedilmez (KVKK).",
+    "qtyMinus": "Adet azalt",
+    "qtyPlus": "Adet artır",
+    "removeItem": "Kalemi çıkar",
+    "allCategories": "Tümü",
+    "categoryFilter": "Kategoriye göre filtrele",
+    "rxMapHint": "her kalemi arayıp ürünü siz seçin (otomatik eşleme yok)",
+    "rxItemInCart": "sepette",
+    "rxMap": "Ara & eşle",
+    "rxMapping": "\"{{label}}\" için ürün seçin → sepete eklenince eşlenir.",
+    "rxDispenseMark": "Dağıtım:",
+    "rxPartial": "Kısmi",
+    "rxFull": "Tam dağıtıldı",
+    "rxDispensedToast": "Reçete tam dağıtıldı olarak işaretlendi",
+    "rxPartialToast": "Reçete kısmi dağıtıldı olarak işaretlendi"
+  },
+  "nav": {
+    "dashboard": "Gösterge paneli",
+    "patients": "Hastalar",
+    "doctors": "Doktorlar",
+    "schedule": "Randevu takvimi",
+    "worklist": "İş kuyruğum",
+    "measurementQueue": "Ölçüm kuyruğu",
+    "surgerySales": "Ameliyat satış",
+    "surgeryDay": "Ameliyat günü",
+    "receptionQueue": "Karşılama",
+    "leads": "Hasta kaynağı",
+    "iolInventory": "IOL stoku",
+    "iolManage": "IOL yönetimi",
+    "consumables": "Sarf malzeme",
+    "stockForecast": "Stok tahmin",
+    "procedures": "Prosedürler",
+    "reports": "Raporlar",
+    "commission": "Hakediş",
+    "fraud": "Suistimal",
+    "messaging": "Mesajlaşma",
+    "users": "Kullanıcılar",
+    "permissions": "Yetkiler",
+    "approvals": "Onaylar",
+    "recall": "Post-op hatırlatma",
+    "cosign": "Co-sign onay",
+    "consentTemplates": "Onam şablonları",
+    "billing": "Faturalar",
+    "cashRegister": "Kasa",
+    "serviceCatalog": "Hizmet kataloğu",
+    "openMenu": "Menüyü aç",
+    "mainMenu": "Ana menü",
+    "skipToContent": "İçeriğe atla",
+    "menuLabel": "Menü",
+    "receptionWelcome": "Karşılama & Ödeme",
+    "appointments": "Randevular",
+    "patientRecords": "Hasta Kayıtları",
+    "examQueue": "Muayene Sırası",
+    "todayList": "Bugünkü Listem",
+    "myAppointments": "Randevularım",
+    "myPatients": "Hastalarım",
+    "pastExaminations": "Geçmiş Muayeneler",
+    "measurementRequests": "Ölçüm Talepleri",
+    "measurementCompleted": "Tamamlanan",
+    "salesPipeline": "Satış Hattı",
+    "surgeryCatalog": "Ameliyat Kataloğu",
+    "surgeryCalendar": "Ameliyat Takvimi",
+    "overview": "Genel Bakış",
+    "approvalRequests": "Onay Talepleri",
+    "stockMaterials": "Stok & Malzeme",
+    "analysis": "Analiz",
+    "settings": "Ayarlar",
+    "clinicSettings": "Klinik Ayarları",
+    "suppliers": "Tedarikçiler",
+    "purchaseOrders": "Satın alma siparişleri",
+    "purchaseOrderApprovals": "Onay bekleyen siparişler",
+    "pharmacyPos": "Eczane satış",
+    "pharmacyPrescriptions": "Reçete kuyruğu",
+    "pharmacyStock": "Eczane stoğu",
+    "pharmacyIntake": "Mal kabul",
+    "pharmacySuppliers": "Tedarikçiler",
+    "pharmacyCash": "Kasa (gün sonu)",
+    "pharmacyReturns": "İade",
+    "pharmacyReports": "Satış raporları",
+    "group": {
+      "clinic": "Klinik",
+      "stock": "Stok",
+      "finance": "Finans",
+      "management": "Yönetim",
+      "procurement": "Satın Alma",
+      "pharmacy": "Eczane",
+      "dailyFlow": "Günlük Akış",
+      "patients": "Hastalar",
+      "surgery": "Ameliyat",
+      "today": "Bugün",
+      "signature": "İmza",
+      "queuesTasks": "Kuyruklar & Görevler",
+      "afterCare": "Sonrası",
+      "doctorFlow": "Doktor Akışı",
+      "measurement": "Ölçüm",
+      "operations": "Operasyon ve Akış",
+      "approvalAudit": "Onay ve Denetim",
+      "analysisComms": "Analiz ve İletişim",
+      "settings": "Sistem Ayarları",
+      "frontOffice": "Ön Büro",
+      "collection": "Tahsilat",
+      "callback": "Geri-Çağırma",
+      "general": "Genel",
+      "salesFlow": "Satış Akışı",
+      "planning": "Planlama",
+      "approvals": "Onaylar",
+      "payments": "Ödemeler",
+      "audit": "Denetim",
+      "reports": "Analiz",
+      "inventory": "Envanter",
+      "sales": "Satış",
+      "stockSupply": "Stok & Tedarik",
+      "cashReporting": "Kasa & Raporlama",
+      "receiving": "Mal Kabul & Hareket"
+    },
+    "newBadge": "Yeni",
+    "myAssignedPatients": "Atanmış Hastalarım",
+    "visitingLock": "Dar menü — yalnız kendi vakaları",
+    "measurementLock": "Kilitli istasyon — yalnız ölçüm ekranları",
+    "stockMovements": "Stok Hareketleri",
+    "pharmacyPurchase": "Mal Kabul / Sipariş",
+    "automations": "Otomasyonlar"
+  },
+  "adminAnalysisHub": {
+    "title": "Analiz",
+    "description": "Klinik performansı, mali raporlar ve denetim ekranları.",
+    "cards": {
+      "reports": {
+        "title": "Raporlar",
+        "description": "Kohort, retention ve doktor yoğunluk haritası."
+      },
+      "commission": {
+        "title": "Doktor Hakedişleri",
+        "description": "Aylık komisyon hesapları ve dağılımı."
+      },
+      "fraud": {
+        "title": "Suistimal Tespiti",
+        "description": "Anormal işlem ve mali risk uyarıları."
+      },
+      "leads": {
+        "title": "Hasta Kaynağı",
+        "description": "Lead funnel ve dönüşüm oranları."
+      },
+      "messaging": {
+        "title": "Mesajlaşma Denetimi",
+        "description": "Hasta mesaj thread'leri ve şablon kullanımı."
+      }
+    }
+  },
+  "adminSettingsHub": {
+    "title": "Ayarlar",
+    "description": "Kullanıcılar, yetkiler, klinik şablonları ve referans verileri.",
+    "cards": {
+      "clinic": {
+        "title": "Klinik Ayarları",
+        "description": "Klinik adı, adresi, telefonu ve logosu."
+      },
+      "users": {
+        "title": "Kullanıcılar",
+        "description": "Hesap ekleme, rol ataması ve 2FA yönetimi."
+      },
+      "permissions": {
+        "title": "Yetkiler",
+        "description": "Rol × ekran erişim matrisi."
+      },
+      "consentTemplates": {
+        "title": "Onam Şablonları",
+        "description": "Cerrahi onam metinleri ve dil sürümleri."
+      },
+      "serviceCatalog": {
+        "title": "Hizmet Kataloğu",
+        "description": "Muayene, lab ve prosedür fiyat tarifesi."
+      }
+    }
+  },
+  "adminAutomations": {
+    "title": "Otomasyonlar",
+    "description": "AI hasta asistanı: konuşmalar, randevu aksiyonları ve yapılandırma.",
+    "loadFailed": "Veriler yüklenemedi.",
+    "kpi": {
+      "todayMessages": "Bugün gelen mesaj",
+      "activeConversations": "Botta aktif konuşma",
+      "handedOff": "Personele devredilen",
+      "appointments": "Bot randevusu"
+    },
+    "config": {
+      "title": "Asistan yapılandırması",
+      "description": "Model, sistem talimatı ve kanal ayarları. Her kayıt revizyon olarak saklanır.",
+      "revision": "Rev {{rev}}",
+      "enabled": "Asistan aktif",
+      "provider": "Sağlayıcı",
+      "model": "Model",
+      "chatwootAccountId": "Chatwoot hesap no",
+      "chatwootBaseUrl": "Chatwoot adresi",
+      "systemPrompt": "Sistem talimatı",
+      "knowledgeBase": "Bilgi tabanı",
+      "knowledgeBaseHint": "Doktorlar, fiyatlar ve klinik bilgileri (markdown). Asistan yalnız buradaki bilgileri söyler.",
+      "saved": "Yapılandırma kaydedildi",
+      "saveError": "Kaydedilemedi — tekrar deneyin",
+      "unsavedChanges": "Kaydedilmemiş değişiklikler var",
+      "resetPrompt": "Varsayılana sıfırla"
+    },
+    "conversations": {
+      "title": "Konuşmalar",
+      "filterAll": "Tümü",
+      "empty": "Henüz konuşma yok",
+      "unknown": "Bilinmeyen kişi",
+      "messageCount": "{{count}} mesaj",
+      "returnToBot": "Bota geri ver",
+      "returnedToBot": "Konuşma bota geri verildi",
+      "transcriptTitle": "Konuşma",
+      "openChatwoot": "Chatwoot'ta aç",
+      "linkedPatient": "Bağlı hasta"
+    },
+    "status": {
+      "bot_active": "Botta",
+      "human_active": "Personelde",
+      "closed": "Kapandı"
+    },
+    "channel": {
+      "whatsapp": "WhatsApp",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "telegram": "Telegram",
+      "webchat": "Web sohbet",
+      "other": "Diğer"
+    },
+    "role": {
+      "patient": "Hasta",
+      "assistant": "Asistan",
+      "staff": "Personel",
+      "system": "Sistem"
+    },
+    "actions": {
+      "title": "Aksiyon denetimi",
+      "description": "Botun sisteme yaptığı her kayıt.",
+      "filterLabel": "Aksiyon tipi",
+      "filterAll": "Tüm aksiyonlar",
+      "empty": "Henüz aksiyon yok"
+    },
+    "actionType": {
+      "appointment_created": "Randevu oluşturdu",
+      "appointment_cancelled": "Randevu iptal",
+      "patient_created": "Hasta kaydı açtı",
+      "patient_matched": "Hasta eşleştirdi",
+      "handoff": "İnsana devir",
+      "returned_to_bot": "Bota geri verildi",
+      "error": "Hata"
+    },
+    "assistant": {
+      "cardTitle": "AI Hasta Asistanı",
+      "cardDescription": "WhatsApp/Instagram/Telegram'dan yazan hastalarla konuşur, uygun doktora randevu oluşturur, gerekince personele devreder."
+    },
+    "enabledState": {
+      "on": "Aktif",
+      "off": "Pasif"
+    },
+    "secrets": {
+      "title": "Bağlantı ve anahtarlar",
+      "description": "Webhook adresi ve API anahtarları. Anahtarlar şifreli saklanır ve bir daha gösterilmez.",
+      "webhookUrlLabel": "Webhook adresi (Chatwoot bot tanımına yapıştırın)",
+      "webhookBaseUrlLabel": "Webhook public adresi",
+      "webhookBaseUrlHint": "Chatwoot'un sunucunuza ulaşacağı dış adres (staging: Tailscale Funnel adresi).",
+      "copy": "Kopyala",
+      "copied": "Kopyalandı ✓",
+      "rotate": "Secret'ı yenile",
+      "rotateHint": "Yenilersen eski adres anında geçersiz olur — Chatwoot'taki bot tanımını yeni adresle güncelle.",
+      "notConfigured": "Webhook secret'ı henüz üretilmedi.",
+      "needBaseUrl": "Adresi görmek için yukarıda webhook public adresini girip kaydedin.",
+      "chatwootBotToken": "Chatwoot bot token",
+      "anthropicKey": "Anthropic API key",
+      "openrouterKey": "OpenRouter API key",
+      "savedBadge": "Kayıtlı ••••{{last4}}",
+      "notSet": "Girilmedi",
+      "replacePlaceholder": "Değiştirmek için yeni değeri yazın",
+      "enterPlaceholder": "Anahtarı yapıştırın",
+      "saveKeys": "Anahtarları kaydet",
+      "keysSaved": "Anahtarlar şifrelenerek kaydedildi",
+      "rotated": "Webhook secret'ı yenilendi",
+      "generate": "Secret üret"
+    }
+  },
+  "clinicSettingsPage": {
+    "title": "Klinik Ayarları",
+    "description": "Klinik iletişim bilgileri, marka ve resmi alanlar.",
+    "sections": {
+      "identity": "Kimlik",
+      "contact": "İletişim",
+      "branding": "Marka",
+      "legal": "Resmi Bilgiler",
+      "scheduling": "Randevu Ayarları",
+      "discountPolicy": "İndirim Politikası",
+      "publicMonitor": "Bekleme Ekranı (Lobi TV)"
+    },
+    "fields": {
+      "name": "Klinik adı",
+      "legalName": "Resmi unvan",
+      "address": "Adres",
+      "phone": "Telefon",
+      "email": "E-posta",
+      "taxId": "Vergi numarası",
+      "slug": "Klinik kodu",
+      "mrnPrefix": "MRN ön eki",
+      "defaultAppointmentMinutes": "Varsayılan randevu süresi (dk)",
+      "postOpFreeMonths": "Ameliyat sonrası ücretsiz kontrol süresi (ay)",
+      "maxApprovableDiscountPercent": "Mutlak indirim tavanı (%)"
+    },
+    "hints": {
+      "slug": "Subdomain — değiştirilemez.",
+      "mrnPrefix": "Hasta MRN ön eki — değiştirilemez.",
+      "defaultAppointmentMinutes": "Yeni randevuda bitiş saati otomatik bu kadar dakika sonra ayarlanır (5-240).",
+      "postOpFreeMonths": "Ameliyat sonrası bu kadar ay içindeki kontrol randevuları ücretsiz işlenir (0 = devre dışı, 0-12).",
+      "maxApprovableDiscountPercent": "Onayla bile bu oranın üstünde indirim uygulanamaz (varsayılan %30; 0-100). Boş = varsayılan."
+    },
+    "actions": {
+      "save": "Kaydet",
+      "saving": "Kaydediliyor…",
+      "reset": "Vazgeç"
+    },
+    "toast": {
+      "saved": "Klinik bilgileri güncellendi.",
+      "error": "Kaydederken bir hata oluştu."
+    },
+    "validation": {
+      "nameMin": "Klinik adı en az 2 karakter",
+      "emailInvalid": "Geçerli bir e-posta girin",
+      "minutesRange": "5 ile 240 arasında dakika girin",
+      "monthsRange": "0 ile 12 arasında ay girin",
+      "discountRange": "0 ile 100 arasında yüzde girin"
+    },
+    "loading": "Klinik bilgileri yükleniyor…",
+    "logo": {
+      "upload": "Logoyu yükle",
+      "replace": "Logoyu değiştir",
+      "remove": "Kaldır",
+      "uploaded": "Logo yüklendi.",
+      "removed": "Logo kaldırıldı; varsayılan amblem geri geldi.",
+      "hint": "PNG, JPG, WebP veya SVG; en fazla 2 MB. Logo yüklemezseniz AirMed amblemi gösterilir.",
+      "errors": {
+        "mime": "Sadece PNG, JPG, WebP veya SVG yükleyebilirsiniz.",
+        "size": "Logo 2 MB sınırını aşıyor."
+      }
+    }
+  },
+  "roles": {
+    "doktor": "Doktor",
+    "visiting": "Misafir",
+    "hemsire": "Hemşire",
+    "modeGenel": "Genel",
+    "modeAsistan": "Asistan",
+    "resepsiyon": "Resepsiyon",
+    "frontDesk": "Ön Banko",
+    "olcumHemsiresi": "Ölçüm Hemşiresi",
+    "measurementRoom": "Ölçüm Odası",
+    "ameliyatSatis": "Ameliyat Satış",
+    "management": "Yönetim",
+    "clinicAdmin": "Klinik Yöneticisi",
+    "finans": "Finans Yetkilisi",
+    "stokSatinalma": "Stok & Satın Alma",
+    "eczane": "Eczane Personeli",
+    "multiRole": "Çoklu rol"
+  },
+  "overview": {
+    "placeholder": "Bu rolün Genel Bakış ekranı hazırlanıyor.",
+    "doctor": {
+      "titleResident": "Bugünkü Programım",
+      "titleVisiting": "Bugünkü Listem",
+      "continueExam": "Muayeneye Devam Et",
+      "takeNext": "Sıradaki Hastayı Al",
+      "capReached": "3/3 aktif muayene — önce birini tamamlayın",
+      "queueEmpty": "Sıranızda bekleyen hasta yok",
+      "kpiQueue": "Muayene sıram",
+      "kpiAppointments": "Bugün randevu",
+      "kpiCosign": "Bekleyen co-sign",
+      "kpiSurgery": "Bugün ameliyat",
+      "live": "Canlı",
+      "widgetQueue": "Muayene Sıram",
+      "widgetCosign": "Co-sign Kuyruğu",
+      "widgetSurgery": "Bugünkü Ameliyatlarım",
+      "emptyQueue": "Sıranızda hasta yok",
+      "emptyCosign": "Bekleyen co-sign yok",
+      "emptySurgery": "Bugün ameliyat yok",
+      "loadError": "Veri yüklenemedi"
+    },
+    "nurse": {
+      "titleGeneral": "Genel Bakış",
+      "titleAssistant": "Genel Bakış",
+      "actingFor": "Şu an çalıştığınız doktor:",
+      "unknownDoctor": "Bilinmeyen doktor",
+      "kpiMeasPending": "Ölçüm bekleyen",
+      "kpiRecall": "Recall (bugün + gecikmiş)",
+      "kpiSurgery": "Bugün ameliyat",
+      "kpiSafety": "Güvenlik kontrol eksik",
+      "kpiMyQueue": "Doktorun sırası",
+      "widgetMeas": "Ölçüm Talepleri",
+      "widgetRecall": "Recall (kaçırılan)",
+      "widgetSafety": "Bugünkü Ameliyat Güvenliği",
+      "widgetMyQueue": "Doktorun Sırası",
+      "emptyMeas": "Bekleyen ölçüm yok",
+      "emptyRecall": "Kaçırılan recall yok",
+      "emptySurgery": "Bugün ameliyat yok",
+      "emptyMyQueue": "Sırada hasta yok",
+      "safetyOk": "Tam",
+      "safetyIncomplete": "Eksik",
+      "paymentGate": "Ödeme bekliyor",
+      "loadError": "Veri yüklenemedi"
+    },
+    "kiosk": {
+      "title": "Ölçüm İstasyonu",
+      "pending": "Bekleyen ölçüm",
+      "completed": "Bugün tamamlanan",
+      "takeNext": "Sıradakini Al"
+    },
+    "reception": {
+      "title": "Genel Bakış",
+      "kpiAppointments": "Bugün randevu",
+      "kpiQueue": "Karşılama kuyruğu",
+      "kpiCompleted": "Tamamlandı",
+      "kpiUnpaid": "Ödeme bekleyen",
+      "live": "Canlı",
+      "widgetQueue": "Karşılama Kuyruğu",
+      "widgetRecall": "Recall (kaçırılan)",
+      "widgetAppointments": "Bugünkü Randevular",
+      "emptyQueue": "Kuyrukta hasta yok",
+      "emptyRecall": "Kaçırılan recall yok",
+      "emptyAppointments": "Bugün randevu yok",
+      "loadError": "Veri yüklenemedi"
+    },
+    "sales": {
+      "title": "Genel Bakış",
+      "kpiHandoff": "Devir bekleyen",
+      "kpiToday": "Bugün ameliyat",
+      "kpiWeek": "Yaklaşan (7 gün)",
+      "kpiRecall": "Recall (kaçırılan)",
+      "live": "Canlı",
+      "widgetHandoff": "Devir Kuyruğu",
+      "widgetUpcoming": "Yaklaşan Ameliyatlar",
+      "widgetRecall": "Recall (kaçırılan)",
+      "emptyHandoff": "Bekleyen devir yok",
+      "emptyUpcoming": "Yaklaşan ameliyat yok",
+      "emptyRecall": "Kaçırılan recall yok",
+      "eyeMissing": "Göz tarafı eksik",
+      "loadError": "Veri yüklenemedi",
+      "riskPrepTitle": "Hazırlığı eksik yaklaşan ameliyat: {{count}}",
+      "tagConsent": "onam",
+      "tagPayment": "ödeme"
+    },
+    "finans": {
+      "title": "Genel Bakış",
+      "kpiDiscount": "Bekleyen indirim",
+      "kpiPo": "Bekleyen PO onayı",
+      "kpiUnpaid": "Ödeme uyumu ihlali",
+      "kpiBypass": "Aktif bypass",
+      "widgetDiscount": "İndirim Onay Kuyruğu",
+      "widgetPo": "Bekleyen Satın Alma",
+      "widgetCompliance": "Uyum Nabzı",
+      "emptyDiscount": "Bekleyen indirim yok",
+      "emptyPo": "Bekleyen PO yok",
+      "discountRequest": "İndirim talebi",
+      "unpaidActive": "ödenmemiş aktif",
+      "bypassActive": "Aktif bypass",
+      "bypassToday": "Bugün toplam bypass",
+      "loadError": "Veri yüklenemedi"
+    },
+    "stok": {
+      "title": "Genel Bakış",
+      "kpiIol": "Kritik IOL",
+      "kpiConsumable": "Kritik sarf",
+      "kpiMed": "Kritik ilaç",
+      "kpiPo": "Açık sipariş",
+      "widgetCritical": "Kritik Stok",
+      "widgetPo": "Açık Siparişler",
+      "widgetQuick": "Hızlı İşlemler",
+      "emptyCritical": "Kritik stok yok",
+      "emptyPo": "Açık sipariş yok",
+      "quickNewPo": "Yeni Satın Alma Siparişi",
+      "quickReceive": "Mal Kabul",
+      "quickForecast": "Stok Tahmini",
+      "loadError": "Veri yüklenemedi"
+    },
+    "eczane": {
+      "title": "Genel Bakış",
+      "kpiRx": "Verilecek reçete",
+      "kpiSales": "Bugün POS satış",
+      "kpiTurnover": "Bugün ciro",
+      "kpiReturns": "Bekleyen iade",
+      "live": "Canlı",
+      "widgetRx": "Reçete Kuyruğu",
+      "widgetSales": "Bugünkü Satışlar",
+      "widgetCash": "Kasa & Gün Sonu",
+      "emptyRx": "Verilecek reçete yok",
+      "emptySales": "Bugün satış yok",
+      "rxItem": "reçete",
+      "anonymous": "Anonim",
+      "cashStatus": "Kasa durumu",
+      "goCash": "Kasaya git",
+      "cash": {
+        "open": "Açık",
+        "closed": "Kapalı",
+        "handed_to_finance": "Finansa teslim edildi",
+        "none": "Açık kasa yok"
+      },
+      "loadError": "Veri yüklenemedi"
+    },
+    "asistan": {
+      "title": "Genel Bakış",
+      "reviewPending": "Bekleyenleri İncele",
+      "kpiApprovals": "Bekleyen onay",
+      "kpiStock": "Kritik stok",
+      "kpiUnpaid": "Ödeme blokajı",
+      "kpiBypass": "Aktif bypass",
+      "widgetEscalate": "Eskale Gerektirenler",
+      "widgetStock": "Kritik Stok",
+      "emptyApprovals": "Bekleyen onay yok",
+      "emptyStock": "Kritik stok yok",
+      "discountRequest": "İndirim talebi",
+      "loadError": "Veri yüklenemedi",
+      "escalate": "Eskale et",
+      "escalateDone": "{{count}} yöneticiye iletildi",
+      "escalateNoManager": "İletilecek yönetici bulunamadı"
+    },
+    "systemStatus": {
+      "label": "Sistem durumu",
+      "online": "Çevrimiçi",
+      "offline": "Çevrimdışı",
+      "syncOk": "Senkron güncel",
+      "syncPending": "{{count}} kayıt bekliyor",
+      "syncFailed": "{{count}} sync hatası",
+      "syncLocal": "Yerel kayıt",
+      "receiptAuto": "Makbuz: Oto yazdır",
+      "receiptManual": "Makbuz: Manuel"
+    }
+  },
+  "adminOverview": {
+    "title": "Genel Bakış",
+    "approvalsPage": {
+      "title": "İndirim Onay Talepleri",
+      "pendingTitle": "Bekleyen Talepler",
+      "empty": "Bekleyen indirim talebi yok",
+      "discountRule": "%10 üzeri indirimler yönetici onayı gerektirir. Onay faturayı açar, ret iptal eder.",
+      "tabs": {
+        "discount": "İndirim",
+        "refund": "İade",
+        "po": "Satın Alma"
+      }
+    },
+    "stockPage": {
+      "title": "Stok & Malzeme Takibi",
+      "lenses": "Lensler",
+      "supplies": "Sarf Malzeme",
+      "drugs": "İlaç",
+      "colItem": "Malzeme",
+      "colTotal": "Toplam",
+      "colReserved": "Rezerve",
+      "colAvailable": "Kullanılabilir",
+      "colLevel": "Seviye",
+      "colStatus": "Durum",
+      "sufficient": "Yeterli",
+      "low": "Düşük · min {{min}}",
+      "empty": "Kayıt yok"
+    },
+    "kpi": {
+      "todayExams": "Bugün muayene",
+      "live": "canlı",
+      "todayCollected": "Bugünkü tahsilat",
+      "activeSales": "Aktif ameliyat satışı",
+      "pendingDiscount": "Onay bekleyen indirim"
+    },
+    "approvals": {
+      "title": "Bekleyen İndirim Onayları",
+      "all": "Tümü",
+      "requestedBy": "talep eden {{name}}",
+      "discountBadge": "%{{percent}} indirim",
+      "list": "Liste",
+      "discounted": "İndirimli",
+      "loss": "Klinik kaybı",
+      "approve": "Onayla",
+      "reject": "Reddet",
+      "empty": "Bekleyen indirim onayı yok",
+      "approvedToast": "İndirim onaylandı",
+      "rejectedToast": "İndirim reddedildi",
+      "rejectReasonPrompt": "Red gerekçesi (opsiyonel):"
+    },
+    "stock": {
+      "title": "Kritik Stok",
+      "all": "Stok",
+      "availMin": "Kullanılabilir {{avail}} · min {{min}}",
+      "low": "Düşük",
+      "empty": "Kritik stok yok"
+    },
+    "lens": {
+      "title": "Önümüzdeki Ameliyatlar — Lens İhtiyacı",
+      "auto": "Planlanan ameliyatlardan otomatik",
+      "needed": "adet gerekli",
+      "available": "Stokta kullanılabilir:",
+      "empty": "Planlı lens ihtiyacı yok"
+    },
+    "lensType": {
+      "monofocal": "Monofokal GİL",
+      "trifocal": "Trifokal GİL",
+      "edof": "EDOF GİL",
+      "toric": "Torik GİL",
+      "other": "GİL"
+    },
+    "relative": {
+      "today": "Bugün",
+      "yesterday": "Dün"
+    }
+  },
+  "user": {
+    "label": "Kullanıcı",
+    "changePassword": "Parolayı değiştir",
+    "logout": "Çıkış yap",
+    "profile": "Profilim"
+  },
+  "locale": {
+    "label": "Dil",
+    "switcherAria": "Dil seç",
+    "tr": "Türkçe",
+    "ru": "Русский",
+    "tg": "Тоҷикӣ"
+  },
+  "actions": {
+    "save": "Kaydet",
+    "cancel": "Vazgeç",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "back": "Geri",
+    "create": "Ekle",
+    "search": "Ara",
+    "loading": "Yükleniyor…",
+    "submitting": "Gönderiliyor…",
+    "retry": "Tekrar dene",
+    "previous": "Önceki",
+    "next": "Sonraki",
+    "backToList": "Listeye dön",
+    "saveChanges": "Değişiklikleri kaydet",
+    "close": "Kapat",
+    "confirmIrreversible": "Bu işlem geri alınamaz. Devam edilsin mi?",
+    "all": "Tümü",
+    "includeInactive": "Pasifleri göster",
+    "add": "Ekle"
+  },
+  "confirm": {
+    "title": "Onayla",
+    "confirmLabel": "Onayla",
+    "promptTitle": "Bilgi girin",
+    "promptConfirmLabel": "Tamam"
+  },
+  "states": {
+    "empty": "Kayıt bulunamadı",
+    "loading": "Yükleniyor…",
+    "error": "Bir hata oluştu",
+    "errorHint": "Veri yüklenemedi. Bağlantınızı kontrol edip tekrar deneyin."
+  },
+  "dashboard": {
+    "title": "Gösterge paneli",
+    "greetingNamed": "Hoş geldiniz, {{name}}",
+    "greetingAnon": "Hoş geldiniz",
+    "mustChangeNotice": "İlk girişiniz — devam etmeden önce parolanızı değiştirmeniz önerilir.",
+    "mustChangeAction": "Şimdi değiştir",
+    "quick": {
+      "patients": {
+        "title": "Hastalar",
+        "description": "Hasta ara, yeni kayıt aç, geçmişi gör."
+      },
+      "changePassword": {
+        "title": "Parolayı değiştir",
+        "description": "Hesap güvenliğin için parolanı güncelle."
+      }
+    }
+  },
+  "pagination": {
+    "page": "Sayfa {{page}} / {{total}}"
+  },
+  "forms": {
+    "invalidEmail": "Geçerli bir e-posta girin",
+    "unsavedConfirm": "Kaydedilmemiş değişiklikler var. Çıkılsın mı? Girilenler kaybolacak."
+  },
+  "errors": {
+    "forbidden": {
+      "title": "Erişim yetkiniz yok",
+      "description": "Bu sayfayı görüntülemek için gerekli rol atanmamış. Klinik yöneticinize başvurun.",
+      "back": "Gösterge paneline dön"
+    },
+    "unexpected": "Beklenmeyen hata",
+    "code": {
+      "forbidden": "Bu işlem için yetkiniz yok.",
+      "unauthorized": "Oturumunuz sona ermiş. Lütfen yeniden giriş yapın.",
+      "conflict": "Bu kayıt başka bir işlemle çakışıyor. Sayfayı yenileyip tekrar deneyin.",
+      "badRequest": "Girilen bilgiler geçersiz. Lütfen kontrol edip tekrar deneyin.",
+      "notFound": "Kayıt bulunamadı.",
+      "timeout": "İşlem zaman aşımına uğradı. Tekrar deneyin.",
+      "tooManyRequests": "Çok fazla istek gönderildi. Lütfen biraz bekleyin.",
+      "preconditionFailed": "İşlem için gerekli ön koşul sağlanmadı.",
+      "payloadTooLarge": "Gönderilen veri çok büyük."
+    },
+    "clinic": {
+      "threePatientCap": "Aynı anda en fazla 3 hasta muayenede olabilir. Devam etmeden önce mevcut muayenelerden birini tamamlayın.",
+      "drugAllergy": "Hasta '{{allergen}}' alerjisi bildirildi; '{{drug}}' alternatifi gözden geçirin.",
+      "drugConflict": "Hasta zaten '{{existing}}' kullanıyor — '{{drug}}' ile çakışma: {{detail}}"
+    },
+    "notFoundPage": {
+      "title": "Sayfa bulunamadı",
+      "description": "Aradığınız sayfa taşınmış veya hiç var olmamış olabilir. Adresi kontrol edin ya da ana sayfaya dönün.",
+      "back": "Ana sayfaya dön"
+    }
+  },
+  "admin": {
+    "users": {
+      "title": "Kullanıcı yönetimi",
+      "description": "Yalnızca yönetici rolüne açık.",
+      "items": "items: {{count}}"
+    }
+  },
+  "usersPage": {
+    "title": "Kullanıcılar",
+    "description": "Personel hesabı ekleme, rol ataması ve şifre yönetimi.",
+    "actions": {
+      "add": "Yeni Kullanıcı"
+    },
+    "search": {
+      "placeholder": "İsim veya e-posta ara"
+    },
+    "filters": {
+      "role": "Rol",
+      "roleAll": "Tüm roller",
+      "status": "Durum",
+      "statusAll": "Tüm durumlar",
+      "clear": "Filtreleri temizle"
+    },
+    "columns": {
+      "name": "Ad",
+      "email": "E-posta",
+      "role": "Rol",
+      "status": "Durum",
+      "lastLogin": "Son giriş",
+      "actions": "İşlemler"
+    },
+    "status": {
+      "active": "Aktif",
+      "inactive": "Pasif",
+      "locked": "Kilitli",
+      "suspended": "Askıda"
+    },
+    "lastLoginNever": "Henüz giriş yapmadı",
+    "rowActions": {
+      "open": "İşlemler",
+      "view": "Profili aç",
+      "resetPassword": "Şifre sıfırla",
+      "deactivate": "Pasifleştir",
+      "reactivate": "Etkinleştir"
+    },
+    "empty": {
+      "title": "Henüz başka kullanıcı yok",
+      "description": "İlk personel hesabını eklemek için Yeni Kullanıcı düğmesini kullanın."
+    },
+    "loading": "Yükleniyor…",
+    "count": "{{count}} kullanıcı",
+    "roleLabels": {
+      "yonetici": "Yönetici",
+      "yonetici_asistani": "Yönetici Asistanı",
+      "doktor": "Doktor",
+      "resepsiyon": "Resepsiyon",
+      "hemsire": "Hemşire",
+      "ameliyat_satis": "Ameliyat Satış",
+      "olcum_hemsiresi": "Ölçüm Hemşiresi",
+      "finans": "Finans Yetkilisi",
+      "stok_satinalma": "Stok & Satın Alma",
+      "eczane": "Eczane Personeli"
+    },
+    "locales": {
+      "tr": "Türkçe",
+      "ru": "Русский",
+      "tg": "Тоҷикӣ"
+    },
+    "doctorTypes": {
+      "local": "Yerleşik",
+      "visiting": "Misafir"
+    },
+    "visitingHint": "Misafir doktor: hasta listesinde yalnızca kendi yaptığı ameliyatların hastaları görünür. Yönetici sonradan bu kuralı değiştirebilir.",
+    "validation": {
+      "invalidPleaseCheck": "Form geçersiz — vurgulanan alanları kontrol edin"
+    },
+    "create": {
+      "title": "Yeni kullanıcı ekle",
+      "description": "Şifre sistem tarafından üretilir, kullanıcı ilk girişte değiştirir.",
+      "fields": {
+        "name": "Ad Soyad",
+        "email": "E-posta",
+        "role": "Rol",
+        "locale": "Dil",
+        "specialty": "Uzmanlık",
+        "doctorType": "Doktor tipi"
+      },
+      "submit": "Kullanıcıyı Oluştur",
+      "cancel": "İptal",
+      "errors": {
+        "duplicate": "Bu e-posta ile bir kullanıcı zaten var",
+        "generic": "Kullanıcı oluşturulamadı"
+      }
+    },
+    "password": {
+      "title": "Yeni şifre",
+      "description": "Bu şifre yalnızca bir kez gösterilir. Şimdi kopyalayın ve kullanıcıya güvenli kanaldan iletin.",
+      "userLabel": "Kullanıcı",
+      "passwordLabel": "Şifre",
+      "copy": "Şifreyi kopyala",
+      "copied": "Kopyalandı",
+      "warning": "Pencereyi kapattıktan sonra şifre tekrar görüntülenemez. Kullanıcı ilk girişte kendi şifresini belirleyecek.",
+      "close": "Anladım, kapat",
+      "copyFailed": "Kopyalanamadı — şifreyi manuel olarak işaretleyip kopyalayın"
+    },
+    "confirm": {
+      "cancel": "İptal",
+      "resetPassword": {
+        "title": "Şifre sıfırlansın mı?",
+        "description": "{{email}} için yeni bir şifre üretilecek. Eski şifre çalışmaz. Kullanıcı ilk girişte yeni şifreyi değiştirir.",
+        "submit": "Şifreyi sıfırla",
+        "error": "Şifre sıfırlanamadı"
+      },
+      "deactivate": {
+        "title": "Kullanıcıyı pasifleştir",
+        "description": "{{name}} ({{email}}) sisteme giriş yapamayacak. Daha sonra yeniden etkinleştirebilirsiniz.",
+        "submit": "Pasifleştir",
+        "error": "Pasifleştirilemedi"
+      },
+      "reactivate": {
+        "title": "Kullanıcıyı yeniden etkinleştir",
+        "description": "{{name}} sisteme tekrar giriş yapabilecek.",
+        "submit": "Etkinleştir",
+        "error": "Etkinleştirilemedi"
+      }
+    },
+    "toast": {
+      "created": "Kullanıcı oluşturuldu",
+      "updated": "Kullanıcı güncellendi",
+      "passwordReset": "Şifre sıfırlandı",
+      "deactivated": "Kullanıcı pasifleştirildi",
+      "reactivated": "Kullanıcı etkinleştirildi",
+      "copied": "Şifre panoya kopyalandı"
+    },
+    "detail": {
+      "title": "Kullanıcı Detayı",
+      "notFound": "Kullanıcı bulunamadı",
+      "tabs": {
+        "profile": "Profil",
+        "roles": "Roller & Mod",
+        "documents": "Dökümanlar"
+      },
+      "profile": {
+        "phone": "Telefon",
+        "phonePlaceholder": "+992 90 000 00 00",
+        "phoneInvalid": "Telefon rakam ve +, boşluk, parantez içermeli (en az 4 karakter)",
+        "save": "Kaydet",
+        "saved": "Profil güncellendi",
+        "saveError": "Profil güncellenemedi",
+        "lastLogin": "Son giriş"
+      },
+      "actionsCard": {
+        "title": "Hesap İşlemleri",
+        "selfDeactivateHint": "Kendi hesabınızı pasifleştiremezsiniz."
+      },
+      "roles": {
+        "title": "Roller",
+        "readonlyHint": "Rol değişimi bu sürümde kapalı — rol ataması kullanıcı oluşturulurken yapılır.",
+        "modesTitle": "Hemşire Mod Adayları",
+        "modesHint": "Girişte seçilebilecek oturum modları. En az bir mod seçili olmalı; değişiklik kullanıcının sonraki girişinde etkili olur.",
+        "modeLabels": {
+          "genel": "Genel",
+          "asistan": "Asistan",
+          "olcum": "Ölçüm"
+        },
+        "modesMinWarning": "En az bir mod seçili olmalı",
+        "modesSave": "Modları Kaydet",
+        "modesSaved": "Mod adayları güncellendi",
+        "doctorTitle": "Doktor Profili",
+        "doctorHint": "Bu kullanıcı bir doktor profiline bağlı. Mesai, izin ve hasta-facing profil doktor detayında yönetilir.",
+        "openDoctorClinical": "Klinik takvim & izinler"
+      },
+      "documents": {
+        "title": "Personel Dökümanları",
+        "hint": "CV, diploma, sertifika ve sözleşmeler iç İK verisidir; hasta yüzeylerine asla çıkmaz.",
+        "empty": "Henüz döküman yok",
+        "columns": {
+          "type": "Tür",
+          "file": "Dosya",
+          "size": "Boyut",
+          "date": "Tarih",
+          "uploadedBy": "Yükleyen",
+          "actions": "İşlemler"
+        },
+        "types": {
+          "cv": "CV",
+          "diploma": "Diploma",
+          "sertifika": "Sertifika",
+          "sozlesme": "Sözleşme",
+          "diger": "Diğer"
+        },
+        "upload": "Döküman Yükle",
+        "uploadDialog": {
+          "title": "Döküman yükle",
+          "type": "Tür",
+          "file": "Dosya",
+          "note": "Not (opsiyonel)",
+          "submit": "Yükle",
+          "cancel": "İptal",
+          "fileRequired": "Bir dosya seçin",
+          "mimeError": "Desteklenmeyen dosya türü (PDF, Word, JPG, PNG, WebP)",
+          "sizeError": "Dosya 15MB'ı aşamaz"
+        },
+        "uploaded": "Döküman yüklendi",
+        "download": "İndir",
+        "downloadError": "Döküman açılamadı",
+        "delete": "Sil",
+        "deleteConfirm": "\"{{name}}\" dökümanı silinsin mi?",
+        "deleted": "Döküman silindi"
+      },
+      "doctorFields": {
+        "title": "Doktor Bilgileri",
+        "hint": "Uzmanlık, komisyon ve idari not doktora özgü alanlardır. Ad, telefon ve e-posta hesap üzerinden yönetilir.",
+        "specialty": "Uzmanlık",
+        "specialtyRequired": "Uzmanlık zorunlu",
+        "commission": "Komisyon oranı (%)",
+        "commissionHint": "Otomatik hakediş hesabında kullanılır (0-100). Boş bırakılabilir.",
+        "commissionInvalid": "Komisyon 0-100 arası ondalık olmalı",
+        "notes": "İdari not",
+        "save": "Doktor bilgilerini kaydet",
+        "saved": "Doktor bilgileri güncellendi",
+        "saveError": "Doktor bilgileri kaydedilemedi"
+      }
+    }
+  },
+  "permissionsPage": {
+    "title": "Yetkiler",
+    "description": "Rol × ekran erişim matrisi. Override default davranışı geçersiz kılar; eşitlerse otomatik silinir.",
+    "infoTitle": "Yetki değişiklikleri ne zaman geçerli olur?",
+    "infoBody": "Toggle ile yaptığınız değişiklikler kullanıcının bir sonraki access token yenilemesinde (≤15 dk) veya logout + tekrar login ile geçerli olur. Anında etkinleştirmek için kullanıcıdan oturumunu sonlandırıp yeniden giriş yapmasını isteyin. Override default'la eşitlenirse kayıt otomatik silinir; varsayılan davranışı bozmayan toggle'ları geri almak için tekrar tıklamanız yeterli.",
+    "tabPage": "Sayfa erişimi",
+    "tabAction": "Aksiyon yetkileri",
+    "tabView": "İçerik görünürlüğü",
+    "adminOnly": "Sadece yönetici düzenleyebilir",
+    "loading": "Yükleniyor...",
+    "loadFailed": "Yetkiler alınamadı: {{message}}",
+    "resource": "Kaynak",
+    "emptyCategory": "Bu kategori için tanımlı yetki yok",
+    "confirmSelfLock": "Dikkat: Bu yetkiyi kendi rolünüzden kaldırırsanız bu ekrana bir daha erişemeyebilirsiniz. Devam edilsin mi?",
+    "overrideTitle": "Override (default: {{state}})",
+    "defaultOpen": "Default: açık",
+    "defaultClosed": "Default: kapalı",
+    "stateOpen": "açık",
+    "stateClosed": "kapalı",
+    "roles": {
+      "yonetici": "Yönetici",
+      "yonetici_asistani": "Asistan",
+      "doktor": "Doktor",
+      "resepsiyon": "Resepsiyon",
+      "hemsire": "Hemşire",
+      "ameliyat_satis": "Ameliyat Satış",
+      "olcum_hemsiresi": "Ölçüm Hemşiresi",
+      "finans": "Finans Yetkilisi",
+      "stok_satinalma": "Stok & Satın Alma",
+      "eczane": "Eczane Personeli"
+    }
+  },
+  "globalSearch": {
+    "trigger": "Ara veya git",
+    "title": "Komut paleti",
+    "placeholder": "Ad, soyad veya MRN ile ara…",
+    "loading": "Aranıyor…",
+    "minChars": "En az 2 karakter girin",
+    "noResults": "Sonuç yok",
+    "patientsHeading": "Hastalar",
+    "navHeading": "Git",
+    "navPlaceholder": "Komut ara veya bir ekrana git…"
+  },
+  "onboarding": {
+    "helpButton": "İlk-gün kılavuzu",
+    "title": "İlk-Gün Kılavuzu",
+    "intro": "Rolüne göre temel adımlar. İşaretledikçe ilerlemen kaydedilir.",
+    "progress": "{{done}}/{{total}} tamamlandı",
+    "allDone": "Tüm adımları tamamladın 🎉",
+    "dismiss": "Kapat",
+    "trainingNote": "İpucu: Adımları gerçek hastayla denemeden önce bir test hastasıyla pratik yapabilirsin.",
+    "roles": {
+      "resepsiyon": {
+        "title": "Resepsiyon",
+        "steps": {
+          "s1": "Karşılama'dan hasta seç veya hızlı-ekle, randevu tipi + saat ver",
+          "s2": "Hasta gelince \"Geldi\" ile check-in yap (tipe göre ölçüm/doktora yönlenir)",
+          "s3": "\"Önce öde\": muayene/ölçüm ücretini al, makbuzu yazdır",
+          "s4": "Karşılama kokpitinde sırayı ve ödeme durumunu izle"
+        }
+      },
+      "olcum_hemsiresi": {
+        "title": "Ölçüm Hemşiresi",
+        "steps": {
+          "s1": "Ölçüm Talepleri kuyruğunu aç (yeni talepte sesli/görsel uyarı)",
+          "s2": "Hastayı seç, OD/OS değerlerini gir (virgül otomatik noktaya çevrilir)",
+          "s3": "Patolojik değeri bayrakla — doktorda kırmızı görünür",
+          "s4": "\"Doktora Gönder\" ile tamamla; cihaz çıktısını (PDF) iliştir"
+        }
+      },
+      "doktor": {
+        "title": "Doktor",
+        "steps": {
+          "s1": "Muayene Sırası'nda \"Muayeneye Al\" (aynı anda en fazla 3)",
+          "s2": "Muayene formunu doldur; bitmeden ölçüm istersen \"Taslak kaydet\"",
+          "s3": "Muayene sonrası: Reçete / Ölçüm iste / Ameliyat planla",
+          "s4": "Ölçüm hazır olunca \"Geri çağır\"; cerrahide WHO güvenlik + göz tarafı doğrula"
+        }
+      },
+      "yonetici": {
+        "title": "Yönetici",
+        "steps": {
+          "s1": "Genel Bakış: bugünkü muayene/tahsilat + bekleyen onaylar",
+          "s2": "İndirim onaylarını gerekçe + tutarla incele",
+          "s3": "Kullanıcılar + yetki matrisini yönet",
+          "s4": "Raporlar (ciro/hakediş) ve kritik stok uyarılarını takip et"
+        }
+      },
+      "default": {
+        "title": "Genel",
+        "steps": {
+          "s1": "Sol menüden ekranlar arasında gezin",
+          "s2": "Sağ üstten dil ve tema (karanlık mod) değiştir",
+          "s3": "Cmd/Ctrl+K ile hızlı hasta ara",
+          "s4": "Takıldığın yerde yöneticine danış"
+        }
+      }
+    }
+  },
+  "loading": "Yükleniyor…",
+  "noData": "Veri yok",
+  "dashboardEmpty": "Bu rol için pano tanımlı değil.",
+  "stockMovements": {
+    "title": "Lens Stok Hareketleri",
+    "description": "Son lens (IOL) stok giriş, çıkış ve düzeltme kayıtları. Sarf hareketleri Stok & Malzeme ekranındadır.",
+    "colDate": "Tarih",
+    "colType": "Tür",
+    "colItem": "Lens / Lot",
+    "colQty": "Miktar",
+    "colUser": "Kullanıcı",
+    "colNote": "Not",
+    "error": "Hareketler yüklenemedi.",
+    "empty": "Henüz stok hareketi yok.",
+    "type": {
+      "receive": "Giriş",
+      "consume": "Tüketim",
+      "adjust": "Düzeltme",
+      "return": "İade",
+      "expire": "SKT Düşüm"
+    }
+  },
+  "pharmacyMovements": {
+    "title": "Mal Kabul / Stok Hareketleri",
+    "description": "Son eczane stok giriş (mal kabul), satış, iade ve düzeltme kayıtları.",
+    "colDate": "Tarih",
+    "colType": "Tür",
+    "colItem": "Ürün",
+    "colQty": "Miktar",
+    "colUser": "Kullanıcı",
+    "colNote": "Not",
+    "error": "Hareketler yüklenemedi.",
+    "empty": "Henüz stok hareketi yok.",
+    "type": {
+      "intake": "Mal Kabul",
+      "sale": "Satış",
+      "return": "İade",
+      "adjustment": "Düzeltme",
+      "disposal": "İmha",
+      "expire": "SKT Düşüm"
+    }
+  },
+  "pharmacySuppliers": {
+    "title": "Eczane Tedarikçileri",
+    "description": "Eczane stoğuna parti tedarik etmiş tedarikçiler.",
+    "colName": "Tedarikçi",
+    "colPhone": "Telefon",
+    "colEmail": "E-posta",
+    "colBatches": "Parti",
+    "colProducts": "Ürün",
+    "error": "Tedarikçiler yüklenemedi.",
+    "empty": "Henüz partiye bağlı tedarikçi yok."
+  },
+  "approvalReject": {
+    "title": "Talebi reddet",
+    "description": "Bu talep reddedilecek. Gerekçe talep edene iletilir.",
+    "reasonLabel": "Red gerekçesi (opsiyonel)",
+    "reasonPlaceholder": "Kısa gerekçe — talep eden görür",
+    "confirm": "Reddet"
+  },
+  "po": {
+    "receiveTitle": "Mal Kabul",
+    "receiveHint": "Her kalemde gerçek teslim alınan miktarı girin. Eksik = kısmi teslim.",
+    "colItem": "Kalem",
+    "colOrdered": "Sipariş",
+    "colReceived": "Teslim alınan",
+    "colQty": "Adet",
+    "colUnitPrice": "Birim fiyat",
+    "colLineTotal": "Tutar",
+    "partialWarn": "Kısmi teslim: eksik kalemler backorder olarak kalır.",
+    "receiveConfirm": "Mal kabulü onayla",
+    "priceReadonlyNote": "Birim fiyatlar procurement tarafından girildi (read-only)."
+  },
+  "rxQueue": {
+    "partial": "Kısmi"
+  },
+  "profile": {
+    "title": "Profilim",
+    "description": "Kendi bilgilerinizi görüntüleyin ve telefon/dil tercihinizi güncelleyin.",
+    "identity": "Kimlik",
+    "name": "Ad Soyad",
+    "email": "E-posta",
+    "roles": "Roller",
+    "mode": "Aktif mod",
+    "editable": "Düzenlenebilir",
+    "phone": "Telefon",
+    "phonePlaceholder": "ör. +992 90 000 00 00",
+    "loadError": "Profil yüklenemedi",
+    "modes": {
+      "genel": "Genel",
+      "asistan": "Asistan",
+      "olcum": "Ölçüm"
+    }
+  },
+  "publicMonitorSection": {
+    "description": "Lobi TV'sinde bekleme ekranını gösterir (Raspberry Pi kiosk). Girişsiz çalışır; bağlantıyı yalnız güvendiğiniz cihaza girin.",
+    "statusOn": "Yayın açık",
+    "statusOff": "Yayın kapalı",
+    "generate": "Bağlantı Oluştur",
+    "regenerate": "Bağlantıyı Yenile",
+    "disable": "Yayını Kapat",
+    "copyOnce": "Bu bağlantı yalnız bir kez gösterilir — kopyalayıp kiosk cihazına kaydedin.",
+    "copy": "Kopyala",
+    "copied": "Bağlantı kopyalandı",
+    "generated": "Yeni yayın bağlantısı oluşturuldu",
+    "disabled": "Yayın kapatıldı",
+    "error": "İşlem başarısız"
+  }
+}

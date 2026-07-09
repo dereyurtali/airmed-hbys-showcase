@@ -1,0 +1,100 @@
+{
+  "title": "Doktor Hakediş",
+  "description": "Hizmet bazlı kural tanımı + aylık hakediş hesabı (admin).",
+  "tabs": {
+    "entries": "Hakediş kayıtları",
+    "rules": "Kurallar",
+    "monthly": "Aylık özet"
+  },
+  "actions": {
+    "newRule": "Yeni kural",
+    "calculate": "Hakediş hesapla",
+    "approve": "Onayla",
+    "reject": "Reddet",
+    "rejectionReason": "Red gerekçesi",
+    "confirmReject": "Onayla red",
+    "markPaid": "Ödendi işaretle",
+    "confirmPaid": "Ödemeyi kaydet"
+  },
+  "ruleType": {
+    "per_surgery": "İşlem başına sabit",
+    "percentage": "Yüzde"
+  },
+  "status": {
+    "pending": "Bekliyor",
+    "approved": "Onaylı",
+    "paid": "Ödendi",
+    "cancelled": "İptal"
+  },
+  "source": {
+    "surgery": "Ameliyat",
+    "procedure": "Prosedür"
+  },
+  "paymentMethod": {
+    "bank_transfer": "Havale",
+    "cash": "Nakit",
+    "other": "Diğer"
+  },
+  "scope": {
+    "allDoctors": "Tüm doktorlar (klinik geneli)"
+  },
+  "inactive": "Pasif",
+  "openEnded": "süresiz",
+  "filters": {
+    "status": "Durum",
+    "all": "Hepsi"
+  },
+  "cols": {
+    "calculatedAt": "Hesap tarihi",
+    "doctor": "Doktor",
+    "source": "Kaynak",
+    "amount": "Tutar",
+    "basePrefix": "Baz:",
+    "status": "Durum",
+    "actions": "İşlem",
+    "scope": "Kapsam",
+    "type": "Tip",
+    "value": "Değer",
+    "validity": "Geçerlilik",
+    "priority": "Öncelik",
+    "currency": "Döviz"
+  },
+  "emptyEntries": "Henüz hakediş kaydı yok.",
+  "emptyRules": "Henüz kural tanımlı değil — Önce 'Yeni kural' butonu ile bir tane oluşturun.",
+  "monthly": {
+    "year": "Yıl",
+    "month": "Ay",
+    "empty": "Bu ay için hakediş kaydı yok."
+  },
+  "ruleForm": {
+    "title": "Yeni hakediş kuralı",
+    "doctor": "Doktor (boş = klinik geneli default)",
+    "type": "Tip",
+    "amountValue": "Tutar",
+    "percentValue": "Yüzde (0-100)",
+    "currency": "Döviz",
+    "priority": "Öncelik (yüksek önce eşleşir)",
+    "validFrom": "Başlangıç",
+    "validTo": "Bitiş (boş = süresiz)",
+    "notes": "Not"
+  },
+  "calcForm": {
+    "title": "Hakediş hesapla",
+    "hint": "Tamamlanmış cerrahi/prosedür için tek seferde hesaplama. Yüzde kuralı seçilirse baz tutar girilmelidir.",
+    "sourceType": "Kaynak tipi",
+    "sourceId": "Kaynak ID (UUID)",
+    "baseAmount": "Baz tutar (yüzde kuralı için)",
+    "baseAmountHint": "örn. paket fiyatı"
+  },
+  "toast": {
+    "calculated": "Hakediş kaydedildi.",
+    "approved": "Onaylandı.",
+    "rejected": "Reddedildi.",
+    "paid": "Ödendi işaretlendi.",
+    "ruleCreated": "Kural eklendi.",
+    "ruleDeleted": "Kural arşivlendi."
+  },
+  "errors": {
+    "unknown": "İşlem başarısız."
+  }
+}

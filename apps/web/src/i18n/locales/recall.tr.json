@@ -1,0 +1,46 @@
+{
+  "page": {
+    "title": "Post-op Hatırlatma",
+    "description": "Kontrolünü kaçıran veya yaklaşan post-op hastalar.",
+    "empty": "Bu kategoride hasta yok."
+  },
+  "bucket": {
+    "missed": "Kaçırılanlar",
+    "today": "Bugün",
+    "next7days": "Önümüzdeki 7 gün"
+  },
+  "attempt": {
+    "log": "Deneme kaydet",
+    "title": "Hatırlatma denemesi kaydet",
+    "method": "Yöntem",
+    "result": "Sonuç",
+    "notes": "Notlar",
+    "save": "Kaydet",
+    "success": "Deneme kaydedildi",
+    "results": {
+      "reached": "Ulaşıldı",
+      "no_answer": "Cevap yok",
+      "voicemail": "Sesli mesaj",
+      "rescheduled": "Yeniden planlandı",
+      "wrong_number": "Yanlış numara"
+    }
+  },
+  "status": {
+    "no_show": "Gelmedi",
+    "scheduled": "Planlı"
+  },
+  "method": {
+    "sms": "SMS",
+    "phone": "Telefon",
+    "email": "E-posta"
+  },
+  "result": {
+    "reached": "Ulaşıldı",
+    "no_answer": "Cevap yok",
+    "rescheduled": "Yeniden planlandı",
+    "voicemail": "Sesli mesaj",
+    "wrong_number": "Yanlış numara"
+  },
+  "scheduleControl": "Kontrol Randevusu",
+  "scheduleControlSuccess": "Kontrol randevusu oluşturuldu"
+}

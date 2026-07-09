@@ -1,0 +1,273 @@
+name: CI
+
+on:
+  # Ağır suit'i (jest e2e + Playwright) elle tetiklemek için — haftalık cron'u
+  # beklemeden runner'da on-demand çalıştır (örn. e2e fix doğrulaması).
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'gelistirme-plani/**'
+      - 'hesaplamalar/**'
+      - '.claude/**'
+      - '.editorconfig'
+      - '.prettierrc'
+      - '.gitignore'
+      - 'LICENSE'
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'gelistirme-plani/**'
+      - 'hesaplamalar/**'
+      - '.claude/**'
+      - '.editorconfig'
+      - '.prettierrc'
+      - '.gitignore'
+      - 'LICENSE'
+  # Ağır suit (jest e2e + Playwright) artık HER merge'de DEĞİL → HAFTADA 1 (Pazar gece).
+  # Günde onlarca PR açılıyor; ağır suit gündüz kimseyi bloklamamalı + her gece de
+  # gerekmez (kullanıcı kararı). Pazar 03:00 UTC main HEAD'ini kayıt için doğrular;
+  # regresyon en geç 1 hafta içinde yakalanır. Go-live'da (hasta verisi) sıklığı
+  # per-merge'e/günlüğe geri çek — o noktada her değişikliği canlıdan önce doğrulamak şart.
+  schedule:
+    - cron: '0 3 * * 0'
+
+# Yeni push aynı PR ref'ine gelince eski run iptal. main korunur (her merge kayıt).
+# event_name grup'a dahil → nightly (schedule) ile push/PR ayrı kulvar: nightly
+# koşarken gelen bir merge'in `check`'i nightly'i beklemez (aksi halde aynı main
+# ref'inde kuyruğa girerdi).
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+env:
+  NODE_VERSION: '20'
+
+# ── İki-şerit CI (CLAUDE.md "iki-şerit metot") ────────────────────────────────
+# PR gate = HIZLI `check` (tek npm ci → lint+typecheck+build + HIZLI unit testler),
+# hedef ~4-6 dk. Unit testler Prisma'yı mock'lar (gerçek DB gerektirmez) → Postgres
+# service yok, hızlı kalır. PR + push:main'de koşar, PR'ı bloklar.
+# AĞIR suit (jest e2e + Playwright) artık HER merge'de DEĞİL → HAFTADA 1 (Pazar 03:00 UTC).
+# Gündüz onlarca PR/merge'de kimse ağır suit beklemez; haftalık koşum regresyonu
+# kayda geçirir. Hasta girince (go-live) per-merge'e/günlüğe geri al. 2 runner
+# (staging-box-runner + -2) → check'ler paralelleşir; test+e2e aynı host'ta 5432'yi
+# paylaştığı için seri (needs).
+
+jobs:
+  check:
+    name: Check (lint+typecheck+build+unit)
+    # PR + push:main gate. Nightly'de gereksiz (heavy suite zaten ayrı kulvarda).
+    if: github.event_name != 'schedule'
+    runs-on: [self-hosted, airmed]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      # node_modules cache: lockfile değişmediyse `npm ci` (disk-ağır extraction) ATLA
+      # → tekrar tekrar full install yerine restore. Miss'te npm ci fallback (kıramaz).
+      # Native binary (bcrypt) aynı makinede derli; prisma client db:generate ile yenilenir.
+      - name: node_modules cache
+        id: nmc
+        uses: actions/cache@v6
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            packages/*/node_modules
+          key: nm-${{ runner.os }}-node${{ env.NODE_VERSION }}-${{ hashFiles('package-lock.json') }}
+      - if: steps.nmc.outputs.cache-hit != 'true'
+        # #971 — supply-chain: PR/Dependabot bağımlılıklarının postinstall
+        # script'lerini runner yetkisiyle çalıştırma. --ignore-scripts + güvenilir
+        # native binary'yi (bcrypt) explicit rebuild; prisma client aşağıda generate.
+        run: |
+          npm ci --ignore-scripts
+          npm rebuild bcrypt
+      - run: npm run db:generate
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run build
+      # Hızlı unit testler PR'ı bloklar (Prisma mock'lu, DB'siz). Jest e2e + Playwright
+      # ağır suit'e (nightly cron) taşındı — PR/merge'i bloklamasın diye.
+      - run: npm run test:unit
+
+  # ── Ağır suit: yalnız HAFTALIK cron (Şerit B, gündüz bloklamaz) ─────────────
+  test:
+    name: Test
+    # #932 — go-live'da her merge'i canlıdan önce doğrulamak için: repo variable
+    # HEAVY_SUITE_PER_MERGE=true set edilince push:main'de de koşar (kod değişikliği
+    # gerekmez — pilotta boş, go-live'da Ali flag'i açar).
+    if: >-
+      github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && vars.HEAVY_SUITE_PER_MERGE == 'true')
+    runs-on: [self-hosted, airmed]
+    # Haftalık → kimse beklemiyor; yine de takılırsa asılı kalmasın diye sert sınır.
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: airmed
+          POSTGRES_PASSWORD: airmed_test
+          POSTGRES_DB: airmed_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://airmed:airmed_test@localhost:5432/airmed_test
+      JWT_ACCESS_SECRET: test_access_secret_dummy_value_for_ci_only
+      JWT_REFRESH_SECRET: test_refresh_secret_dummy_value_for_ci_only
+      PLATFORM_JWT_ACCESS_SECRET: test_platform_access_secret_dummy_value_for_ci_only
+      PLATFORM_JWT_REFRESH_SECRET: test_platform_refresh_secret_dummy_value_for_ci_only
+      PLATFORM_BCRYPT_COST: 4
+      DEV_PLATFORM_OPEN_IPS: 'true'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - name: node_modules cache
+        id: nmc
+        uses: actions/cache@v6
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            packages/*/node_modules
+          key: nm-${{ runner.os }}-node${{ env.NODE_VERSION }}-${{ hashFiles('package-lock.json') }}
+      - if: steps.nmc.outputs.cache-hit != 'true'
+        # #971 — supply-chain: PR/Dependabot bağımlılıklarının postinstall
+        # script'lerini runner yetkisiyle çalıştırma. --ignore-scripts + güvenilir
+        # native binary'yi (bcrypt) explicit rebuild; prisma client aşağıda generate.
+        run: |
+          npm ci --ignore-scripts
+          npm rebuild bcrypt
+      - run: npm run db:generate
+      - name: Provision airmed_app role (CI postgres init.sql çalıştırmaz)
+        run: |
+          docker exec ${{ job.services.postgres.id }} \
+            psql -U airmed -d airmed_test -v ON_ERROR_STOP=1 \
+            -c "CREATE ROLE airmed_app LOGIN PASSWORD 'airmed_app_dev' NOSUPERUSER NOBYPASSRLS;"
+      # Runner'da ~35 suite ~30.5sn'de FAIL ediyordu = e2e testTimeout (30sn) sınırı:
+      # her suite'in beforeAll'ı (createTestApp full Nest boot + resetAndSeedFixtures,
+      # SOĞUK ts-jest cache) runner'da ~30sn sürüp tam sınırda timeout'a düşüyordu
+      # (lokalde warm cache → birkaç sn → yeşil). Fix: e2e testTimeout 30→90sn
+      # (jest-e2e.json) → soğuk boot'lar sınıra takılmadan tamamlanır. Haftalık →
+      # gündüz bloklamaz; toplam süre 30dk job cap'iyle sınırlı. 3× retry zaten kaldırıldı.
+      - name: Test (unit + e2e)
+        run: npm run test
+
+  e2e:
+    name: E2E (Playwright)
+    # #932 — go-live'da her merge'i canlıdan önce doğrulamak için: repo variable
+    # HEAVY_SUITE_PER_MERGE=true set edilince push:main'de de koşar (kod değişikliği
+    # gerekmez — pilotta boş, go-live'da Ali flag'i açar).
+    if: >-
+      github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && vars.HEAVY_SUITE_PER_MERGE == 'true')
+    # needs: [test] — `check` değil: test + e2e ikisi de postgres'i host 5432'ye
+    # bağlar; 2 runner aynı host'ta paralel koşarsa port çakışır. test→e2e seri
+    # zinciri bunu engeller (check postgres kullanmaz → paralel kalır).
+    needs: [test]
+    runs-on: [self-hosted, airmed]
+    # Yavaş runner → Playwright render'ı timeout'a girebilir; nightly'de
+    # informational (kayıt). Sertleştirince continue-on-error sil.
+    continue-on-error: true
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: airmed
+          POSTGRES_PASSWORD: airmed_test
+          POSTGRES_DB: airmed_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://airmed:airmed_test@localhost:5432/airmed_test
+      JWT_ACCESS_SECRET: test_access_secret_dummy_value_for_ci_only
+      JWT_REFRESH_SECRET: test_refresh_secret_dummy_value_for_ci_only
+      JWT_ACCESS_TTL: 15m
+      JWT_REFRESH_TTL: 7d
+      BCRYPT_COST: 4
+      PLATFORM_JWT_ACCESS_SECRET: test_platform_access_secret_dummy_value_for_ci_only
+      PLATFORM_JWT_REFRESH_SECRET: test_platform_refresh_secret_dummy_value_for_ci_only
+      PLATFORM_JWT_ACCESS_TTL: 15m
+      PLATFORM_JWT_REFRESH_TTL: 7d
+      PLATFORM_BCRYPT_COST: 4
+      DEV_PLATFORM_OPEN_IPS: 'true'
+      WEB_ORIGIN: http://localhost:5173
+      ADMIN_ORIGIN: http://localhost:5174
+      SEED_E2E_PASSWORD: e2e-test-pass
+      NODE_ENV: development
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - name: node_modules cache
+        id: nmc
+        uses: actions/cache@v6
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            packages/*/node_modules
+          key: nm-${{ runner.os }}-node${{ env.NODE_VERSION }}-${{ hashFiles('package-lock.json') }}
+      - if: steps.nmc.outputs.cache-hit != 'true'
+        # #971 — supply-chain: PR/Dependabot bağımlılıklarının postinstall
+        # script'lerini runner yetkisiyle çalıştırma. --ignore-scripts + güvenilir
+        # native binary'yi (bcrypt) explicit rebuild; prisma client aşağıda generate.
+        run: |
+          npm ci --ignore-scripts
+          npm rebuild bcrypt
+      - run: npm run db:generate
+      - run: npm run db:build
+      - name: Provision airmed_app role (CI postgres init.sql çalıştırmaz)
+        run: |
+          docker exec ${{ job.services.postgres.id }} \
+            psql -U airmed -d airmed_test -v ON_ERROR_STOP=1 \
+            -c "CREATE ROLE airmed_app LOGIN PASSWORD 'airmed_app_dev' NOSUPERUSER NOBYPASSRLS;"
+      - name: Apply migrations
+        run: npx prisma migrate deploy
+        working-directory: packages/db
+      - name: Seed database (with E2E user)
+        run: npm run db:seed --workspace=@airmed/db
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('apps/web/package.json') }}
+      - name: Install Playwright browser (chromium)
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        # Self-hosted runner: OS bağımlılıkları tek seferlik prep ile kurulu (sudo yok).
+        run: npx playwright install chromium
+        working-directory: apps/web
+      - name: Run E2E tests
+        run: npm run e2e --workspace=@airmed/web
+      - name: Upload Playwright traces on failure
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-trace
+          path: |
+            apps/web/test-results/
+            apps/web/playwright-report/
+          retention-days: 7

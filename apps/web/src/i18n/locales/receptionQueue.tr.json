@@ -1,0 +1,60 @@
+{
+  "page": {
+    "title": "Resepsiyon Yönlendirme Kuyruğu",
+    "description": "Ödeme sonrası doktora / ölçüme yönlendirilecek hastalar",
+    "empty": "Yönlendirilecek hasta yok",
+    "loadFailed": "Kuyruk alınamadı: {{message}}"
+  },
+  "columns": {
+    "patient": "Hasta",
+    "stage": "Durum",
+    "action": "İşlem"
+  },
+  "action": {
+    "sendToDoctor": "Doktora gönder",
+    "sendToMeasurement": "Ölçüme gönder"
+  },
+  "error": {
+    "examUnpaid": "Önce muayene tahsilatı alın.",
+    "measurementUnpaid": "Önce ölçüm tahsilatı alın."
+  },
+  "cockpit": {
+    "title": "Karşılama Kokpiti",
+    "description": "Bugünkü randevular, bekleyen tahsilat ve tamamlanan ziyaretler tek ekranda.",
+    "prefsLink": "Tercihler",
+    "todays": "Bugünkü randevular",
+    "todaysEmpty": "Bugün için randevu yok",
+    "pending": "Bekleyen tahsilatlar",
+    "pendingEmpty": "Bekleyen tahsilat yok",
+    "completed": "Bugün tamamlananlar",
+    "completedEmpty": "Henüz tamamlanan ziyaret yok",
+    "colTime": "Saat",
+    "colPatient": "Hasta",
+    "colArrive": "Karşılama",
+    "colStage": "Durum",
+    "colAction": "İşlem",
+    "arriveCta": "Geldi",
+    "arriveToDoctor": "Doktora",
+    "arriveToDoctorHint": "Ölçüm yerine doğrudan doktora yönlendir",
+    "quickChargeCta": "Hızlı tahsil",
+    "toastPaid": "Tahsilat alındı, hasta yönlendirilebilir",
+    "paidBadge": "Tahsil edildi",
+    "measurementStale": "Ölçüm güncel değil",
+    "walkInCta": "Yeni randevu",
+    "secondOpinion": "İkinci görüş",
+    "urgent": "ACİL",
+    "urgentSet": "Acil işaretle",
+    "urgentClear": "Acil kaldır"
+  },
+  "prefs": {
+    "title": "Karşılama Tercihleri",
+    "description": "Bu cihazda saklanan resepsiyon tercihleri",
+    "autoprintTitle": "Tahsilat sonrası makbuz",
+    "autoprintHint": "Tahsilat alınınca makbuz nasıl açılsın?",
+    "autoLabel": "Otomatik yazdır",
+    "autoDesc": "Yeni sekme açılır ve tarayıcının yazdır diyaloğu otomatik tetiklenir.",
+    "manualLabel": "Sadece linki göster",
+    "manualDesc": "Tahsilat sonrası toast içinde makbuz linki çıkar; manuel açarsınız.",
+    "deviceScopeHint": "Tercih bu tarayıcıda saklanır; başka cihazda ayrıca seçin."
+  }
+}

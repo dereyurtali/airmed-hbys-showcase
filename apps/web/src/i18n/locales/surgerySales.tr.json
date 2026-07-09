@@ -1,0 +1,100 @@
+{
+  "page": {
+    "title": "Satış Hattı",
+    "description": "Paket fatura/tahsilat bekleyen planlanmış ameliyatlar",
+    "empty": "Ameliyat adayı yok",
+    "loadFailed": "Kuyruk alınamadı: {{message}}"
+  },
+  "queue": {
+    "candidates": "Ameliyat Adayları",
+    "newCount": "{{count}} yeni",
+    "searchPlaceholder": "Hasta ara…"
+  },
+  "pipeline": {
+    "new": "Yeni — fiyat bekliyor",
+    "priceGiven": "Fiyat verildi",
+    "pendingApproval": "Yönetici onayında",
+    "scheduled": "Planlandı"
+  },
+  "detail": {
+    "selectPrompt": "Bir aday seçin",
+    "today": "Bugün {{time}}",
+    "recommendation": "Doktor Önerisi",
+    "surgery": "Ameliyat",
+    "lens": "Lens / yöntem",
+    "eye": "Göz",
+    "recommender": "Öneren",
+    "catalogPrice": "Katalog fiyatı",
+    "fixedLensNote": "Doktorun önerdiği lens sabit.",
+    "givePrice": "Fiyatı Ver",
+    "patientDetail": "Hasta detayı",
+    "clinicalSummary": "Klinik özet",
+    "diagnosis": "Tanı",
+    "measurementCount": "Ölçüm"
+  },
+  "eye": {
+    "od": "Sağ göz",
+    "os": "Sol göz",
+    "ou": "İki göz"
+  },
+  "give": {
+    "title": "Fiyat & İndirim",
+    "catalogPrice": "Katalog (liste) fiyatı",
+    "discountLine": "İndirim (%{{percent}})",
+    "patientPays": "Hasta ödeyecek",
+    "discountRate": "İndirim oranı",
+    "noApproval": "%{{cap}}'e kadar indirimi kendiniz uygulayabilirsiniz — onay gerekmez.",
+    "approvalNeeded": "%{{cap}} üzeri indirim yönetici onayına gider.",
+    "reasonLabel": "İndirim sebebi (en az 10 karakter)",
+    "apply": "İndirimi Uygula",
+    "cancel": "Vazgeç",
+    "success": "Fiyat verildi, fatura oluşturuldu",
+    "paidToast": "Tahsilat alındı"
+  },
+  "schedule": {
+    "title": "Hasta fiyatı kabul ettiyse ameliyat randevusu verin",
+    "description": "Cerrah ve tarih seçilir; doktorun uzmanlığı ve müsaitliği kontrol edilir.",
+    "give": "Randevu Ver",
+    "dateLabel": "Ameliyat tarihi & saati",
+    "confirm": "Randevu Ver",
+    "success": "Ameliyat randevusu verildi",
+    "doctorLabel": "Cerrah",
+    "outOfSpecialty": "uzmanlık dışı"
+  },
+  "columns": {
+    "patient": "Hasta",
+    "type": "Ameliyat",
+    "scheduled": "Planlanan",
+    "action": "İşlem"
+  },
+  "action": {
+    "invoice": "Paket faturası"
+  },
+  "catalog": {
+    "title": "Ameliyat Kataloğu",
+    "description": "Cerrahi paket fiyat listesi (salt-okunur)",
+    "empty": "Katalogda cerrahi paket yok",
+    "loading": "Yükleniyor…",
+    "ungrouped": "Diğer",
+    "searchPlaceholder": "Paket ara…",
+    "col": {
+      "paket": "Paket",
+      "lens": "Lens / yöntem",
+      "material": "Malzeme",
+      "price": "Katalog fiyatı"
+    }
+  },
+  "calendar": {
+    "title": "Ameliyat Takvimi",
+    "description": "Planlı ameliyatlar (önümüzdeki 90 gün)",
+    "empty": "Planlı ameliyat yok",
+    "noResults": "“{{query}}” için sonuç yok",
+    "searchPlaceholder": "Hasta ara…",
+    "dateFrom": "Başlangıç tarihi",
+    "dateTo": "Bitiş tarihi",
+    "consentMissingFilter": "Onamı eksik",
+    "consentMissing": "Onam eksik",
+    "paymentMissingFilter": "Ödemesi eksik",
+    "paymentMissing": "Ödeme eksik"
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "title": "Музди духтурон",
+  "description": "Қоидаҳои аз рӯи навъи хидмат + ҳисоби ҳармоҳа (мудир).",
+  "tabs": {
+    "entries": "Сабтҳои музд",
+    "rules": "Қоидаҳо",
+    "monthly": "Хулосаи моҳ"
+  },
+  "actions": {
+    "newRule": "Қоидаи нав",
+    "calculate": "Музд ҳисоб кардан",
+    "approve": "Тасдиқ кардан",
+    "reject": "Рад кардан",
+    "rejectionReason": "Сабаби рад",
+    "confirmReject": "Тасдиқи рад",
+    "markPaid": "Пардохт шуд",
+    "confirmPaid": "Пардохтро захира"
+  },
+  "ruleType": {
+    "per_surgery": "Барои ҳар амалиёт собит",
+    "percentage": "Фоиз"
+  },
+  "status": {
+    "pending": "Дар интизор",
+    "approved": "Тасдиқшуда",
+    "paid": "Пардохт",
+    "cancelled": "Бекор"
+  },
+  "source": {
+    "surgery": "Амалиёт",
+    "procedure": "Процедура"
+  },
+  "paymentMethod": {
+    "bank_transfer": "Интиқол",
+    "cash": "Нақд",
+    "other": "Дигар"
+  },
+  "scope": {
+    "allDoctors": "Ҳамаи духтурон (умумӣ)"
+  },
+  "inactive": "Ғайрифаъол",
+  "openEnded": "беинтиҳо",
+  "filters": {
+    "status": "Ҳолат",
+    "all": "Ҳама"
+  },
+  "cols": {
+    "calculatedAt": "Санаи ҳисоб",
+    "doctor": "Духтур",
+    "source": "Манбаъ",
+    "amount": "Маблағ",
+    "basePrefix": "Асос:",
+    "status": "Ҳолат",
+    "actions": "Амал",
+    "scope": "Доира",
+    "type": "Навъ",
+    "value": "Қимат",
+    "validity": "Эътибор",
+    "priority": "Афзалият",
+    "currency": "Асъор"
+  },
+  "emptyEntries": "Ҳанӯз сабт нест.",
+  "emptyRules": "Ҳанӯз қоида нест — «Қоидаи нав» зер кунед.",
+  "monthly": {
+    "year": "Сол",
+    "month": "Моҳ",
+    "empty": "Барои ин моҳ сабт нест."
+  },
+  "ruleForm": {
+    "title": "Қоидаи нав",
+    "doctor": "Духтур (холӣ = умумӣ)",
+    "type": "Навъ",
+    "amountValue": "Маблағ",
+    "percentValue": "Фоиз (0-100)",
+    "currency": "Асъор",
+    "priority": "Афзалият (баланд аввал)",
+    "validFrom": "Аз",
+    "validTo": "То (холӣ = беинтиҳо)",
+    "notes": "Эзоҳ"
+  },
+  "calcForm": {
+    "title": "Музд ҳисоб кардан",
+    "hint": "Барои амалиёт/процедураи иҷрошуда як маротиба. Барои фоиз қоида - маблағи асос лозим аст.",
+    "sourceType": "Навъи манбаъ",
+    "sourceId": "ID манбаъ (UUID)",
+    "baseAmount": "Маблағи асос (фоиз барои)",
+    "baseAmountHint": "ниг. нархи баста"
+  },
+  "toast": {
+    "calculated": "Музд захира шуд.",
+    "approved": "Тасдиқ шуд.",
+    "rejected": "Рад шуд.",
+    "paid": "Пардохт қайд шуд.",
+    "ruleCreated": "Қоида илова шуд.",
+    "ruleDeleted": "Қоида архив шуд."
+  },
+  "errors": {
+    "unknown": "Иҷро нашуд."
+  }
+}

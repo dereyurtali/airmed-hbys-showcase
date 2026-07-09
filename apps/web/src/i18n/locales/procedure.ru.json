@@ -1,0 +1,99 @@
+{
+  "section": {
+    "title": "Процедуры",
+    "newButton": "Новая процедура",
+    "loading": "Загрузка…",
+    "empty": "Записей о процедурах пока нет."
+  },
+  "listPage": {
+    "title": "Процедуры",
+    "description": "Инъекции, лазеры и малые процедуры.",
+    "allTypes": "Все типы",
+    "fromDate": "С",
+    "toDate": "По",
+    "empty": "По фильтру ничего не найдено.",
+    "cols": {
+      "performedAt": "Дата",
+      "patient": "Пациент",
+      "type": "Тип",
+      "eyeSide": "Глаз",
+      "doctor": "Врач",
+      "status": "Статус"
+    }
+  },
+  "types": {
+    "intravitreal_injection": "Интравитреальная инъекция",
+    "yag_capsulotomy": "YAG-капсулотомия",
+    "argon_laser": "Аргон-лазер",
+    "retina_laser_prp": "Лазер сетчатки (ПРК)",
+    "slt": "СЛТ (трабекулопластика)",
+    "cross_linking": "Кросс-линкинг",
+    "minor": "Малая процедура"
+  },
+  "status": {
+    "planned": "Запланировано",
+    "performed": "Выполнено",
+    "cancelled": "Отменено"
+  },
+  "eyeSide": {
+    "od": "Правый (OD)",
+    "os": "Левый (OS)",
+    "ou": "Оба (OU)"
+  },
+  "anesthesia": {
+    "topical": "Топическая",
+    "local": "Местная",
+    "none": "Нет"
+  },
+  "settings": {
+    "energy_mj": "Энергия",
+    "energy_mw": "Мощность",
+    "pulse_count": "Количество импульсов",
+    "spot_count": "Количество точек",
+    "spot_size_um": "Размер пятна",
+    "duration_ms": "Длительность",
+    "duration_min": "Длительность",
+    "protocol": "Протокол",
+    "description": "Описание"
+  },
+  "form": {
+    "title": "Новая процедура",
+    "description": "Сохраните запись и при необходимости создайте контрольный приём.",
+    "submit": "Сохранить",
+    "sections": {
+      "drug": "Препарат",
+      "settings": "Параметры"
+    },
+    "fields": {
+      "type": "Тип",
+      "doctor": "Врач",
+      "eyeSide": "Глаз",
+      "anesthesia": "Анестезия",
+      "performedAt": "Дата / время",
+      "status": "Статус",
+      "drugUsed": "Препарат",
+      "drugDose": "Доза",
+      "findings": "Находки",
+      "complications": "Осложнения",
+      "notes": "Примечания",
+      "autoFollowUp": "Создать контрольный приём автоматически",
+      "followUpDays": "Через сколько дней:"
+    },
+    "placeholders": {
+      "drugUsed": "Lucentis / Eylea / Avastin…"
+    }
+  },
+  "list": {
+    "followUp": "Контроль: {{date}}"
+  },
+  "toast": {
+    "created": "Процедура сохранена.",
+    "savedFollowUpSkipped": "Процедура сохранена; контрольный приём не создан из-за конфликта расписания."
+  },
+  "errors": {
+    "unknown": "Операция не выполнена.",
+    "forbidden": "Изменять может только оперирующий врач или администратор.",
+    "notFound": "Запись не найдена.",
+    "selectDoctor": "Выберите врача."
+  }
+}

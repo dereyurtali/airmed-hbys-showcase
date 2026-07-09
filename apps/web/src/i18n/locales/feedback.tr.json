@@ -1,0 +1,47 @@
+{
+  "trigger": "Geliştirme İste",
+  "title": "Geri-Bildirim Merkezi",
+  "tab": {
+    "new": "Yeni İstek",
+    "mine": "İsteklerim"
+  },
+  "kind": {
+    "bug": "Hata",
+    "improvement": "Geliştirme",
+    "question": "Soru"
+  },
+  "form": {
+    "kind": "Tür",
+    "title": "Başlık",
+    "titlePlaceholder": "Kısa özet",
+    "description": "Açıklama",
+    "descriptionPlaceholder": "Ne oldu / ne olmasını istersin? (Kişisel bilgi yazma — otomatik temizlenir)",
+    "contextNote": "Ekran, sürüm ve cihaz bilgisi otomatik eklenir; hasta verisi gönderilmez.",
+    "submit": "Gönder"
+  },
+  "submitted": "İsteğin alındı, teşekkürler!",
+  "list": {
+    "empty": "Henüz bir isteğin yok.",
+    "shippedIn": "Yayında"
+  },
+  "status": {
+    "submitted": "Gönderildi",
+    "in_progress": "Yapılıyor",
+    "shipped": "Yayında",
+    "rejected": "Reddedildi"
+  },
+  "studio": {
+    "markScreen": "Ekranı işaretle (opsiyonel)",
+    "attached": "Görsel eklendi — değiştir",
+    "rect": "Kutu",
+    "arrow": "Ok",
+    "pen": "Kalem",
+    "blur": "Blurla",
+    "capturing": "Ekran görüntüsü alınıyor…",
+    "captureFailed": "Ekran görüntüsü alınamadı. Görsel olmadan da istek gönderebilirsin.",
+    "confirmRedaction": "Görselde hasta verisi görünmüyor, gönderilmesini onaylıyorum.",
+    "attach": "İşaretli görseli ekle",
+    "cancel": "Kapat",
+    "uploadFailed": "Görsel yüklenemedi"
+  }
+}

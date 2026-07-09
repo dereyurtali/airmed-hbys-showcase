@@ -1,0 +1,71 @@
+name: Coverage
+
+# Coverage ağır (~70 dk, disk I/O bound) ve PR'ı bloklamaz. Önceden HER main
+# merge'inde koşuyordu → çok merge'li günlerde 2 self-hosted runner'ı saatlerce
+# tutup PR check'lerini açlığa düşürüyordu. Artık NIGHTLY (gece 1 kez) + manuel:
+# coverage trend için günde 1 veri noktası yeter, gündüz runner'lar PR'a kalır.
+on:
+  schedule:
+    - cron: '30 2 * * *' # her gece 02:30 UTC (05:30 Istanbul)
+  workflow_dispatch:
+
+concurrency:
+  group: coverage-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  coverage:
+    name: Coverage
+    runs-on: [self-hosted, airmed]
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: airmed
+          POSTGRES_PASSWORD: airmed_test
+          POSTGRES_DB: airmed_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://airmed:airmed_test@localhost:5432/airmed_test
+      JWT_ACCESS_SECRET: test_access_secret_dummy_value_for_ci_only
+      JWT_REFRESH_SECRET: test_refresh_secret_dummy_value_for_ci_only
+      PLATFORM_JWT_ACCESS_SECRET: test_platform_access_secret_dummy_value_for_ci_only
+      PLATFORM_JWT_REFRESH_SECRET: test_platform_refresh_secret_dummy_value_for_ci_only
+      PLATFORM_BCRYPT_COST: 4
+      DEV_PLATFORM_OPEN_IPS: 'true'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      # #971 — supply-chain: --ignore-scripts + güvenilir native (bcrypt) rebuild.
+      - run: |
+          npm ci --ignore-scripts
+          npm rebuild bcrypt
+      - run: npm run db:generate
+      - name: Provision airmed_app role (CI postgres init.sql çalıştırmaz)
+        run: |
+          docker exec ${{ job.services.postgres.id }} \
+            psql -U airmed -d airmed_test -v ON_ERROR_STOP=1 \
+            -c "CREATE ROLE airmed_app LOGIN PASSWORD 'airmed_app_dev' NOSUPERUSER NOBYPASSRLS;"
+      - run: npm run test:coverage
+      - name: Upload coverage artifacts
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-report
+          path: |
+            apps/api/coverage/
+            apps/web/coverage/
+            apps/admin/coverage/
+          retention-days: 30

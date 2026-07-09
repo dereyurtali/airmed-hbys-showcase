@@ -1,0 +1,57 @@
+{
+  "section": {
+    "title": "Омодагӣ ба ҷарроҳӣ",
+    "openButton": "Pre-op-ро кушоед",
+    "editButton": "Pre-op-ро таҳрир кунед",
+    "ready": "Ба ҷарроҳӣ омода",
+    "notReady": "Омодагӣ давом дорад",
+    "progress": "{{done}}/{{total}} банд иҷро шуд",
+    "markReady": "Ҳамчун омода қайд кунед",
+    "unmarkReady": "Омодагиро бекор кунед"
+  },
+  "dialog": {
+    "title": "Санҷиши pre-op",
+    "description": "Нишондиҳандаҳои ҳаётӣ, дилатсия, анестезия ва рӯйхатро пур кунед. Пас аз иҷрои ҳамаи бандҳои ҳатмӣ метавонед омодагиро қайд кунед.",
+    "vitalsTitle": "Нишондиҳандаҳои ҳаётӣ",
+    "systolic": "Систоликӣ",
+    "diastolic": "Диастоликӣ",
+    "pulse": "Набз",
+    "bloodSugar": "Қанди хун",
+    "temperatureC": "Ҳарорат",
+    "oxygenSaturation": "SpO₂",
+    "weightKg": "Вазн",
+    "dilatationAt": "Вақти дилатсия",
+    "anesthesiaNotes": "Қайдҳои анестезия",
+    "lensTitle": "Захиракунии линзаи IOL",
+    "lensSelect": "Партияро интихоб кунед",
+    "lensNone": "Линза захира нашудааст",
+    "checklistTitle": "Рӯйхати омодагӣ",
+    "save": "Захира кунед",
+    "close": "Пӯшидан"
+  },
+  "checklist": {
+    "fasting_8h": "Гуруснагӣ (8 соат) тасдиқ шуд",
+    "blood_sugar": "Назорати қанди хун",
+    "blood_pressure": "Назорати фишори хун",
+    "pupil_dilation": "Дилатсияи мардумак",
+    "antibiotic_prophylaxis": "Профилактикаи антибиотик",
+    "consent_signed": "Розигӣ имзо шуд",
+    "lens_reserved": "Линзаи IOL захира шуд",
+    "surgeon_ready": "Ҷарроҳ омода",
+    "anesthesia_consult_completed": "Машварати наркозшинос анҷом ёфт"
+  },
+  "toast": {
+    "created": "Сабти pre-op сохта шуд",
+    "updated": "Pre-op нав карда шуд",
+    "ready": "Ҷарроҳӣ ҳамчун омода қайд шуд",
+    "unmarked": "Омодагӣ бекор карда шуд"
+  },
+  "errors": {
+    "unknown": "Хатои ғайричашмдошт",
+    "vitalsRequired": "Ҳадди ақал як нишондиҳандаи ҳаётиро ворид кунед",
+    "dilatationRequired": "Вақти дилатсия нест",
+    "checklistIncomplete": "Ҳамаи бандҳои ҳатмӣ бояд иҷро шаванд",
+    "lensOutOfStock": "Партияи интихобшуда дар захира нест",
+    "lockedAfterReady": "Пас аз қайди омодагӣ таҳрир намешавад"
+  }
+}

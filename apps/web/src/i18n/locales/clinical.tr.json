@@ -1,0 +1,29 @@
+{
+  "eyeSide": {
+    "label": "Göz tarafı",
+    "od": "Sağ (OD)",
+    "os": "Sol (OS)",
+    "ou": "Her iki (OU)",
+    "odColumn": "Sağ göz (OD)",
+    "osColumn": "Sol göz (OS)",
+    "linkBoth": "Her iki göz aynı (OU)"
+  },
+  "confirm": {
+    "defaultPhrase": "SİL",
+    "typePrompt": "Onaylamak için \"{{phrase}}\" yazın",
+    "reasonLabel": "Gerekçe",
+    "reasonPlaceholder": "Gerekçe (en az {{min}} karakter)",
+    "confirm": "Onayla",
+    "undo": "Geri al"
+  },
+  "banner": {
+    "allergy": "Alerji",
+    "anticoagulant": "Kan sulandırıcı",
+    "years": "yaş",
+    "gender": {
+      "male": "Erkek",
+      "female": "Kadın",
+      "other": "Diğer"
+    }
+  }
+}

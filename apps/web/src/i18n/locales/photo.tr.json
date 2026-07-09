@@ -1,0 +1,53 @@
+{
+  "section": {
+    "title": "Fotoğraf arşivi",
+    "newButton": "Yeni fotoğraf",
+    "loading": "Yükleniyor…",
+    "empty": "Henüz fotoğraf yok."
+  },
+  "upload": {
+    "title": "Fotoğraf yükle",
+    "description": "Hastanın preop/postop/intraop görüntülerini, OCT, fundus veya topografi fotoğraflarını yükleyin. JPG, PNG, WebP, HEIC. En fazla 10 MB.",
+    "fileLabel": "Dosya",
+    "selectFile": "Dosya seç",
+    "selected": "Seçili: {{name}} ({{size}})",
+    "tag": "Etiket",
+    "descriptionLabel": "Açıklama (opsiyonel)",
+    "takenAt": "Çekildiği tarih (opsiyonel)",
+    "submit": "Yükle",
+    "submitting": "Yükleniyor…"
+  },
+  "tag": {
+    "preop": "Ameliyat öncesi",
+    "postop": "Ameliyat sonrası",
+    "intraop": "Ameliyat sırasında",
+    "oct": "OCT",
+    "fundus": "Fundus",
+    "topography": "Topografi",
+    "device_output": "Cihaz çıktısı",
+    "general": "Genel"
+  },
+  "errors": {
+    "mimeNotAllowed": "Bu dosya tipi desteklenmiyor.",
+    "tooLarge": "Dosya 10 MB'dan büyük olamaz.",
+    "noFile": "Lütfen bir dosya seçin.",
+    "uploadFailed": "Yükleme başarısız: {{message}}",
+    "onlyOwnerOrAdmin": "Sadece fotoğrafı yükleyen veya yönetici düzenleyebilir.",
+    "unknown": "Beklenmeyen hata."
+  },
+  "lightbox": {
+    "close": "Kapat",
+    "next": "Sonraki",
+    "prev": "Önceki"
+  },
+  "actions": {
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "confirmDelete": "Bu fotoğrafı silmek istediğinizden emin misiniz?"
+  },
+  "toast": {
+    "uploaded": "Fotoğraf yüklendi.",
+    "deleted": "Fotoğraf silindi.",
+    "updated": "Fotoğraf güncellendi."
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "title": "Suistimal tespiti",
+  "description": "Anormal aktivite alarmları + denetim incelemesi.",
+  "tabs": {
+    "alerts": "Aktif alarmlar",
+    "rules": "Kurallar"
+  },
+  "actions": {
+    "scanNow": "Şimdi tara",
+    "startReview": "İncelemeye al",
+    "resolve": "Çözüldü",
+    "markFalsePositive": "Yanlış pozitif",
+    "notePlaceholder": "Açıklama (opsiyonel)",
+    "confirm": {
+      "resolved": "Çözüldü kaydet",
+      "false_positive": "Yanlış pozitif kaydet"
+    }
+  },
+  "filters": {
+    "status": "Durum",
+    "severity": "Önem",
+    "rule": "Kural",
+    "all": "Hepsi"
+  },
+  "severity": {
+    "low": "Düşük",
+    "medium": "Orta",
+    "high": "Yüksek"
+  },
+  "status": {
+    "new": "Yeni",
+    "reviewing": "İncelemede",
+    "resolved": "Çözüldü",
+    "false_positive": "Yanlış pozitif"
+  },
+  "rule": {
+    "night_operations": "Gece saatinde işlem",
+    "stock_consume_without_surgery": "Cerrahi olmadan stok düşümü",
+    "multi_ip_login": "Çoklu IP girişi",
+    "frequent_patient_appointment": "Aynı hasta sık randevu",
+    "active": "Aktif",
+    "inactive": "Pasif"
+  },
+  "ruleDescription": {
+    "night_operations": "22:00-06:00 (Asia/Dushanbe) arası yapılan veri mutation'ları işaretler.",
+    "stock_consume_without_surgery": "IOL stok düşümü cerrahi kaydı olmadan yapıldığında alarm verir.",
+    "multi_ip_login": "Aynı kullanıcı 1 saat içinde 2+ farklı IP'den giriş yaparsa.",
+    "frequent_patient_appointment": "Aynı hasta için 30 gün içinde 6+ randevu açıldığında."
+  },
+  "alert": {
+    "actor": "Kullanıcı"
+  },
+  "emptyAlerts": "Aktif alarm yok.",
+  "toast": {
+    "statusUpdated": "Durum güncellendi.",
+    "ruleToggled": "Kural güncellendi.",
+    "scanned": "Tarama tamamlandı: {{count}} yeni alarm."
+  },
+  "errors": {
+    "unknown": "İşlem başarısız."
+  }
+}

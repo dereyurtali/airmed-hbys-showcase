@@ -1,0 +1,3749 @@
+// AirMed-HBYS v0.2 — Prisma schema
+// Tables, enums, and relations grow as modules ship per gelistirme-plani.
+//
+// F1: tenant_id is mandatory on every tenant-scoped table.
+// F1: RLS policies are added in raw SQL migrations (see prisma/migrations/).
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pg_trgm, btree_gist, uuidOssp(map: "uuid-ossp")]
+}
+
+// =============================================================================
+// F1 — Multi-tenant core
+// =============================================================================
+
+model Tenant {
+  id               String       @id @default(uuid()) @db.Uuid
+  slug             String       @unique @db.VarChar(63)
+  name             String       @db.VarChar(255)
+  status           TenantStatus @default(active)
+  plan             TenantPlan   @default(pilot)
+  locale           String       @default("tr") @db.VarChar(5)
+  timezone         String       @default("Asia/Dushanbe") @db.VarChar(50)
+  // S13 — MRN format: <prefix><yy><check><seq5>, ör. "TD26700042". Pilot için
+  // DemoEye Clinic Dushanbe = "TD"; onboarding wizard'da set edilir, immutable.
+  mrnPrefix        String       @default("") @map("mrn_prefix") @db.VarChar(4)
+  // Klinik iletişim/marka alanları — yönetici "Klinik Ayarları" ekranından düzenler.
+  // Logo URL'i runtime için public/ alanı veya CDN; upload UI'sı ileri faz.
+  address          String?      @db.VarChar(500)
+  phone            String?      @db.VarChar(50)
+  email            String?      @db.VarChar(255)
+  logoUrl          String?      @map("logo_url") @db.VarChar(1000)
+  legalName        String?      @map("legal_name") @db.VarChar(255)
+  taxId            String?      @map("tax_id") @db.VarChar(50)
+  // #1159 — Lobi bekleme ekranı (Raspberry Pi kiosk) yayın anahtarı. Düz metin
+  // ASLA saklanmaz; yalnız SHA-256 hex hash'i (API-key deseni). null = yayın kapalı.
+  // Public endpoint /api/public/waiting-monitor bu hash'ten tenant'ı çözer.
+  publicMonitorKeyHash String?  @unique @map("public_monitor_key_hash") @db.VarChar(64)
+  settings         Json         @default("{}")
+  featureFlags     Json         @default("{}") @map("feature_flags")
+  createdAt        DateTime     @default(now()) @map("created_at")
+  suspendedAt      DateTime?    @map("suspended_at")
+  // F3 suspend metadata — neden + serbest not + (opsiyonel) otomatik
+  // re-aktivasyon zamanı. Pilot için basit; tenant_suspend_log tablosu v0.3.
+  suspendReason    String?      @map("suspend_reason") @db.VarChar(50)
+  suspendNote      String?      @map("suspend_note") @db.VarChar(1000)
+  autoReactivateAt DateTime?    @map("auto_reactivate_at")
+  deletedAt        DateTime?    @map("deleted_at")
+
+  users                   User[]
+  roles                   Role[]
+  userRoles               UserRole[]
+  patients                Patient[]
+  doctors                 Doctor[]
+  doctorAvailabilities    DoctorAvailability[]
+  doctorLeaves            DoctorLeave[]
+  visitingWindows         VisitingWindow[]
+  appointments            Appointment[]
+  examinations            Examination[]
+  surgeries               Surgery[]
+  measurements            Measurement[]
+  patientPhotos           PatientPhoto[]
+  staffDocuments          StaffDocument[]
+  labTests                LabTest[]
+  auditLogs               AuditLog[]
+  refreshTokens           RefreshToken[]
+  apiKeys                 ApiKey[]
+  iolModels               IolModel[]
+  iolLots                 IolLot[]
+  iolStockMovements       IolStockMovement[]
+  procedures              Procedure[]
+  preOps                  PreOp[]
+  suppliers               Supplier[]
+  prescriptions           Prescription[]
+  commissionRules         CommissionRule[]
+  commissionEntries       CommissionEntry[]
+  fraudRules              FraudRule[]
+  fraudAlerts             FraudAlert[]
+  consentTemplates        ConsentTemplate[]
+  consentSignings         ConsentSigning[]
+  impersonations          TenantImpersonation[]    @relation("TenantImpersonationTarget")
+  messageTemplates        MessageTemplate[]
+  messageTriggers         MessageTrigger[]
+  messageDeliveries       MessageDelivery[]
+  patientDoctors          PatientDoctor[]
+  // S15 — Encounter (hasta ziyaret akışı / istasyon yolculuğu)
+  encounters              Encounter[]
+  // S15b — Notification (uygulama-içi bildirim)
+  notifications           Notification[]
+  // S15c — Ölçüm siparişleri
+  measurementOrders       MeasurementOrder[]
+  // I2.1 — Geri-bildirim merkezi (#818)
+  feedbackRequests        FeedbackRequest[]
+  feedbackAttachments     FeedbackAttachment[]
+  // S15-PR19 — Bağlamsal mesajlaşma
+  messageThreadsContext   PatientMessageThread[]
+  threadMessages          PatientThreadMessage[]
+  // EPIC #1018 — AI hasta asistanı (otomasyon)
+  agentConfigs            AgentConfig[]
+  agentConfigRevisions    AgentConfigRevision[]
+  agentConversations      AgentConversation[]
+  agentMessages           AgentMessage[]
+  agentActions            AgentAction[]
+  // S15-PR20 — Recall (post-op takip)
+  recallAttempts          RecallAttempt[]
+  // S15-PR25 — Surgical kit (ameliyat sarf reçetesi)
+  surgicalKits            SurgicalKit[]
+  surgicalKitComponents   SurgicalKitComponent[]
+  // S15-P3 — Lab abnormal threshold
+  labAbnormalThresholds   LabAbnormalThreshold[]
+  // S11a — Billing
+  serviceItems            ServiceItem[]
+  invoices                Invoice[]
+  invoiceItems            InvoiceItem[]
+  payments                Payment[]
+  refunds                 Refund[]
+  cashRegisterClosures    CashRegisterClosure[]
+  // S13 — MRN yıl bazlı atomik sayaç
+  mrnCounters             MrnCounter[]
+  invoiceCounters         InvoiceCounter[]
+  // S14 — v0.1 port: dashboard layouts, permission matrix, discount approvals,
+  // webhooks (API key zaten var, sadece geri ref'ler eklendi).
+  dashboardLayouts        DashboardLayout[]
+  permissionAssignments   PermissionAssignment[]
+  discountApprovals       DiscountApproval[]
+  webhooks                Webhook[]
+  webhookDeliveries       WebhookDelivery[]
+  // S15-PR3 — WHO Surgical Safety Checklist (per surgery)
+  surgicalSafetyChecks    SurgicalSafetyCheck[]
+  // S15-PR10 — Hemşire "doktor adına" session'ları
+  nurseAssistanceSessions NurseAssistanceSession[]
+  // S16 — Sarf malzeme stoğu (IOL-dışı; Kritik Stok paneli)
+  consumables             Consumable[]
+  // S11e/#419 — Döviz kuru geçmişi (NBT cron + fatura snapshot kaynağı)
+  exchangeRates           ExchangeRate[]
+  // v0.4 #548 — Satın Alma Siparişi (klinik + eczane; domain ile ayrılır)
+  purchaseOrders          PurchaseOrder[]
+  purchaseOrderItems      PurchaseOrderItem[]
+  // v0.4 #551 — Eczane perakende (klinik stoğundan ayrı)
+  pharmacyProducts        PharmacyProduct[]
+  pharmacyBatches         PharmacyBatch[]
+  pharmacySales           PharmacySale[]
+  pharmacySaleItems       PharmacySaleItem[]
+  pharmacyReturns         PharmacyReturn[]
+  pharmacyReturnItems     PharmacyReturnItem[]
+  pharmacyCashClosures    PharmacyCashClosure[]
+  pharmacyStockMovements  PharmacyStockMovement[]
+  // R1 (#723) — kalıcı problem + ilaç listesi
+  patientProblems         PatientProblem[]
+  patientMedications      PatientMedication[]
+
+  @@index([slug])
+  @@index([status])
+  @@map("tenants")
+}
+
+// S13 — Hasta MRN sıra sayacı (per tenant, per yıl). Yıl başında yeni satır
+// otomatik açılır (UPSERT). last_seq atomik artar (race-free).
+model MrnCounter {
+  tenantId String @map("tenant_id") @db.Uuid
+  year     Int
+  lastSeq  Int    @default(0) @map("last_seq")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@id([tenantId, year])
+  @@map("mrn_counters")
+}
+
+// #923 — fatura numarası (YYYY-NNNN) atomik per-tenant/yıl sayacı (MrnCounter
+// deseni). Eski findFirst+parse+increment race-condition'a açıktı.
+model InvoiceCounter {
+  tenantId String @map("tenant_id") @db.Uuid
+  year     Int
+  lastSeq  Int    @default(0) @map("last_seq")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@id([tenantId, year])
+  @@map("invoice_counters")
+}
+
+enum TenantStatus {
+  active
+  trial
+  suspended
+  churned
+}
+
+enum TenantPlan {
+  pilot
+  standard
+  enterprise
+}
+
+// =============================================================================
+// F2 — Platform admins (DNA Software Solutions team — separate from tenant users)
+// All platform_* tables sit OUTSIDE Postgres RLS — they have no tenant_id and
+// are intentionally accessible only via PLATFORM_JWT_* secrets + ip allowlist.
+// =============================================================================
+
+model PlatformAdmin {
+  id                String       @id @default(uuid()) @db.Uuid
+  email             String       @unique @db.VarChar(255)
+  passwordHash      String       @map("password_hash") @db.VarChar(255)
+  name              String       @db.VarChar(100)
+  role              PlatformRole
+  // #914 — AES-256-GCM şifreli (v1.gcm.<iv>.<tag>.<ct>); base64 + prefix VarChar(64)'ü aşar.
+  totpSecret        String?      @map("totp_secret") @db.VarChar(255)
+  totpVerifiedAt    DateTime?    @map("totp_verified_at")
+  isActive          Boolean      @default(true) @map("is_active")
+  failedLoginCount  Int          @default(0) @map("failed_login_count")
+  lockedUntil       DateTime?    @map("locked_until")
+  passwordChangedAt DateTime?    @map("password_changed_at")
+  lastLoginAt       DateTime?    @map("last_login_at")
+  lastLoginIp       String?      @map("last_login_ip") @db.Inet
+  createdAt         DateTime     @default(now()) @map("created_at")
+  updatedAt         DateTime     @default(now()) @updatedAt @map("updated_at")
+
+  sessions       PlatformAdminSession[]
+  recoveryCodes  PlatformAdminRecoveryCode[]
+  auditLogs      PlatformAuditLog[]
+  impersonations TenantImpersonation[]
+
+  @@map("platform_admins")
+}
+
+enum PlatformRole {
+  platform_owner
+  platform_engineer
+  platform_support
+}
+
+model PlatformAdminSession {
+  id               String    @id @default(uuid()) @db.Uuid
+  adminId          String    @map("admin_id") @db.Uuid
+  refreshTokenHash String    @unique @map("refresh_token_hash") @db.VarChar(64)
+  ipAddress        String    @map("ip_address") @db.Inet
+  userAgent        String?   @map("user_agent") @db.VarChar(500)
+  expiresAt        DateTime  @map("expires_at")
+  revokedAt        DateTime? @map("revoked_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+
+  admin PlatformAdmin @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@index([adminId])
+  @@index([expiresAt])
+  @@map("platform_admin_sessions")
+}
+
+// Email-keyed (no FK) so failed lookups for unknown accounts still log an
+// attempt — useful for spotting credential-stuffing scans.
+model PlatformAdminLoginAttempt {
+  id            BigInt   @id @default(autoincrement())
+  email         String   @db.VarChar(255)
+  ipAddress     String   @map("ip_address") @db.Inet
+  success       Boolean
+  failureReason String?  @map("failure_reason") @db.VarChar(50)
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([email, createdAt(sort: Desc)])
+  @@index([ipAddress, createdAt(sort: Desc)])
+  @@map("platform_admin_login_attempts")
+}
+
+// CIDR stored as VARCHAR — Prisma has no first-class cidr support and the
+// allowlist is small enough (~5-10 rows) to fetch+match in application code
+// via `cidr-matcher` rather than a per-request Postgres lookup.
+model PlatformAdminIpAllowlist {
+  id        String   @id @default(uuid()) @db.Uuid
+  cidr      String   @db.VarChar(43)
+  label     String?  @db.VarChar(100)
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([isActive])
+  @@map("platform_admin_ip_allowlist")
+}
+
+// Recovery codes are sha256(code), one row per code so `used_at` is set
+// atomically (UPDATE ... WHERE used_at IS NULL RETURNING) and races are safe.
+model PlatformAdminRecoveryCode {
+  id        String    @id @default(uuid()) @db.Uuid
+  adminId   String    @map("admin_id") @db.Uuid
+  codeHash  String    @unique @map("code_hash") @db.VarChar(64)
+  usedAt    DateTime? @map("used_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  admin PlatformAdmin @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@index([adminId, usedAt])
+  @@map("platform_admin_recovery_codes")
+}
+
+// D1 — Mesajlaşma altyapısı (klinik bildirim sistemi).
+//
+// Tasarım kararları (v0.2 pilot kapsamı):
+// - **MessageTemplate**: çok dilli, Handlebars body, tenant-scoped (override
+//   yapılabilir; default seed global).
+// - **MessageTrigger**: 22 default trigger key + ON/OFF + quiet hours.
+//   Plan'ın 4-kategorili matrisi.
+// - **MessageDelivery**: queue/log birleşik tablosu. status PENDING→SENT→
+//   DELIVERED veya FAILED. retryCount + lastError. Bull/Redis YOK; basit
+//   DB-polling worker (10sn cron, A12 sync worker pattern'i).
+// - **MessageProvider abstraction**: IMessageProvider interface, runtime'da
+//   MESSAGE_PROVIDER env (`MOCK` default; pilot deployment'ta Twilio swap).
+// - InboundMessage v0.3'e ertelendi (webhook parser).
+
+model MessageTemplate {
+  id          String    @id @default(uuid()) @db.Uuid
+  tenantId    String    @map("tenant_id") @db.Uuid
+  // Trigger key ile bağlantı; bir tenant'ta aynı key+language tek kayıt
+  triggerKey  String    @map("trigger_key") @db.VarChar(60)
+  language    String    @db.VarChar(5) // tr/ru/tg
+  subject     String?   @db.VarChar(200)
+  body        String    @db.Text
+  // Whitelist: handlebars render'da hangi context değişkenleri izinli
+  variables   String[]  @db.VarChar(50)
+  channelType String    @map("channel_type") @db.VarChar(20) // MOCK | SMS | WHATSAPP | EMAIL
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@unique([tenantId, triggerKey, language, channelType])
+  @@index([tenantId, deletedAt])
+  @@map("message_templates")
+}
+
+model MessageTrigger {
+  id              String   @id @default(uuid()) @db.Uuid
+  tenantId        String   @map("tenant_id") @db.Uuid
+  key             String   @db.VarChar(60)
+  category        String   @db.VarChar(20) // RANDEVU | TETKIK | FATURA | ONAM | DIGER
+  name            String   @db.VarChar(200)
+  isEnabled       Boolean  @default(true) @map("is_enabled")
+  // Uncloseable trigger'lar (örn. COMPLICATION_DOCTOR_ALERT) için UI hint
+  isMandatory     Boolean  @default(false) @map("is_mandatory")
+  channels        String[] @db.VarChar(20) // ['MOCK','SMS'] vb.
+  quietHoursStart Int?     @map("quiet_hours_start") // 0-23 (Asia/Dushanbe)
+  quietHoursEnd   Int?     @map("quiet_hours_end")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@unique([tenantId, key])
+  @@index([tenantId, isEnabled])
+  @@map("message_triggers")
+}
+
+model MessageDelivery {
+  id              String    @id @default(uuid()) @db.Uuid
+  tenantId        String    @map("tenant_id") @db.Uuid
+  triggerKey      String    @map("trigger_key") @db.VarChar(60)
+  channelType     String    @map("channel_type") @db.VarChar(20)
+  // Recipient phone/email; PII (encryption v0.3)
+  recipient       String    @db.VarChar(255)
+  subject         String?   @db.VarChar(200)
+  body            String    @db.Text
+  // Context snapshot — debug + replay için
+  contextSnapshot Json      @map("context_snapshot")
+  status          String    @db.VarChar(20) // PENDING | SENT | DELIVERED | FAILED
+  attempts        Int       @default(0)
+  lastError       String?   @map("last_error") @db.Text
+  scheduledAt     DateTime  @map("scheduled_at")
+  sentAt          DateTime? @map("sent_at")
+  deliveredAt     DateTime? @map("delivered_at")
+  failedAt        DateTime? @map("failed_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId, status, scheduledAt])
+  @@index([tenantId, triggerKey, createdAt(sort: Desc)])
+  @@index([tenantId, recipient, createdAt(sort: Desc)])
+  // #1058 — dispatcher cross-tenant taraması için partial index (raw SQL):
+  // message_deliveries_pending_idx ON (scheduled_at) WHERE status='PENDING'
+  @@map("message_deliveries")
+}
+
+// A12 — Hibrit sync outbox: tüm tenant-scope CUD aksiyonları PG trigger'ı ile
+// bu tabloya yazılır. Worker (A12 PR 2) `synced_at IS NULL` rowları çekip
+// karşı node'a (LOCAL → CLOUD veya tersi) REST POST eder. Atomik garanti
+// için trigger transaction context'inde çalışıyor.
+//
+// Tasarım:
+// - `source` LOCAL|CLOUD — bu node'un kim olduğu (env config'inden trigger'a
+//   PG session var ile geçilir, default LOCAL).
+// - `payload` row'un yeni hali (DELETE'te OLD row). Worker bunu karşı node'a
+//   gönderir; karşı node Prisma upsert ile uygular.
+// - `occurred_at` row'un gerçek changed_at'i (updated_at varsa, yoksa now).
+//   Conflict resolution last-write-wins için kritik.
+// - `synced_at` null iken outbox queue'da; başarılı sync sonrası set.
+// - `retry_count` exponential backoff için. `failed_at` 5+ retry sonrası
+//   dead-letter işareti — admin alarm tetikler (PR 2).
+model SyncOutbox {
+  id         String    @id @default(uuid()) @db.Uuid
+  source     String    @db.VarChar(10) // LOCAL | CLOUD
+  entityType String    @map("entity_type") @db.VarChar(50)
+  entityId   String    @map("entity_id") @db.Uuid
+  operation  String    @db.VarChar(10) // INSERT | UPDATE | DELETE
+  tenantId   String?   @map("tenant_id") @db.Uuid
+  payload    Json
+  occurredAt DateTime  @map("occurred_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  syncedAt   DateTime? @map("synced_at")
+  retryCount Int       @default(0) @map("retry_count")
+  lastError  String?   @map("last_error") @db.Text
+  failedAt   DateTime? @map("failed_at")
+
+  // Worker query: en eski unsynced rowları al
+  @@index([syncedAt, createdAt])
+  // Conflict detection: aynı entity, time-ordered
+  @@index([entityType, entityId, occurredAt])
+  // Per-tenant filter (debug + per-tenant sync rate metrik için)
+  @@index([tenantId, syncedAt])
+  // Dead-letter raporu
+  @@index([failedAt])
+  @@map("sync_outbox")
+}
+
+// A12 PR 3 — Conflict queue. Receive endpoint apply sırasında çakışma
+// tespit ederse satırı buraya yazıp event'i skip eder. Admin UI listeleyip
+// manuel resolve eder (local/remote tercih).
+//
+// Conflict tipleri:
+// - lww_stale: gelen UPDATE'in occurredAt'i mevcut updated_at'ten eski.
+//   Local kazandı; remote skip edildi (oluşturulan satır audit/visibility için).
+// - unique_create: aynı unique field (ör. mrn) ile farklı id'li satır var.
+//   Manuel merge gerek.
+// - delete_update: gelen UPDATE local'de silinmiş satır. Plan: DELETE kazanır.
+//   Satır oluşturulur sadece visibility için; resolved_at otomatik set
+//   (LOCAL kazandı, manuel müdahale gerekmez).
+model SyncConflict {
+  id             String    @id @default(uuid()) @db.Uuid
+  eventId        String    @map("event_id") @db.Uuid
+  entityType     String    @map("entity_type") @db.VarChar(50)
+  entityId       String    @map("entity_id") @db.Uuid
+  tenantId       String?   @map("tenant_id") @db.Uuid
+  conflictType   String    @map("conflict_type") @db.VarChar(30)
+  remoteSource   String    @map("remote_source") @db.VarChar(10)
+  localSnapshot  Json?     @map("local_snapshot")
+  remoteSnapshot Json      @map("remote_snapshot")
+  occurredAt     DateTime  @map("occurred_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  resolvedAt     DateTime? @map("resolved_at")
+  resolvedById   String?   @map("resolved_by_id") @db.Uuid
+  resolution     String?   @db.VarChar(20) // local_kept | remote_applied | auto_local
+
+  @@index([resolvedAt, createdAt])
+  @@index([tenantId, resolvedAt])
+  @@index([entityType, entityId])
+  @@map("sync_conflicts")
+}
+
+// F4 — Tenant impersonation: platform admin geçici olarak tenant kullanıcısı
+// kimliğiyle login olur. Her impersonation DB'de tracking ediliyor (Redis
+// yerine pilot için PG); aktif sayım `ended_at IS NULL AND expires_at > now()`
+// koşulu ile. JWT payload'daki `imp.id` bu satıra referans veriyor — strategy
+// her istekte satırı doğruluyor (revocation = DB update, anında geçersiz).
+model TenantImpersonation {
+  id              String    @id @default(uuid()) @db.Uuid
+  platformAdminId String    @map("platform_admin_id") @db.Uuid
+  targetUserId    String    @map("target_user_id") @db.Uuid
+  targetTenantId  String    @map("target_tenant_id") @db.Uuid
+  reason          String    @db.VarChar(500)
+  startedAt       DateTime  @default(now()) @map("started_at")
+  expiresAt       DateTime  @map("expires_at")
+  endedAt         DateTime? @map("ended_at")
+  // 'manual_stop' | 'expired' | 'tenant_suspended' | 'force_stop'
+  endedReason     String?   @map("ended_reason") @db.VarChar(50)
+  ipAddress       String?   @map("ip_address") @db.Inet
+  userAgent       String?   @map("user_agent") @db.Text
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  platformAdmin PlatformAdmin @relation(fields: [platformAdminId], references: [id])
+  targetUser    User          @relation("UserImpersonationTarget", fields: [targetUserId], references: [id])
+  targetTenant  Tenant        @relation("TenantImpersonationTarget", fields: [targetTenantId], references: [id])
+
+  // Aynı user'a aynı anda 2 aktif impersonation'ı engellemek için partial
+  // unique index — `ended_at IS NULL`. Prisma partial unique constraint
+  // doğrudan desteklemiyor; migration'da raw SQL ile kuruluyor.
+  @@index([targetUserId, endedAt])
+  @@index([platformAdminId, startedAt(sort: Desc)])
+  @@index([targetTenantId, endedAt])
+  @@map("tenant_impersonations")
+}
+
+// Separate from tenant audit_logs — different retention (1y vs 180d), different
+// access policy (no RLS, queryable cross-tenant), and prevents NULL-tenant_id
+// rows in audit_logs from confusing the existing tenant-scoped policies.
+model PlatformAuditLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  adminId    String?  @map("admin_id") @db.Uuid
+  email      String?  @db.VarChar(255)
+  action     String   @db.VarChar(100)
+  entityType String?  @map("entity_type") @db.VarChar(100)
+  entityId   String?  @map("entity_id") @db.Uuid
+  payload    Json     @default("{}")
+  ip         String?  @db.Inet
+  userAgent  String?  @map("user_agent") @db.VarChar(500)
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  admin PlatformAdmin? @relation(fields: [adminId], references: [id])
+
+  @@index([adminId, createdAt])
+  @@index([action, createdAt])
+  @@map("platform_audit_logs")
+}
+
+// #1085 — Platform zaman-serisi metrik snapshot'ı (RLS-dışı platform tablosu).
+// 5 dk'da bir örneklenir; 14 gün retention (gecelik prune). İzleme ekranlarının
+// (Sunucu/Veritabanı/Kullanım #1086-1092) trend + kapasite temeli.
+// Sayısal alanlar BigInt (byte'lar) / Int; boş olabilenler (pg_stat_statements
+// yoksa slowQueryCount) nullable.
+model PlatformMetricsSnapshot {
+  id                 String   @id @default(uuid()) @db.Uuid
+  capturedAt         DateTime @default(now()) @map("captured_at")
+  // Veritabanı
+  dbSizeBytes        BigInt   @map("db_size_bytes")
+  dbConnActive       Int      @map("db_conn_active")
+  dbConnIdle         Int      @map("db_conn_idle")
+  dbConnIdleInTx     Int      @map("db_conn_idle_in_tx")
+  dbConnTotal        Int      @map("db_conn_total")
+  slowQueryCount     Int?     @map("slow_query_count")
+  // Node process
+  nodeHeapUsedBytes  BigInt   @map("node_heap_used_bytes")
+  nodeRssBytes       BigInt   @map("node_rss_bytes")
+  nodeEventLoopLagMs Float    @map("node_event_loop_lag_ms")
+  // Host
+  hostCpuPct         Float    @map("host_cpu_pct")
+  hostMemUsedBytes   BigInt   @map("host_mem_used_bytes")
+  hostMemTotalBytes  BigInt   @map("host_mem_total_bytes")
+  hostDiskUsedBytes  BigInt   @map("host_disk_used_bytes")
+  hostDiskTotalBytes BigInt   @map("host_disk_total_bytes")
+  // Kullanım
+  tenantCounts       Json     @map("tenant_counts")
+  activeUsers        Int      @map("active_users")
+  activeSessions     Int      @map("active_sessions")
+
+  @@index([capturedAt])
+  @@map("platform_metrics_snapshots")
+}
+
+// #1093 — F6 bakım modu. Platform ekibi kontrollü bakım penceresi planlar.
+// scope=global tüm tenant'ları, scope=tenant yalnız targetTenantId'yi etkiler.
+// Aktif pencerede klinik API mutasyonları 503 + Retry-After ile reddedilir
+// (v1 tam blok — basit). RLS-dışı platform tablosu.
+model MaintenanceWindow {
+  id             String   @id @default(uuid()) @db.Uuid
+  scope          String   @db.VarChar(10) // 'global' | 'tenant'
+  targetTenantId String?  @map("target_tenant_id") @db.Uuid
+  message        String   @db.VarChar(500)
+  startsAt       DateTime @map("starts_at")
+  endsAt         DateTime @map("ends_at")
+  cancelledAt    DateTime? @map("cancelled_at")
+  createdById    String?  @map("created_by_id") @db.Uuid
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@index([startsAt, endsAt])
+  @@index([targetTenantId])
+  @@map("maintenance_windows")
+}
+
+// #1093 — F6 duyuru (broadcast). Klinik web'de login sonrası dismissible banner
+// (kritik severity dismiss'siz). global/hedef tenant listesi. RLS-dışı.
+model PlatformAnnouncement {
+  id              String   @id @default(uuid()) @db.Uuid
+  title           String   @db.VarChar(200)
+  body            String   @db.VarChar(2000)
+  severity        String   @default("info") @db.VarChar(10) // 'info' | 'warning'
+  scope           String   @db.VarChar(10) // 'global' | 'tenant'
+  targetTenantIds String[] @map("target_tenant_ids") @db.Uuid
+  publishAt       DateTime @map("publish_at")
+  expiresAt       DateTime @map("expires_at")
+  archivedAt      DateTime? @map("archived_at")
+  createdById     String?  @map("created_by_id") @db.Uuid
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([publishAt, expiresAt])
+  @@map("platform_announcements")
+}
+
+// =============================================================================
+// A3 — Auth: User + Role + UserRole (per-tenant)
+// =============================================================================
+
+model User {
+  id                 String     @id @default(uuid()) @db.Uuid
+  tenantId           String     @map("tenant_id") @db.Uuid
+  email              String     @db.VarChar(255)
+  passwordHash       String     @map("password_hash") @db.VarChar(255)
+  name               String     @db.VarChar(100)
+  locale             String     @default("tr") @db.VarChar(5)
+  // #1049 — personel profil telefonu (hasta telefonundan bağımsız; opsiyonel).
+  phone              String?    @db.VarChar(30)
+  status             UserStatus @default(active)
+  mustChangePassword Boolean    @default(false) @map("must_change_password")
+  failedLoginCount   Int        @default(0) @map("failed_login_count")
+  lockedUntil        DateTime?  @map("locked_until")
+  lastLoginAt        DateTime?  @map("last_login_at")
+  lastLoginIp        String?    @map("last_login_ip") @db.Inet
+  // S5 — Rol üstü user bayrakları (karar tutanağı §3). Doktor için:
+  // - is_visiting_doctor: bool — misafir cerrah (sadece kendi cerrahileri görür)
+  // - can_see_all_patients: bool — yönetici override; baş hekim için
+  // JSON nesnesi; ileride ek flag'ler ek migration olmadan eklenir.
+  // Shape: { is_visiting_doctor?: boolean, can_see_all_patients?: boolean }
+  flags              Json?      @map("flags")
+  createdAt          DateTime   @default(now()) @map("created_at")
+  updatedAt          DateTime   @default(now()) @updatedAt @map("updated_at")
+  deletedAt          DateTime?  @map("deleted_at")
+
+  tenant                     Tenant                   @relation(fields: [tenantId], references: [id])
+  userRoles                  UserRole[]
+  doctorProfile              Doctor?
+  refreshTokens              RefreshToken[]
+  auditLogs                  AuditLog[]
+  // S15-PR10 — Co-sign trail + nurse session relations
+  auditLogsOnBehalfOf        AuditLog[]               @relation("AuditLogOnBehalfOf")
+  // S15-PR23 — Co-sign onaylayan doktor (cosignedById).
+  auditLogsCosigned          AuditLog[]               @relation("AuditLogCosignedBy")
+  nurseSessionsAsNurse       NurseAssistanceSession[] @relation("NurseSessionNurse")
+  nurseSessionsAsDoctor      NurseAssistanceSession[] @relation("NurseSessionDoctor")
+  examinationsAsDoctor       Examination[]            @relation("ExaminationDoctor")
+  measurementsTaken          Measurement[]            @relation("MeasurementBy")
+  appointmentsCreated        Appointment[]            @relation("AppointmentCreatedBy")
+  apiKeysCreated             ApiKey[]                 @relation("ApiKeyCreatedBy")
+  photosUploaded             PatientPhoto[]           @relation("PhotoUploadedBy")
+  // #1049 — personel dökümanları (özne olarak + yükleyen olarak)
+  staffDocuments             StaffDocument[]          @relation("StaffDocumentUser")
+  staffDocumentsUploaded     StaffDocument[]          @relation("StaffDocumentUploadedBy")
+  labTestsCreated            LabTest[]                @relation("LabTestCreatedBy")
+  iolLotsCreated             IolLot[]                 @relation("IolLotCreatedBy")
+  iolMovementsCreated        IolStockMovement[]       @relation("IolMovementCreatedBy")
+  proceduresCreated          Procedure[]              @relation("ProcedureCreatedBy")
+  preOpsMarkedReady          PreOp[]                  @relation("PreOpMarkedReadyBy")
+  prescriptionsCreated       Prescription[]           @relation("PrescriptionCreatedBy")
+  commissionsReviewed        CommissionEntry[]        @relation("CommissionReviewedBy")
+  fraudAlertsTriggered       FraudAlert[]             @relation("FraudAlertActor")
+  fraudAlertsReviewed        FraudAlert[]             @relation("FraudAlertReviewedBy")
+  consentTemplatesCreated    ConsentTemplate[]        @relation("ConsentTemplateCreatedBy")
+  consentSigningsSigned      ConsentSigning[]         @relation("ConsentSigningSignedBy")
+  impersonationsAsTarget     TenantImpersonation[]    @relation("UserImpersonationTarget")
+  // S4 — Doktor-hasta atamasını yapan user (manuel veya transfer)
+  patientDoctorsAssigned     PatientDoctor[]          @relation("PatientDoctorAssignedBy")
+  // S11a — Billing
+  serviceItemsCreated        ServiceItem[]            @relation("ServiceItemCreatedBy")
+  invoicesCreated            Invoice[]                @relation("InvoiceCreatedBy")
+  invoicesCancelled          Invoice[]                @relation("InvoiceCancelledBy")
+  paymentsTaken              Payment[]                @relation("PaymentTakenBy")
+  refundsApproved            Refund[]                 @relation("RefundApprovedBy")
+  // S15-PR15b — Refund 2-aşama: talep + reverse audit relasyonları.
+  refundsRequested           Refund[]                 @relation("RefundRequestedBy")
+  refundsReversed            Refund[]                 @relation("RefundReversedBy")
+  cashRegisterClosures       CashRegisterClosure[]    @relation("CashRegisterClosedBy")
+  cashRegisterDraftsPrepared CashRegisterClosure[]    @relation("CashRegisterPreparedBy")
+  // S15 — Encounter (açan kullanıcı audit)
+  encountersCreated          Encounter[]              @relation("EncounterCreatedBy")
+  // S15b — Notification (alıcı)
+  notificationsReceived      Notification[]           @relation("NotificationRecipient")
+  // I2.1 — Geri-bildirim merkezi (#818)
+  feedbackSubmitted          FeedbackRequest[]        @relation("FeedbackSubmittedBy")
+  // S15c — Ölçüm siparişleri (isteyen doktor)
+  measurementOrdersIssued    MeasurementOrder[]       @relation("MeasurementOrderedBy")
+  // S15-PR19 — Bağlamsal mesajlaşma (yazar)
+  threadMessages             PatientThreadMessage[]   @relation("ThreadMessageAuthor")
+  threadsCreated             PatientMessageThread[]   @relation("ThreadCreatedBy")
+  // EPIC #1018 — AI hasta asistanı config revizyonları (kim değiştirdi izi).
+  agentConfigRevisions       AgentConfigRevision[]    @relation("AgentConfigRevisionCreatedBy")
+  // S15-PR20 — Recall (post-op takip)
+  recallAttempts             RecallAttempt[]          @relation("RecallAttemptedBy")
+  // v0.4 #548 — Satın Alma Siparişi görev ayrılığı (oluşturan ≠ onaylayan)
+  purchaseOrdersCreated      PurchaseOrder[]          @relation("PurchaseOrderCreatedBy")
+  purchaseOrdersApproved     PurchaseOrder[]          @relation("PurchaseOrderApprovedBy")
+  // v0.4 #551 — Eczane perakende aktör ilişkileri
+  pharmacySalesSold          PharmacySale[]           @relation("PharmacySaleSoldBy")
+  pharmacyReturnsProcessed   PharmacyReturn[]         @relation("PharmacyReturnProcessedBy")
+  pharmacyCashOpened         PharmacyCashClosure[]    @relation("PharmacyCashOpenedBy")
+  pharmacyCashClosed         PharmacyCashClosure[]    @relation("PharmacyCashClosedBy")
+  pharmacyCashHanded         PharmacyCashClosure[]    @relation("PharmacyCashHandedBy")
+  pharmacyCashReconciled     PharmacyCashClosure[]    @relation("PharmacyCashReconciledBy")
+  pharmacyStockMovesMade     PharmacyStockMovement[]  @relation("PharmacyStockMovementBy")
+
+  @@unique([tenantId, email])
+  @@index([tenantId, status])
+  @@index([tenantId, deletedAt])
+  @@map("users")
+}
+
+enum UserStatus {
+  active
+  suspended
+  locked
+  inactive
+}
+
+model Role {
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  key       RoleKey
+  label     String   @db.VarChar(100)
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  tenant    Tenant     @relation(fields: [tenantId], references: [id])
+  userRoles UserRole[]
+
+  @@unique([tenantId, key])
+  @@index([tenantId, isActive])
+  @@map("roles")
+}
+
+enum RoleKey {
+  yonetici
+  yonetici_asistani
+  doktor
+  resepsiyon
+  hemsire
+  // S12a — müşteri görüşmesi sonrası: cerrahi paket fatura+tahsilatı ayrı pozisyon
+  // (docs/audits/2026-05-28-musteri-toplantisi-sonrasi.md)
+  ameliyat_satis
+  // S16 — Ölçüm odası personeli (dar/kilitli istasyon rolü): yalnız ölçüm
+  // talepleri + tamamlanan. Asistan hemşireden (hemsire) ayrı pozisyon.
+  // v0.4 (#538) sonrası yeni standart: "hemsire + olcum modu" (bkz. flags.modes);
+  // bu enum değeri geri-uyum için korunur (çift-yol), yeni tenant'lar moddan gider.
+  olcum_hemsiresi
+  // v0.4 (#538) — 3 yeni klinik rol (docs/v0.4-rol-nitelik-mod-plan.md İP-2).
+  // Finans Yetkilisi, Stok & Satın Alma, Eczane Personeli. Yetkileri İP-6/9/10'da
+  // permission registry'sine bağlanır; bu PR yalnız sisteme tanıtır.
+  finans
+  stok_satinalma
+  eczane
+}
+
+model UserRole {
+  // A12 sync — sync_outbox_record() trigger function entity.id UUID bekliyor.
+  // Composite key (tenantId, userId, roleId) önceden @@id'di ama sync trigger
+  // bu üçlüyü tek bir entity_id'ye sığdıramıyordu (DROP'lanmıştı 20260524190530
+  // migration'ında). Migration 20260526xxx_user_roles_id_pk → id kolonu eklendi,
+  // composite anahtar @@unique constraint olarak korundu, sync trigger eklendi.
+  id         String   @id @default(uuid()) @db.Uuid
+  tenantId   String   @map("tenant_id") @db.Uuid
+  userId     String   @map("user_id") @db.Uuid
+  roleId     String   @map("role_id") @db.Uuid
+  assignedAt DateTime @default(now()) @map("assigned_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role   Role   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, userId, roleId])
+  @@index([tenantId, userId])
+  @@index([tenantId, roleId])
+  @@map("user_roles")
+}
+
+// =============================================================================
+// A3 — Auth: RefreshToken (per-user, hash stored, never raw)
+// =============================================================================
+
+model RefreshToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  tenantId  String    @map("tenant_id") @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  tokenHash String    @unique @map("token_hash") @db.VarChar(255)
+  expiresAt DateTime  @map("expires_at")
+  revokedAt DateTime? @map("revoked_at")
+  ip        String?   @db.Inet
+  userAgent String?   @map("user_agent") @db.VarChar(500)
+  // v0.4 (#539) — Oturumun çalışma modu. Login'de seçilir, refresh rotasyonunda
+  // korunur (kilitli kiosk refresh sonrası da kilitli kalsın; çok-modlu kullanıcı
+  // seçtiği moda sabit). null = mod kavramı olmayan oturum (klasik).
+  mode      String?   @map("mode") @db.VarChar(32)
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, userId])
+  @@index([tenantId, expiresAt])
+  @@map("refresh_tokens")
+}
+
+// =============================================================================
+// A4 — Patient
+// =============================================================================
+
+model Patient {
+  id                            String                @id @default(uuid()) @db.Uuid
+  tenantId                      String                @map("tenant_id") @db.Uuid
+  mrn                           String                @db.VarChar(20) // medical record number (Verhoeff check digit)
+  firstName                     String                @map("first_name") @db.VarChar(100)
+  lastName                      String                @map("last_name") @db.VarChar(100)
+  birthDate                     DateTime              @map("birth_date") @db.Date
+  gender                        Gender
+  identityNo                    String?               @map("identity_no") @db.VarChar(50)
+  passportNo                    String?               @map("passport_no") @db.VarChar(50)
+  phone                         String?               @db.VarChar(20)
+  phoneLast4                    String?               @map("phone_last4") @db.VarChar(4)
+  email                         String?               @db.VarChar(255)
+  address                       String?
+  emergencyContactName          String?               @map("emergency_contact_name") @db.VarChar(200)
+  emergencyContactPhone         String?               @map("emergency_contact_phone") @db.VarChar(20)
+  notes                         String?
+  // E1 lead source — kanal (enum) + serbest not (kampanya adı, doktor adı vb.)
+  leadSource                    LeadSource?           @map("lead_source")
+  leadSourceNote                String?               @map("lead_source_note") @db.VarChar(255)
+  // E4 etiket — multi-select tag (VIP, yüksek risk, vb.). Postgres array.
+  tags                          PatientTagKey[]       @default([])
+  // S15-PR1 — Tıbbi alanlar + pediatrik veli (pilot blocker hukuki güvenlik).
+  // photoUrl: hasta profil avatarı özelliği kaldırıldı (kod + UI). Kolon mevcut
+  // veriyi kaybetmemek için korunur; uygulama artık yazmaz/okumaz (ölü alan).
+  // allergies/anticoagulantMedications: serbest text array (open vocabulary);
+  // surgery proposal'da pop-up uyarı, prescription create'de string match.
+  // bloodType: enum (a_pos..o_neg + unknown); pre-op vital'de görünür.
+  // pediatricGuardian*: hasta yaşı <18 ise consent.service ConsentSigning'i
+  // veli imzasıyla zorunlu kılar (PR7'de signedByGuardian + relationship).
+  photoUrl                      String?               @map("photo_url") @db.VarChar(500)
+  allergies                     String[]              @default([])
+  anticoagulantMedications      String[]              @default([]) @map("anticoagulant_medications")
+  bloodType                     BloodType?            @map("blood_type")
+  pediatricGuardianName         String?               @map("pediatric_guardian_name") @db.VarChar(200)
+  pediatricGuardianPhone        String?               @map("pediatric_guardian_phone") @db.VarChar(20)
+  pediatricGuardianRelationship GuardianRelationship? @map("pediatric_guardian_relationship")
+  createdAt                     DateTime              @default(now()) @map("created_at")
+  updatedAt                     DateTime              @default(now()) @updatedAt @map("updated_at")
+  deletedAt                     DateTime?             @map("deleted_at")
+
+  tenant             Tenant                 @relation(fields: [tenantId], references: [id])
+  appointments       Appointment[]
+  examinations       Examination[]
+  surgeries          Surgery[]
+  measurements       Measurement[]
+  photos             PatientPhoto[]
+  labTests           LabTest[]
+  procedures         Procedure[]
+  prescriptions      Prescription[]
+  consentSignings    ConsentSigning[]
+  // S4 — Doktor atama m2m (karar tutanağı §7 — hibrit). Randevu/muayene/cerrahi
+  // tetikleyince auto upsert; resepsiyon yeni hasta eklerken manuel primary.
+  patientDoctors     PatientDoctor[]
+  // S15 — Encounter (ziyaret akışı)
+  encounters         Encounter[]
+  // S15c — Ölçüm siparişleri
+  measurementOrders  MeasurementOrder[]
+  // S11a — Billing
+  invoices           Invoice[]
+  // S15-PR19 — Bağlamsal mesajlaşma (hasta-bağlı thread'ler).
+  messageThreads     PatientMessageThread[]
+  // EPIC #1018 — AI hasta asistanı konuşmaları (telefonla eşleşince bağlanır).
+  agentConversations AgentConversation[]
+  // S15-PR20 — Recall (post-op takip)
+  recallAttempts     RecallAttempt[]        @relation("PatientRecallAttempts")
+  // v0.4 #551 — Eczane satışı (opsiyonel hasta bağı; walk-in anonim olabilir)
+  pharmacySales      PharmacySale[]
+  // R1 (#723) — kalıcı klinik problem + ilaç listesi (EHR problem list).
+  problems           PatientProblem[]
+  medications        PatientMedication[]
+
+  @@unique([tenantId, mrn])
+  @@index([tenantId, lastName, firstName])
+  @@index([tenantId, phoneLast4])
+  @@index([tenantId, deletedAt])
+  // A4 search perf: pg_trgm GIN indexes on free-text columns. Postgres uses
+  // these for LIKE '%q%' patterns (gin_trgm_ops). Raw SQL migration is the
+  // source of truth — see 20260510120000_a4_patient_search_gin.
+  @@index([firstName(ops: raw("gin_trgm_ops"))], type: Gin, map: "patients_first_name_trgm")
+  @@index([lastName(ops: raw("gin_trgm_ops"))], type: Gin, map: "patients_last_name_trgm")
+  @@index([phone(ops: raw("gin_trgm_ops"))], type: Gin, map: "patients_phone_trgm")
+  @@index([mrn(ops: raw("gin_trgm_ops"))], type: Gin, map: "patients_mrn_trgm")
+  // #1055 — searchFilter OR'unun index'siz tek kolu (phoneLast4 contains) tüm
+  // sorguyu seq scan'e düşürüyordu; BitmapOr için tüm kollar index'li olmalı.
+  @@index([phoneLast4(ops: raw("gin_trgm_ops"))], type: Gin, map: "patients_phone_last4_trgm")
+  // E1 funnel queries pivot on tenantId + leadSource + createdAt; small index
+  // keeps the rollup query cheap on 10K+ patients.
+  @@index([tenantId, leadSource, createdAt], map: "patients_lead_source_created_idx")
+  @@index([tags], type: Gin, map: "patients_tags_gin_idx")
+  @@map("patients")
+}
+
+// R1 (#723) — Kalıcı klinik problem listesi (EHR problem list). Muayene
+// tanılarından bağımsız, hasta seviyesinde sürekli izlenen aktif/çözülmüş
+// problemler. createdById raw FK (User modeline dokunmadan; migration'da).
+model PatientProblem {
+  id          String    @id @default(uuid()) @db.Uuid
+  tenantId    String    @map("tenant_id") @db.Uuid
+  patientId   String    @map("patient_id") @db.Uuid
+  description String    @db.VarChar(300)
+  icd10       String?   @db.VarChar(20)
+  // 'active' | 'resolved' (app-level enum; Zod boundary doğrular).
+  status      String    @default("active") @db.VarChar(20)
+  onsetDate   DateTime? @map("onset_date") @db.Date
+  resolvedAt  DateTime? @map("resolved_at")
+  createdById String?   @map("created_by_id") @db.Uuid
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  tenant  Tenant  @relation(fields: [tenantId], references: [id])
+  patient Patient @relation(fields: [patientId], references: [id])
+
+  @@index([tenantId, patientId, status, deletedAt])
+  @@map("patient_problems")
+}
+
+// R1 (#723) — Kalıcı ilaç listesi (medication list). Reçetelerden bağımsız,
+// hastanın sürekli kullandığı/bıraktığı ilaçlar.
+model PatientMedication {
+  id          String    @id @default(uuid()) @db.Uuid
+  tenantId    String    @map("tenant_id") @db.Uuid
+  patientId   String    @map("patient_id") @db.Uuid
+  name        String    @db.VarChar(200)
+  dose        String?   @db.VarChar(80)
+  frequency   String?   @db.VarChar(80)
+  // 'active' | 'stopped'
+  status      String    @default("active") @db.VarChar(20)
+  startedAt   DateTime? @map("started_at") @db.Date
+  stoppedAt   DateTime? @map("stopped_at")
+  createdById String?   @map("created_by_id") @db.Uuid
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  tenant  Tenant  @relation(fields: [tenantId], references: [id])
+  patient Patient @relation(fields: [patientId], references: [id])
+
+  @@index([tenantId, patientId, status, deletedAt])
+  @@map("patient_medications")
+}
+
+enum Gender {
+  male
+  female
+  other
+}
+
+// E1 — 8 lead source channels (RFP scope: Instagram, Telegram, WhatsApp,
+// doktor yönlendirme, eski hasta, optik, şirket anlaşması, saha temsilcisi).
+enum LeadSource {
+  instagram
+  telegram
+  whatsapp
+  doctor_referral
+  returning_patient
+  optic_partner
+  corporate_contract
+  field_rep
+  walk_in
+  // #375 — İkinci görüş için yapısal intake (eskiden tek second_opinion cerrahi
+  // RED aşamasındaydı; resepsiyon serbest nota yazıyordu).
+  second_opinion
+  other
+}
+
+// S15-PR1 — Kan grubu enum'u; Rh + ABO grup birleştirir + unknown (girilmemiş /
+// bilinmiyor). Cerrahi ekibinin transfüzyon hazırlığı + acil müdahale için.
+enum BloodType {
+  a_pos
+  a_neg
+  b_pos
+  b_neg
+  ab_pos
+  ab_neg
+  o_pos
+  o_neg
+  unknown
+}
+
+// S15-PR1 — Pediatrik veli ilişki tipi; ConsentSigning (PR7) veli imzasında
+// "kim imzaladı" yapısal kaydı için.
+enum GuardianRelationship {
+  mother
+  father
+  legal_guardian
+  grandparent
+  sibling
+  other
+}
+
+// =============================================================================
+// A5 — Doctor + DoctorAvailability
+// =============================================================================
+
+model Doctor {
+  id             String     @id @default(uuid()) @db.Uuid
+  tenantId       String     @map("tenant_id") @db.Uuid
+  userId         String?    @unique @map("user_id") @db.Uuid // null if doctor is a profile only (visiting)
+  name           String     @db.VarChar(200)
+  specialty      String     @db.VarChar(100)
+  type           DoctorType @default(local)
+  contactPhone   String?    @map("contact_phone") @db.VarChar(20)
+  contactEmail   String?    @map("contact_email") @db.VarChar(255)
+  commissionRate Decimal?   @map("commission_rate") @db.Decimal(5, 2) // percentage 0-100
+  isActive       Boolean    @default(true) @map("is_active")
+  notes          String?
+  // #1049 — hasta-facing profil alanları (EPIC #1052 Karar 3). CV/döküman İK
+  // verisidir (StaffDocument) ve hasta yüzeyine ASLA sızmaz; hastaya yayın
+  // YALNIZ publicProfile=true iken ve YALNIZ title/photo/bio/languages ile.
+  // Yayın yüzeyleri publicProfile'ı isActive ile AND'lemek zorunda.
+  title          String?    @db.VarChar(100)
+  photoKey       String?    @map("photo_key") @db.VarChar(255)
+  bio            Json? // {tr?, ru?, tg?} — 3-dil kısa tanıtım
+  languages      String[]   @default([])
+  publicProfile  Boolean    @default(false) @map("public_profile")
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @default(now()) @updatedAt @map("updated_at")
+  deletedAt      DateTime?  @map("deleted_at")
+
+  tenant            Tenant               @relation(fields: [tenantId], references: [id])
+  user              User?                @relation(fields: [userId], references: [id])
+  staffDocuments    StaffDocument[]
+  availabilities    DoctorAvailability[]
+  leaves            DoctorLeave[]
+  visitingWindows   VisitingWindow[]
+  appointments      Appointment[]
+  surgeries         Surgery[]
+  procedures        Procedure[]
+  commissionRules   CommissionRule[]
+  commissionEntries CommissionEntry[]
+  // S4 — Doktor-hasta atama m2m (karar tutanağı §7)
+  patientDoctors    PatientDoctor[]
+  // S15 — Encounter (hastanın yönlendirildiği doktor)
+  encounters        Encounter[]
+
+  @@index([tenantId, isActive])
+  @@index([tenantId, specialty])
+  @@map("doctors")
+}
+
+// S4 — Doktor-hasta atama tablosu (karar tutanağı §7 hibrit model).
+//
+// Doktor X "hasta Y'nin doktoru"dur eğer:
+//  - source='auto': X, Y ile en az 1 randevu/muayene/cerrahi yapmışsa
+//    (appointment.create, examination.create, surgery.create hook'ları upsert)
+//  - source='manual': resepsiyon yeni hasta eklerken primary doctor seçmişse
+//  - source='transfer': yönetici başka doktordan devretmişse (S8'de UI)
+//
+// Doktor `/patients` listesinde sadece kendi atanmış hastalarını görür
+// (PatientService.list filter); flag `can_see_all_patients` (S5) bunu override.
+// `is_visiting_doctor` (S5) tam tersine kısıtlar — sadece kendi cerrahileri.
+//
+// isPrimary: hasta için birincil sorumlu doktor (UI'da rozet); pilot için
+// tek primary kabul edilir, partial unique index'le zorlanır.
+model PatientDoctor {
+  id         String   @id @default(uuid()) @db.Uuid
+  tenantId   String   @map("tenant_id") @db.Uuid
+  patientId  String   @map("patient_id") @db.Uuid
+  doctorId   String   @map("doctor_id") @db.Uuid
+  isPrimary  Boolean  @default(false) @map("is_primary")
+  source     String   @db.VarChar(20) // 'auto' | 'manual' | 'transfer'
+  assignedAt DateTime @default(now()) @map("assigned_at")
+  assignedBy String?  @map("assigned_by") @db.Uuid
+
+  tenant         Tenant  @relation(fields: [tenantId], references: [id])
+  patient        Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctor         Doctor  @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  assignedByUser User?   @relation("PatientDoctorAssignedBy", fields: [assignedBy], references: [id], onDelete: SetNull)
+
+  @@unique([tenantId, patientId, doctorId])
+  @@index([tenantId, doctorId, assignedAt(sort: Desc)])
+  @@index([tenantId, patientId, isPrimary])
+  @@map("patient_doctors")
+}
+
+enum DoctorType {
+  local // staff doctor
+  visiting // visiting professor
+  referral // external referrer
+}
+
+model DoctorAvailability {
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  doctorId  String   @map("doctor_id") @db.Uuid
+  dayOfWeek Int      @map("day_of_week") // 0=Sunday .. 6=Saturday
+  startTime String   @map("start_time") @db.VarChar(5) // "09:00"
+  endTime   String   @map("end_time") @db.VarChar(5) // "17:00"
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+  doctor Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, doctorId, dayOfWeek])
+  @@map("doctor_availabilities")
+}
+
+// A5 izin/tatil — doctor unavailable ranges. Slot calculation excludes
+// these together with appointments (overlap check is application-level
+// since leaves and appointments share the doctor's calendar).
+model DoctorLeave {
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  doctorId  String   @map("doctor_id") @db.Uuid
+  startsAt  DateTime @map("starts_at")
+  endsAt    DateTime @map("ends_at")
+  reason    String?  @db.VarChar(500)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+  doctor Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, doctorId, startsAt])
+  @@map("doctor_leaves")
+}
+
+// #368 — Ziyaretçi doktor penceresi: "ayın belirli günleri gelen doktor".
+// Tanımlıysa randevu yalnız bu tarih aralıklarına verilebilir (recurring
+// DoctorAvailability'ye ek tarih-bazlı kısıt). Boşsa kısıt yok (tam-zamanlı doktor).
+model VisitingWindow {
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  doctorId  String   @map("doctor_id") @db.Uuid
+  startsAt  DateTime @map("starts_at")
+  endsAt    DateTime @map("ends_at")
+  notes     String?  @db.VarChar(500)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+  doctor Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, doctorId, startsAt])
+  @@map("visiting_windows")
+}
+
+// =============================================================================
+// A6 — Appointment
+// =============================================================================
+
+model Appointment {
+  id          String            @id @default(uuid()) @db.Uuid
+  tenantId    String            @map("tenant_id") @db.Uuid
+  patientId   String            @map("patient_id") @db.Uuid
+  // #367 — Doktorsuz "genel randevu" (telefonda "müsait doktora gelirim"). null =
+  // havuz; check-in'de / sonradan müsait doktora atanır. EXCLUDE GIST null doctor'da
+  // çakışma kontrolü yapmaz (havuz randevuları üst üste olabilir — atamada netleşir).
+  doctorId    String?           @map("doctor_id") @db.Uuid
+  type        AppointmentType   @default(consultation)
+  status      AppointmentStatus @default(scheduled)
+  startsAt    DateTime          @map("starts_at")
+  endsAt      DateTime          @map("ends_at")
+  notes       String?
+  // #378 — Randevu geliş kanalı (telefon/Instagram/Telegram…). LeadFunnel raporu
+  // için; eskiden işlenemiyordu.
+  source      LeadSource?       @map("source")
+  createdById String?           @map("created_by_id") @db.Uuid
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @default(now()) @updatedAt @map("updated_at")
+  deletedAt   DateTime?         @map("deleted_at")
+
+  tenant            Tenant          @relation(fields: [tenantId], references: [id])
+  patient           Patient         @relation(fields: [patientId], references: [id])
+  doctor            Doctor?         @relation(fields: [doctorId], references: [id])
+  createdBy         User?           @relation("AppointmentCreatedBy", fields: [createdById], references: [id])
+  examination       Examination?
+  surgery           Surgery?
+  procedure         Procedure?      @relation("ProcedureAppointment")
+  procedureFollowUp Procedure?      @relation("ProcedureFollowUpAppointment")
+  // S15 — Encounter (1-1: bir randevu bir ziyareti başlatır)
+  encounter         Encounter?
+  // S11a — Billing
+  invoices          Invoice[]
+  // S15-PR20 — Recall (post-op takip denemeleri)
+  recallAttempts    RecallAttempt[] @relation("AppointmentRecallAttempts")
+
+  @@index([tenantId, doctorId, startsAt])
+  @@index([tenantId, patientId, startsAt])
+  @@index([tenantId, status, startsAt])
+  // #1059 — doctorId'siz takvim aralık sorgusu (haftalık tüm-doktor görünümü,
+  // resepsiyonun en sık ekranı) için: lider kolonu startsAt olan tek index.
+  @@index([tenantId, startsAt])
+  @@index([tenantId, deletedAt])
+  // #1058 — no-show task cross-tenant taraması için partial index (raw SQL):
+  // appointments_scheduled_starts_idx ON (starts_at)
+  //   WHERE status='scheduled' AND deleted_at IS NULL
+  @@map("appointments")
+}
+
+enum AppointmentType {
+  consultation
+  surgery
+  control
+  injection
+  laser
+  examination
+  pre_op
+  post_op
+}
+
+enum AppointmentStatus {
+  scheduled
+  checked_in
+  in_progress
+  completed
+  cancelled
+  no_show
+}
+
+// #379 — Muayene taslak/kesin durumu. Doktor muayeneyi bitirmeden ölçüm
+// isterse yazdıkları "draft" olarak korunur; geri çağrılınca aynı taslak
+// üzerinden devam edilir. Eski kayıtlar `final` (migration default).
+enum ExaminationStatus {
+  draft
+  final
+}
+
+// =============================================================================
+// S15 — Encounter (hasta ziyaret akışı / istasyon yolculuğu)
+// =============================================================================
+//
+// Bir hastanın klinikteki tek günlük yolculuğunu modeller. Appointment.status
+// (takvim/scheduling yaşam döngüsü) korunur; Encounter.stage klinik istasyon
+// yolculuğunu sürer (resepsiyon → ödeme → doktor → ölçüm → reçete/ameliyat-satış).
+//
+// Ödeme birinci sınıf istasyondur: muayene ücreti ödenmeden hasta doktor
+// kuyruğuna (waiting_doctor) geçemez — kapı InvoiceService.assertPaidSession.
+//
+// appointmentId nullable: randevusuz (walk-in) hasta için resepsiyon doğrudan
+// ziyaret açabilir. @unique: bir randevu en fazla bir ziyaret başlatır.
+model Encounter {
+  id             String         @id @default(uuid()) @db.Uuid
+  tenantId       String         @map("tenant_id") @db.Uuid
+  patientId      String         @map("patient_id") @db.Uuid
+  appointmentId  String?        @unique @map("appointment_id") @db.Uuid
+  doctorId       String?        @map("doctor_id") @db.Uuid
+  stage          EncounterStage @default(registered)
+  openedAt       DateTime       @default(now()) @map("opened_at")
+  stageUpdatedAt DateTime       @default(now()) @map("stage_updated_at")
+  closedAt       DateTime?      @map("closed_at")
+  // #424 — Göz acili triyaj önceliği. Acil hasta (kimyasal yanık, retina
+  // dekolmanı, akut glokom, yabancı cisim) kuyruğun en önüne çıkar. Break Glass'tan
+  // (önce-öde bypass) ayrı: bu yalnız kuyruk sırası önceliği.
+  isUrgent       Boolean        @default(false) @map("is_urgent")
+  urgentReason   String?        @map("urgent_reason") @db.VarChar(200)
+
+  // S15-PR5 — Break Glass: acil durumda "önce öde" kuralı bypass edilir.
+  // assertPaidSession aktif bypass varsa geçer; auto-bill sonradan yönetici
+  // tarafından kapatılır. activate sadece yönetici, audit trail explicit.
+  emergencyBypassReason      String?   @map("emergency_bypass_reason") @db.VarChar(500)
+  emergencyBypassActivatedAt DateTime? @map("emergency_bypass_activated_at")
+  emergencyBypassActivatedBy String?   @map("emergency_bypass_activated_by") @db.Uuid
+  emergencyBypassClosedAt    DateTime? @map("emergency_bypass_closed_at")
+  emergencyBypassClosedBy    String?   @map("emergency_bypass_closed_by") @db.Uuid
+  createdById                String?   @map("created_by_id") @db.Uuid
+  createdAt                  DateTime  @default(now()) @map("created_at")
+  updatedAt                  DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt                  DateTime? @map("deleted_at")
+
+  tenant            Tenant             @relation(fields: [tenantId], references: [id])
+  patient           Patient            @relation(fields: [patientId], references: [id])
+  appointment       Appointment?       @relation(fields: [appointmentId], references: [id])
+  doctor            Doctor?            @relation(fields: [doctorId], references: [id])
+  createdBy         User?              @relation("EncounterCreatedBy", fields: [createdById], references: [id])
+  measurementOrders MeasurementOrder[]
+
+  @@index([tenantId, doctorId, stage])
+  @@index([tenantId, stage, stageUpdatedAt])
+  @@index([tenantId, patientId, openedAt])
+  @@index([tenantId, deletedAt])
+  @@index([tenantId, isUrgent], map: "encounters_urgent_idx")
+  // #1059 — açık encounter sayacı (dailyHuddle closedAt IS NULL) için partial
+  // index (Prisma modelleyemez; kaynak raw SQL):
+  // encounters_open_idx ON (tenant_id) WHERE closed_at IS NULL AND deleted_at IS NULL
+  @@map("encounters")
+}
+
+enum EncounterStage {
+  registered // hasta geldi, ziyaret açıldı
+  awaiting_exam_payment // muayene ücreti kasada bekliyor
+  waiting_doctor // ödeme alındı → doktor kuyruğunda (DOKTORA DÜŞER)
+  in_exam // doktor muayenede
+  awaiting_measurement_payment // ölçüm ücretli → kasaya yönlendirildi
+  in_measurement // ölçüm odasında
+  measurement_ready // sonuçlar doktora döndü
+  awaiting_surgery_sales // ameliyat satışa yönlendirildi
+  done // ziyaret kapandı
+  cancelled // ziyaret iptal
+  // S15-PR5 — Break Glass: acil müdahale (kimyasal yanık, ani görme kaybı,
+  // travma). Ödeme atlanır, hizmet derhal başlar. activate hep yönetici;
+  // sebep zorunlu, audit log explicit. Sonradan close ile normal akışa
+  // dönülür ve auto-bill sürer.
+  emergency_bypass
+}
+
+// =============================================================================
+// S15b — Notification (uygulama-içi bildirim / inbox)
+// =============================================================================
+//
+// İstasyonlar arası "düşme" deneyiminin bel kemiği. NotificationService satır
+// insert eder VE mevcut SyncGateway üzerinden tenant room'a `notification.new`
+// yayar; client kendi recipientUserId'sine göre filtreler. Kalıcı kayıt +
+// okunmamış rozet için tablo; real-time için socket broadcast.
+model Notification {
+  id              String           @id @default(uuid()) @db.Uuid
+  tenantId        String           @map("tenant_id") @db.Uuid
+  recipientUserId String           @map("recipient_user_id") @db.Uuid
+  type            NotificationType
+  title           String           @db.VarChar(200)
+  body            String?          @db.Text
+  // deep-link bağlamı: { encounterId?, patientId?, orderId?, surgeryId? }
+  payload         Json             @default("{}")
+  readAt          DateTime?        @map("read_at")
+  createdAt       DateTime         @default(now()) @map("created_at")
+
+  tenant    Tenant @relation(fields: [tenantId], references: [id])
+  recipient User   @relation("NotificationRecipient", fields: [recipientUserId], references: [id])
+
+  @@index([tenantId, recipientUserId, readAt])
+  @@index([tenantId, recipientUserId, createdAt(sort: Desc)])
+  @@map("notifications")
+}
+
+enum NotificationType {
+  sent_to_doctor // resepsiyon hastayı doktora gönderdi
+  measurement_ordered // doktor ölçüm istedi → ölçüm birimi
+  measurement_payment_due // ölçüm ücretli → kasa
+  measurement_ready // ölçüm sonuçları doktora döndü
+  surgery_handoff // ameliyat planlandı → ameliyat satış
+  approval_escalated // yönetici asistanı indirim onayını yöneticiye eskale etti (R5 #727)
+  feature_request // kullanıcı geri-bildirimi alındı (I2 #818)
+  feature_request_status // geri-bildirim durumu değişti (gönderildi→yapılıyor→yayında)
+  automation_escalated // AI asistan konuşmayı insana devretti (EPIC #1018 / #1023)
+}
+
+// =============================================================================
+// A7 — Examination
+// =============================================================================
+
+model Examination {
+  id             String            @id @default(uuid()) @db.Uuid
+  tenantId       String            @map("tenant_id") @db.Uuid
+  patientId      String            @map("patient_id") @db.Uuid
+  doctorId       String            @map("doctor_id") @db.Uuid
+  appointmentId  String?           @unique @map("appointment_id") @db.Uuid
+  chiefComplaint String?           @map("chief_complaint")
+  history        String?
+  findings       Json              @default("{}") // göz spesifik bulgular (OD/OS/OU vb.)
+  diagnosis      String?
+  treatmentPlan  String?           @map("treatment_plan")
+  prescription   String?
+  status         ExaminationStatus @default(final)
+  examinedAt     DateTime          @map("examined_at")
+  createdAt      DateTime          @default(now()) @map("created_at")
+  updatedAt      DateTime          @default(now()) @updatedAt @map("updated_at")
+  deletedAt      DateTime?         @map("deleted_at")
+
+  tenant      Tenant       @relation(fields: [tenantId], references: [id])
+  patient     Patient      @relation(fields: [patientId], references: [id])
+  doctor      User         @relation("ExaminationDoctor", fields: [doctorId], references: [id])
+  appointment Appointment? @relation(fields: [appointmentId], references: [id])
+
+  @@index([tenantId, patientId, examinedAt])
+  @@index([tenantId, doctorId, examinedAt])
+  // #935 — diğer soft-delete tablolarındaki gibi tenant + deletedAt index'i.
+  @@index([tenantId, deletedAt])
+  @@map("examinations")
+}
+
+// =============================================================================
+// A8 — Surgery (basic, deepens in B1)
+// =============================================================================
+
+model Surgery {
+  id                 String                @id @default(uuid()) @db.Uuid
+  tenantId           String                @map("tenant_id") @db.Uuid
+  patientId          String                @map("patient_id") @db.Uuid
+  doctorId           String                @map("doctor_id") @db.Uuid
+  appointmentId      String?               @unique @map("appointment_id") @db.Uuid
+  type               String                @db.VarChar(100)
+  status             SurgeryStatus         @default(planned)
+  scheduledAt        DateTime              @map("scheduled_at")
+  performedAt        DateTime?             @map("performed_at")
+  preOp              Json                  @default("{}") @map("pre_op")
+  intraOp            Json                  @default("{}") @map("intra_op")
+  postOp             Json                  @default("{}") @map("post_op")
+  complicationFlag   Boolean               @default(false) @map("complication_flag")
+  complicationNotes  String?               @map("complication_notes")
+  // B1 PR 1 — derinleştirme: göz-kliniği özgü yapısal alanlar.
+  // Plan: OD (sağ), OS (sol), OU (ikisi) — pilot için null kabul ediyoruz
+  // (legacy A8 kayıtları). UI'da B1 sonrası zorunlu hale gelir.
+  eyeSide            EyeSide?              @map("eye_side")
+  anesthesiaType     AnesthesiaType?       @map("anesthesia_type")
+  // E2 hakediş için: visiting prof = yüksek oran, local = standart, referral = düşük
+  surgeonRole        SurgeonRole?          @map("surgeon_role")
+  // B1 PR 2 — Lens implant tracking.
+  // - lensImplantLotId: hangi IolLot'tan kullanıldı; null = lens kullanılmadı
+  //   veya stok dışı override
+  // - lensSerialNumber: manuel input, regex `^[A-Z0-9-]{6,20}$`; iki cerrahide
+  //   aynı serial olamaz (business rule, partial unique index)
+  // - lensBarcode: opsiyonel scanner input (cihaz entegrasyonu v0.3)
+  // - lensIsOverride: stock dışı veya pre-op'tan farklı seri no → admin audit
+  // - lensOverrideReason: override zorunlu textarea
+  lensImplantLotId   String?               @map("lens_implant_lot_id") @db.Uuid
+  lensSerialNumber   String?               @map("lens_serial_number") @db.VarChar(50)
+  lensBarcode        String?               @map("lens_barcode") @db.VarChar(100)
+  lensIsOverride     Boolean               @default(false) @map("lens_is_override")
+  lensOverrideReason String?               @map("lens_override_reason") @db.VarChar(500)
+  // B1 PR 2 — Komplikasyon structured detail.
+  // { category: string, severity: 'mild'|'moderate'|'severe', description }
+  complicationDetail Json?                 @map("complication_detail")
+  // S15-PR16 — Cerrahi reddi (hasta vazgeçti). status=refused olduğunda
+  // refusalReason zorunlu (service-layer guard). Detail = free-text notlar.
+  refusalReason      SurgeryRefusalReason? @map("refusal_reason")
+  refusalNotes       String?               @map("refusal_notes") @db.VarChar(500)
+  refusedAt          DateTime?             @map("refused_at")
+  createdAt          DateTime              @default(now()) @map("created_at")
+  updatedAt          DateTime              @default(now()) @updatedAt @map("updated_at")
+  deletedAt          DateTime?             @map("deleted_at")
+
+  tenant          Tenant               @relation(fields: [tenantId], references: [id])
+  patient         Patient              @relation(fields: [patientId], references: [id])
+  doctor          Doctor               @relation(fields: [doctorId], references: [id])
+  appointment     Appointment?         @relation(fields: [appointmentId], references: [id])
+  preOpRecord     PreOp?
+  consentSignings ConsentSigning[]
+  // B1 PR 2 — IolLot FK (nullable: lens kullanılmadı veya override)
+  lensImplantLot  IolLot?              @relation("SurgeryLensImplant", fields: [lensImplantLotId], references: [id])
+  // S11a — Billing
+  invoices        Invoice[]
+  // S15-PR3 — WHO Surgical Safety Checklist (21 item, 3 faz). Her ameliyat için
+  // bir SurgicalSafetyCheck satırı; intra-op başlatılmadan önce zorunlu (PR9
+  // SurgeryDayCenterPage entegrasyonu ile UI'da kapı kuralı).
+  safetyCheck     SurgicalSafetyCheck?
+
+  @@index([tenantId, patientId, scheduledAt])
+  @@index([tenantId, doctorId, scheduledAt])
+  @@index([tenantId, status])
+  // B1 PR 2 — Lens serial uniqueness; tenant-scoped, sadece null-değil
+  @@index([tenantId, lensSerialNumber])
+  @@map("surgeries")
+}
+
+// S15-PR3 — WHO Surgical Safety Checklist. 21 item, 3 faz (Sign In / Time Out
+// / Sign Out) + 2 oftalmoloji özel item. items JSON yapısı:
+// { "sign_in.patient_identity": { confirmed: true, confirmedBy: <uuid>,
+//   confirmedAt: <iso>, notes: string }, ... }
+// Phase complete timestamp + actor o fazdaki tüm zorunlu item'lar dolunca
+// SafetyChecklistService.markPhaseComplete() ile yazılır; UI kapı kuralı
+// PR9'da: intra-op başlatılamaz Sign In + Time Out tamamlanmadan.
+model SurgicalSafetyCheck {
+  id                 String    @id @default(uuid()) @db.Uuid
+  tenantId           String    @map("tenant_id") @db.Uuid
+  surgeryId          String    @unique @map("surgery_id") @db.Uuid
+  items              Json      @default("{}")
+  signInCompletedAt  DateTime? @map("sign_in_completed_at")
+  signInCompletedBy  String?   @map("sign_in_completed_by") @db.Uuid
+  timeOutCompletedAt DateTime? @map("time_out_completed_at")
+  timeOutCompletedBy String?   @map("time_out_completed_by") @db.Uuid
+  signOutCompletedAt DateTime? @map("sign_out_completed_at")
+  signOutCompletedBy String?   @map("sign_out_completed_by") @db.Uuid
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  tenant  Tenant  @relation(fields: [tenantId], references: [id])
+  surgery Surgery @relation(fields: [surgeryId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@map("surgical_safety_checks")
+}
+
+enum SurgeryStatus {
+  planned
+  performed
+  cancelled
+  postponed
+  refused
+}
+
+// S15-PR16 — Yapısal cerrahi reddi sebebi. Lead funnel + post-op analitik
+// için: hangi sebep en çok kayba neden oluyor? financial → indirim/finansman
+// teklifi; medical_concern → ek konsültasyon; family → veli ikna; second_opinion
+// → izin verilen yönlendirme; other → free-text.
+enum SurgeryRefusalReason {
+  financial
+  medical_concern
+  family
+  second_opinion
+  other
+}
+
+// B1 — Cerrah rolü. E2 hakediş hesaplama için önemli (visiting prof yüksek oran).
+enum SurgeonRole {
+  VISITING
+  LOCAL
+  REFERRAL
+}
+
+// =============================================================================
+// A9 — Measurement
+// =============================================================================
+
+model Measurement {
+  id                 String          @id @default(uuid()) @db.Uuid
+  tenantId           String          @map("tenant_id") @db.Uuid
+  patientId          String          @map("patient_id") @db.Uuid
+  type               MeasurementType
+  // S15-PR6 — Yanlış göz cerrahisi sebep #1: ölçüm kaydında göz tarafı zorunlu.
+  // od=sağ, os=sol, ou=her iki göz. Migration mevcut satırlara 'ou' default
+  // verir (geçmiş kayıtlarda eye tarafı values JSON'da serbest yazılmıştı).
+  eyeSide            EyeSide         @default(ou) @map("eye_side")
+  values             Json            @default("{}") // göz: visualAcuity, iop, refraction, etc.
+  measuredAt         DateTime        @map("measured_at")
+  measuredById       String?         @map("measured_by_id") @db.Uuid
+  // S15c — fulfilled order bağı (doktor hangi siparişin sonucu geldiğini görür)
+  measurementOrderId String?         @map("measurement_order_id") @db.Uuid
+  notes              String?
+  createdAt          DateTime        @default(now()) @map("created_at")
+  updatedAt          DateTime        @default(now()) @updatedAt @map("updated_at")
+  deletedAt          DateTime?       @map("deleted_at")
+
+  tenant           Tenant            @relation(fields: [tenantId], references: [id])
+  patient          Patient           @relation(fields: [patientId], references: [id])
+  measuredBy       User?             @relation("MeasurementBy", fields: [measuredById], references: [id])
+  measurementOrder MeasurementOrder? @relation(fields: [measurementOrderId], references: [id])
+
+  @@index([tenantId, patientId, measuredAt])
+  @@index([tenantId, type, measuredAt])
+  @@index([tenantId, measurementOrderId])
+  @@index([tenantId, eyeSide, measuredAt], map: "measurements_eye_side_idx")
+  @@map("measurements")
+}
+
+// =============================================================================
+// S15c — MeasurementOrder (ölçüm sipariş akışı)
+// =============================================================================
+//
+// Doktor ölçüm ister → (ücretliyse) hasta kasaya → ödeme sonrası ölçüm odası →
+// sonuçlar doktora döner. Bugün Measurement doğrudan kayıt; burada order/fulfill
+// ayrımı eklenir. requiresPayment: serviceItemIds (ücretli ölçüm kalemleri) dolu mu.
+model MeasurementOrder {
+  id              String                 @id @default(uuid()) @db.Uuid
+  tenantId        String                 @map("tenant_id") @db.Uuid
+  encounterId     String?                @map("encounter_id") @db.Uuid
+  patientId       String                 @map("patient_id") @db.Uuid
+  orderedById     String                 @map("ordered_by_id") @db.Uuid // User.id (doktor)
+  doctorId        String?                @map("doctor_id") @db.Uuid // Doctor.id (geri yönlendirme)
+  requestedTypes  MeasurementType[]      @map("requested_types")
+  serviceItemIds  String[]               @map("service_item_ids") @db.Uuid
+  requiresPayment Boolean                @default(false) @map("requires_payment")
+  status          MeasurementOrderStatus @default(requested)
+  notes           String?
+  fulfilledById   String?                @map("fulfilled_by_id") @db.Uuid
+  fulfilledAt     DateTime?              @map("fulfilled_at")
+  createdAt       DateTime               @default(now()) @map("created_at")
+  updatedAt       DateTime               @default(now()) @updatedAt @map("updated_at")
+  deletedAt       DateTime?              @map("deleted_at")
+
+  tenant       Tenant        @relation(fields: [tenantId], references: [id])
+  encounter    Encounter?    @relation(fields: [encounterId], references: [id])
+  patient      Patient       @relation(fields: [patientId], references: [id])
+  orderedBy    User          @relation("MeasurementOrderedBy", fields: [orderedById], references: [id])
+  measurements Measurement[]
+
+  @@index([tenantId, status])
+  @@index([tenantId, doctorId, status])
+  @@index([tenantId, encounterId])
+  @@index([tenantId, deletedAt])
+  @@map("measurement_orders")
+}
+
+enum MeasurementOrderStatus {
+  requested // doktor istedi
+  awaiting_payment // ücretli → kasa bekliyor
+  in_progress // ölçüm odasında
+  fulfilled // sonuçlar girildi
+  cancelled
+  // R2 (#724) — ölçüm hemşiresi talebi erteledi (hasta hazır değil / cihaz meşgul).
+  // Aktif kuyruktan çıkar; "Ertelenenler" görünümünde "Geri al" ile döner.
+  deferred
+}
+
+enum MeasurementType {
+  visual_acuity
+  intraocular_pressure
+  refraction
+  biometry
+  keratometry
+  topography
+  pachymetry
+  perimetry
+  fundus_photo
+  oct
+}
+
+// =============================================================================
+// A10 — ApiKey (dış sistem entegrasyonu için tenant-scoped API anahtarları)
+//
+// Scope literals (Prisma string[]; runtime kontrolü ApiKeyService'de):
+//   patient:read, patient:create, patient:update,
+//   appointment:read, appointment:create, appointment:cancel,
+//   availability:read
+//
+// Anahtar üretim akışı (service):
+//   1. crypto.randomBytes(32) → 64-char hex plaintext
+//   2. format "ak_{tenantSlug}_{plaintext}" → kullanıcıya bir kez gösterilir
+//   3. SHA-256 hash DB'ye (`keyHash`); raw plaintext SAKLANMAZ
+//   4. prefix (ilk 12 char) UI'da identifier olarak gösterilir
+//
+// Doğrulama (guard, sonraki PR):
+//   Authorization: ApiKey {plaintext} → SHA-256 → keyHash lookup → tenant context
+// =============================================================================
+
+model ApiKey {
+  id          String    @id @default(uuid()) @db.Uuid
+  tenantId    String    @map("tenant_id") @db.Uuid
+  name        String    @db.VarChar(100) // human label, örn "Resepsiyon WhatsApp Bot"
+  keyHash     String    @unique @map("key_hash") @db.VarChar(64) // SHA-256 hex
+  prefix      String    @map("prefix") @db.VarChar(20) // "ak_demoeye_a1b2c3" → UI identifier
+  scopes      String[]  @default([])
+  rateLimit   Int       @default(1000) @map("rate_limit") // req/day per key
+  // S14 — v0.1 port: opsiyonel IP allowlist (CIDR notasyonu kabul). Boş array =
+  // hiç kısıtlama (mevcut davranış). Public booking endpoint'lerinde tetiklenecek.
+  ipAllowlist String[]  @default([]) @map("ip_allowlist")
+  isActive    Boolean   @default(true) @map("is_active")
+  lastUsedAt  DateTime? @map("last_used_at")
+  expiresAt   DateTime? @map("expires_at")
+  createdById String?   @map("created_by_id") @db.Uuid
+  createdAt   DateTime  @default(now()) @map("created_at")
+  revokedAt   DateTime? @map("revoked_at")
+
+  tenant    Tenant @relation(fields: [tenantId], references: [id])
+  createdBy User?  @relation("ApiKeyCreatedBy", fields: [createdById], references: [id])
+
+  @@index([tenantId, isActive])
+  @@index([keyHash])
+  @@map("api_keys")
+}
+
+// =============================================================================
+// A13 — AuditLog (cross-tenant: tenantId nullable for platform actions)
+// =============================================================================
+
+model AuditLog {
+  // #957 — range partition (created_at) PK'ya partition key'i zorunlu kılar →
+  // composite @@id([id, createdAt]) aşağıda. id hâlâ pratikte benzersiz (uuid).
+  id               String    @default(uuid()) @db.Uuid
+  tenantId         String?   @map("tenant_id") @db.Uuid // NULL for platform actions
+  userId           String?   @map("user_id") @db.Uuid
+  // S15-PR10 — Acting on behalf trail: hemşire doktor adına işlem yaptığında
+  // userId=hemşire, onBehalfOfUserId=doktor, nurseSessionId=aktif session.
+  // JCI akreditasyon + KVKK uyumu için ayrı kolonlar (payload içine değil).
+  onBehalfOfUserId String?   @map("on_behalf_of_user_id") @db.Uuid
+  nurseSessionId   String?   @map("nurse_session_id") @db.Uuid
+  action           String    @db.VarChar(100) // login, logout, create, update, delete, view, export
+  entityType       String?   @map("entity_type") @db.VarChar(100)
+  entityId         String?   @map("entity_id") @db.Uuid
+  payload          Json      @default("{}")
+  ip               String?   @db.Inet
+  userAgent        String?   @map("user_agent") @db.VarChar(500)
+  // S15-PR23 — Co-sign onay durumu. Hemşire onBehalfOfUserId set ederek
+  // doktor adına bir işlem yaptığında ilgili audit satırı doktor onayı bekler.
+  // Doktor approve/reject ile bu kolonları doldurur.
+  cosignedAt       DateTime? @map("cosigned_at")
+  cosignedById     String?   @map("cosigned_by_id") @db.Uuid
+  cosignRejected   Boolean   @default(false) @map("cosign_rejected")
+  createdAt        DateTime  @default(now()) @map("created_at")
+
+  tenant       Tenant?                 @relation(fields: [tenantId], references: [id])
+  user         User?                   @relation(fields: [userId], references: [id])
+  onBehalfOf   User?                   @relation("AuditLogOnBehalfOf", fields: [onBehalfOfUserId], references: [id])
+  nurseSession NurseAssistanceSession? @relation(fields: [nurseSessionId], references: [id])
+  cosignedBy   User?                   @relation("AuditLogCosignedBy", fields: [cosignedById], references: [id])
+
+  @@id([id, createdAt])
+  @@index([tenantId, createdAt])
+  @@index([tenantId, userId, createdAt])
+  @@index([tenantId, entityType, entityId])
+  // S15-PR10 — Co-sign audit raporu (doktorun adına yapılan işlemler).
+  @@index([tenantId, onBehalfOfUserId, createdAt])
+  // S15-PR23 — Pending co-sign list için (cosignedAt IS NULL filter).
+  @@index([tenantId, onBehalfOfUserId, cosignedAt])
+  @@map("audit_logs")
+}
+
+// S15-PR10 — Hemşire "Acting on Behalf" oturumu. Hemşire kendi rolüyle giriş
+// yapar, sabahleyin "Bugün Dr. X'in asistanıyım" der → bu tabloda bir satır
+// açılır. Yaptığı her aksiyon (ölçüm/not/reçete tetik) AuditLog'a
+// nurseSessionId + onBehalfOfUserId=Dr.X eşliğinde yazılır. Anlık revoke
+// (revokedAt) için server-side; JWT'ye gömülmez. Yönetici mesai bitirince
+// veya hemşire kendi sonlandırınca endedAt set; revoke audit gerekçe ile.
+//
+// Karar tutanağı: Ali 2026-05-31 — JCI/akreditasyon gereği tam server-side
+// schema (User.flags hack'i yerine). Multi-doctor shift overlapping
+// session'lar OK (concurrent active sessions).
+model NurseAssistanceSession {
+  id        String    @id @default(uuid()) @db.Uuid
+  tenantId  String    @map("tenant_id") @db.Uuid
+  nurseId   String    @map("nurse_user_id") @db.Uuid
+  doctorId  String    @map("doctor_user_id") @db.Uuid
+  startedAt DateTime  @default(now()) @map("started_at")
+  endedAt   DateTime? @map("ended_at")
+  revokedAt DateTime? @map("revoked_at")
+  revokedBy String?   @map("revoked_by") @db.Uuid
+  reason    String?   @db.VarChar(500)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  tenant    Tenant     @relation(fields: [tenantId], references: [id])
+  nurse     User       @relation("NurseSessionNurse", fields: [nurseId], references: [id])
+  doctor    User       @relation("NurseSessionDoctor", fields: [doctorId], references: [id])
+  auditLogs AuditLog[]
+
+  @@index([tenantId, nurseId, endedAt])
+  @@index([tenantId, doctorId, endedAt])
+  // Aktif session hızlı lookup (assertSessionActive guard)
+  @@index([tenantId, nurseId, endedAt, revokedAt], map: "nurse_sessions_active_lookup")
+  @@map("nurse_assistance_sessions")
+}
+
+// =============================================================================
+// C3 — Patient photos (preop / postop / OCT / fundus archive)
+// Storage layer: local disk under $STORAGE_LOCAL_PATH/<tenantId>/<patientId>/.
+// fileKey is the on-disk filename (uuid + extension). Serve via REST endpoint
+// with RLS-aware check; mime/size used for thumbnails + size policy.
+// =============================================================================
+
+model PatientPhoto {
+  id           String    @id @default(uuid()) @db.Uuid
+  tenantId     String    @map("tenant_id") @db.Uuid
+  patientId    String    @map("patient_id") @db.Uuid
+  uploadedById String?   @map("uploaded_by_id") @db.Uuid
+  tag          PhotoTag  @default(general)
+  description  String?   @db.VarChar(500)
+  fileName     String    @map("file_name") @db.VarChar(255)
+  fileKey      String    @map("file_key") @db.VarChar(255)
+  mimeType     String    @map("mime_type") @db.VarChar(100)
+  sizeBytes    Int       @map("size_bytes")
+  takenAt      DateTime? @map("taken_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+
+  tenant     Tenant  @relation(fields: [tenantId], references: [id])
+  patient    Patient @relation(fields: [patientId], references: [id])
+  uploadedBy User?   @relation("PhotoUploadedBy", fields: [uploadedById], references: [id])
+
+  @@unique([tenantId, fileKey])
+  @@index([tenantId, patientId, createdAt])
+  @@index([tenantId, tag, createdAt])
+  @@index([tenantId, deletedAt])
+  @@map("patient_photos")
+}
+
+// #1049 — Personel dökümanı (CV/diploma/sertifika/sözleşme). Çift nullable FK:
+// login'siz doktor (standalone Doctor kaydı) da kapsanır; en az biri dolu
+// kuralı raw-SQL CHECK (staff_documents_subject_check) ile DB'de zorlanır
+// (Prisma CHECK modellemez — appointments_no_overlap EXCLUDE deseniyle aynı,
+// şemadan üretilen migration'lar bunu drop ETMEZ).
+// KVKK: İç İK verisi — hasta-facing hiçbir yüzeye (bot dahil) servis edilmez.
+model StaffDocument {
+  id           String       @id @default(uuid()) @db.Uuid
+  tenantId     String       @map("tenant_id") @db.Uuid
+  userId       String?      @map("user_id") @db.Uuid
+  doctorId     String?      @map("doctor_id") @db.Uuid
+  docType      StaffDocType @map("doc_type")
+  fileKey      String       @map("file_key") @db.VarChar(255)
+  fileName     String       @map("file_name") @db.VarChar(255)
+  mimeType     String       @map("mime_type") @db.VarChar(100)
+  sizeBytes    Int          @map("size_bytes")
+  note         String?      @db.VarChar(500)
+  uploadedById String?      @map("uploaded_by_id") @db.Uuid
+  createdAt    DateTime     @default(now()) @map("created_at")
+  deletedAt    DateTime?    @map("deleted_at")
+
+  tenant     Tenant  @relation(fields: [tenantId], references: [id])
+  user       User?   @relation("StaffDocumentUser", fields: [userId], references: [id])
+  doctor     Doctor? @relation(fields: [doctorId], references: [id])
+  uploadedBy User?   @relation("StaffDocumentUploadedBy", fields: [uploadedById], references: [id])
+
+  @@unique([tenantId, fileKey])
+  @@index([tenantId, userId])
+  @@index([tenantId, doctorId])
+  @@map("staff_documents")
+}
+
+enum StaffDocType {
+  cv
+  diploma
+  sertifika
+  sozlesme
+  diger
+}
+
+enum PhotoTag {
+  preop
+  postop
+  intraop
+  oct
+  fundus
+  topography
+  device_output
+  general
+}
+
+// =============================================================================
+// B2 — LabTest (Tetkik Merkezi)
+// Klinik içi tetkik (oftalmik: visual_field, oct, topography…) + dış lab (PDF
+// upload + manual giriş). `source` ile internal/external ayrılır. Internal'da
+// `results` JSONB yapılandırılmış (test tipine göre); external'da serbest +
+// dosya (`file_*` alanları, C3'teki StorageService ile aynı pattern).
+// =============================================================================
+
+model LabTest {
+  id            String        @id @default(uuid()) @db.Uuid
+  tenantId      String        @map("tenant_id") @db.Uuid
+  patientId     String        @map("patient_id") @db.Uuid
+  source        LabTestSource
+  testType      LabTestType   @map("test_type")
+  performedAt   DateTime      @map("performed_at")
+  results       Json          @default("{}")
+  notes         String?       @db.VarChar(2000)
+  externalLab   String?       @map("external_lab") @db.VarChar(200)
+  fileKey       String?       @map("file_key") @db.VarChar(255)
+  fileName      String?       @map("file_name") @db.VarChar(255)
+  fileMimeType  String?       @map("file_mime_type") @db.VarChar(100)
+  fileSizeBytes Int?          @map("file_size_bytes")
+  createdById   String?       @map("created_by_id") @db.Uuid
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @default(now()) @updatedAt @map("updated_at")
+  deletedAt     DateTime?     @map("deleted_at")
+
+  tenant    Tenant  @relation(fields: [tenantId], references: [id])
+  patient   Patient @relation(fields: [patientId], references: [id])
+  createdBy User?   @relation("LabTestCreatedBy", fields: [createdById], references: [id])
+
+  @@index([tenantId, patientId, performedAt(sort: Desc)])
+  @@index([tenantId, testType, performedAt(sort: Desc)])
+  @@index([tenantId, deletedAt])
+  @@map("lab_tests")
+}
+
+enum LabTestSource {
+  internal
+  external
+}
+
+enum LabTestType {
+  visual_field
+  oct_macula
+  oct_optic_nerve
+  topography
+  pachymetry
+  biometry
+  fluorescein_angiography
+  iop_curve
+  blood_test
+  ekg
+  chest_xray
+  urinalysis
+  other
+}
+
+// =============================================================================
+// C1 — IOL Inventory (Intraocular Lens stok)
+// Klinik göz ameliyatlarında kullanılan IOL'lerin model + lot + diyopter + stok
+// + son kullanma takibi. Ameliyat sırasında otomatik tüketim (B1 bağlantısı,
+// sonraki PR). Movement tablosu her qty değişimini audit'ler.
+// =============================================================================
+
+model IolModel {
+  id          String    @id @default(uuid()) @db.Uuid
+  tenantId    String    @map("tenant_id") @db.Uuid
+  brand       String    @db.VarChar(100)
+  model       String    @db.VarChar(100)
+  description String?   @db.VarChar(500)
+  // S16 — Lens tipi sınıflandırma (monofocal/trifocal/edof/toric): yönetici
+  // Genel Bakış "Lens İhtiyacı" paneli tip bazında gruplar.
+  lensType    String    @default("monofocal") @map("lens_type") @db.VarChar(30)
+  // S16 — Yeniden-sipariş eşiği: modelin tüm lotlarının availableQty toplamı
+  // bu değerin altına düşerse "Kritik Stok" (Düşük) uyarısı tetiklenir.
+  minQty      Int       @default(0) @map("min_qty")
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  tenant        Tenant                 @relation(fields: [tenantId], references: [id])
+  lots          IolLot[]
+  // S15-PR25 — Kit komponent referansı (opsiyonel).
+  kitComponents SurgicalKitComponent[]
+
+  @@unique([tenantId, brand, model])
+  @@index([tenantId, isActive, deletedAt])
+  @@map("iol_models")
+}
+
+// S16 — Sarf malzeme stoğu (IOL-dışı; keratom bıçağı, viskoelastik, sütur vb.).
+// IOL lotlarından ayrı, basit adet + yeniden-sipariş eşiği takibi. Yönetici
+// "Kritik Stok" paneli IOL düşük-stok modelleriyle birleştirip gösterir.
+// C-serisi stok modülünün çekirdeği (ileride hareket/parti detayı eklenebilir).
+model Consumable {
+  id           String    @id @default(uuid()) @db.Uuid
+  tenantId     String    @map("tenant_id") @db.Uuid
+  name         String    @db.VarChar(150)
+  // Kısa stok kodu (VSC, BSS, BLADE, ANTIVEGF…) — Stok & Malzeme tablosunda.
+  code         String?   @db.VarChar(40)
+  // Grup: 'supply' (sarf) | 'drug' (ilaç) — Stok & Malzeme bölümlemesi.
+  category     String?   @db.VarChar(60)
+  unit         String?   @db.VarChar(30)
+  availableQty Int       @default(0) @map("available_qty")
+  // Belirli ameliyatlara ayrılmış (rezerve) miktar; toplam = available + reserved.
+  reservedQty  Int       @default(0) @map("reserved_qty")
+  minQty       Int       @default(0) @map("min_qty")
+  isActive     Boolean   @default(true) @map("is_active")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@unique([tenantId, name])
+  @@index([tenantId, isActive, deletedAt])
+  @@map("consumables")
+}
+
+// S11e/#419 — Döviz kuru (base→quote, örn. USD→TJS). Tenant-scoped: cron her
+// tenant için NBT kurunu upsert eder (no-show/fraud-scan ile aynı per-tenant
+// pattern). Fatura kesiminde o anki en güncel kur Invoice.exchangeRate'e
+// snapshot'lanır. Offline'da son bilinen kur (en güncel satır) kullanılır.
+model ExchangeRate {
+  id            String   @id @default(uuid()) @db.Uuid
+  tenantId      String   @map("tenant_id") @db.Uuid
+  baseCurrency  String   @map("base_currency") @db.VarChar(3)
+  quoteCurrency String   @map("quote_currency") @db.VarChar(3)
+  rate          Decimal  @db.Decimal(12, 4)
+  asOf          DateTime @map("as_of")
+  source        String   @db.VarChar(40)
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId, baseCurrency, quoteCurrency, asOf(sort: Desc)])
+  @@map("exchange_rates")
+}
+
+model IolLot {
+  id           String    @id @default(uuid()) @db.Uuid
+  tenantId     String    @map("tenant_id") @db.Uuid
+  modelId      String    @map("model_id") @db.Uuid
+  lotNumber    String    @map("lot_number") @db.VarChar(100)
+  power        Decimal   @db.Decimal(5, 2)
+  // S15-PR21 — 3-state stok modeli:
+  //   available = elinde, satılmaya/rezerve edilmeye hazır
+  //   reserved  = pre-op'ta belirli ameliyat için ayrıldı, henüz takılmadı
+  //   consumed  = ameliyatta kullanıldı, çıktı tamam
+  // quantity LEGACY: available + reserved toplamı; backward-compat için tutulur.
+  // Yeni kod available/reserved/consumed kullanmalı.
+  quantity     Int       @default(0)
+  availableQty Int       @default(0) @map("available_qty")
+  reservedQty  Int       @default(0) @map("reserved_qty")
+  consumedQty  Int       @default(0) @map("consumed_qty")
+  // Optimistic concurrency token: her UPDATE'te +1; conditional WHERE version=X.
+  version      Int       @default(0)
+  expiresAt    DateTime  @map("expires_at") @db.Date
+  supplier     String?   @db.VarChar(150)
+  notes        String?   @db.VarChar(500)
+  createdById  String?   @map("created_by_id") @db.Uuid
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+
+  tenant    Tenant             @relation(fields: [tenantId], references: [id])
+  model     IolModel           @relation(fields: [modelId], references: [id])
+  createdBy User?              @relation("IolLotCreatedBy", fields: [createdById], references: [id])
+  movements IolStockMovement[]
+  preOps    PreOp[]
+  surgeries Surgery[]          @relation("SurgeryLensImplant")
+
+  @@unique([tenantId, modelId, lotNumber, power])
+  @@index([tenantId, expiresAt])
+  @@index([tenantId, deletedAt])
+  @@index([tenantId, modelId, deletedAt])
+  @@map("iol_lots")
+}
+
+// Stok hareketi audit trail. Her create / adjust / consume bir satır.
+// `quantity` pozitif = giriş, negatif = çıkış.
+model IolStockMovement {
+  id          String          @id @default(uuid()) @db.Uuid
+  tenantId    String          @map("tenant_id") @db.Uuid
+  lotId       String          @map("lot_id") @db.Uuid
+  type        IolMovementType
+  quantity    Int
+  surgeryId   String?         @map("surgery_id") @db.Uuid
+  notes       String?         @db.VarChar(500)
+  createdById String?         @map("created_by_id") @db.Uuid
+  createdAt   DateTime        @default(now()) @map("created_at")
+
+  tenant    Tenant @relation(fields: [tenantId], references: [id])
+  lot       IolLot @relation(fields: [lotId], references: [id])
+  createdBy User?  @relation("IolMovementCreatedBy", fields: [createdById], references: [id])
+
+  @@index([tenantId, lotId, createdAt(sort: Desc)])
+  @@map("iol_stock_movements")
+}
+
+enum IolMovementType {
+  receive // satın alma / giriş
+  consume // ameliyatta tüketim
+  adjust // sayım düzeltme (+/-)
+  return // iade
+  expire // son kullanma → düşürme
+}
+
+// =============================================================================
+// E4 etiket — hasta tag'leri (VIP, risk, takip).
+// Multi-select Postgres array on Patient.tags. Yeni tag eklemek için enum
+// genişletilir (migration). Tenant-özel tag'ler ileri faza ertelendi.
+// =============================================================================
+
+enum PatientTagKey {
+  vip
+  risk_high
+  risk_low
+  follow_up
+  chronic
+  no_show_risk
+  insurance
+  pediatric
+  geriatric
+}
+
+// =============================================================================
+// B5 — Procedures (intravitreal injection, YAG, argon, retina laser, SLT,
+// cross-linking, minor). Surgery'den ayrı bir tablo — bunlar OR'da değil,
+// poliklinikte yapılır, anestezi topikal, süre 5-60 dk.
+// Type-bazlı detay alanları `settings` JSON içine; örn. lazer için
+// {energy_mj, spot_count, wavelength_nm}, IVT için {drug, dose_mg}.
+// =============================================================================
+
+model Procedure {
+  id                       String          @id @default(uuid()) @db.Uuid
+  tenantId                 String          @map("tenant_id") @db.Uuid
+  patientId                String          @map("patient_id") @db.Uuid
+  doctorId                 String          @map("doctor_id") @db.Uuid
+  appointmentId            String?         @unique @map("appointment_id") @db.Uuid
+  followUpAppointmentId    String?         @unique @map("follow_up_appointment_id") @db.Uuid
+  type                     ProcedureType
+  status                   ProcedureStatus @default(planned)
+  eyeSide                  EyeSide         @map("eye_side")
+  anesthesia               AnesthesiaType  @default(topical)
+  drugUsed                 String?         @map("drug_used") @db.VarChar(150)
+  drugDose                 String?         @map("drug_dose") @db.VarChar(50)
+  settings                 Json            @default("{}")
+  findings                 String?
+  complications            String?
+  notes                    String?
+  performedAt              DateTime        @map("performed_at")
+  postProcedureControlDate DateTime?       @map("post_procedure_control_date") @db.Date
+  createdById              String?         @map("created_by_id") @db.Uuid
+  createdAt                DateTime        @default(now()) @map("created_at")
+  updatedAt                DateTime        @default(now()) @updatedAt @map("updated_at")
+  deletedAt                DateTime?       @map("deleted_at")
+
+  tenant              Tenant       @relation(fields: [tenantId], references: [id])
+  patient             Patient      @relation(fields: [patientId], references: [id])
+  doctor              Doctor       @relation(fields: [doctorId], references: [id])
+  appointment         Appointment? @relation("ProcedureAppointment", fields: [appointmentId], references: [id])
+  followUpAppointment Appointment? @relation("ProcedureFollowUpAppointment", fields: [followUpAppointmentId], references: [id])
+  createdBy           User?        @relation("ProcedureCreatedBy", fields: [createdById], references: [id])
+  // S11a — Billing
+  invoices            Invoice[]
+
+  @@index([tenantId, patientId, performedAt(sort: Desc)])
+  @@index([tenantId, doctorId, performedAt(sort: Desc)])
+  @@index([tenantId, type, performedAt(sort: Desc)])
+  @@index([tenantId, deletedAt])
+  @@map("procedures")
+}
+
+enum ProcedureType {
+  intravitreal_injection
+  yag_capsulotomy
+  argon_laser
+  retina_laser_prp
+  slt
+  cross_linking
+  minor
+}
+
+enum ProcedureStatus {
+  planned
+  performed
+  cancelled
+}
+
+enum EyeSide {
+  od
+  os
+  ou
+}
+
+enum AnesthesiaType {
+  topical
+  local
+  none
+  // B1 PR 1 — eklenenler: B3 pre-op pilot için 3 değerle sınırlıydı; B1
+  // intra-op kapsamında ek 2 değer (gerçek cerrahide kullanım).
+  general
+  periocular
+}
+
+// =============================================================================
+// B3 — Pre-op (1-1 Surgery)
+//
+// Cerrahi öncesi hazırlık: checklist (JSONB), vitaller, dilatasyon zamanı,
+// IOL lens rezervasyonu (C1 ile bağlı), anestezi konsültasyon notu, hazırlık
+// durumu. C2 onam, E2 doktor payı snapshot ve E4 paket fiyatlama alanları
+// ilgili modüller hazır olduğunda eklenecek (v0.2 kapsam dışı).
+//
+// readyForSurgery true olabilmesi için tüm zorunlu checklist item'ları
+// completed olmalı (servis kontrolü) — DB-level constraint yok, business
+// logic katmanında doğrulanır.
+// =============================================================================
+
+model PreOp {
+  id              String    @id @default(uuid()) @db.Uuid
+  tenantId        String    @map("tenant_id") @db.Uuid
+  surgeryId       String    @unique @map("surgery_id") @db.Uuid
+  vitalSigns      Json      @default("{}") @map("vital_signs")
+  dilatationAt    DateTime? @map("dilatation_at")
+  checklistItems  Json      @default("[]") @map("checklist_items")
+  anesthesiaNotes String?   @map("anesthesia_notes") @db.VarChar(2000)
+  lensIolLotId    String?   @map("lens_iol_lot_id") @db.Uuid
+  lensReservedAt  DateTime? @map("lens_reserved_at")
+  readyForSurgery Boolean   @default(false) @map("ready_for_surgery")
+  readyAt         DateTime? @map("ready_at")
+  readyById       String?   @map("ready_by_id") @db.Uuid
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt       DateTime? @map("deleted_at")
+
+  tenant     Tenant  @relation(fields: [tenantId], references: [id])
+  surgery    Surgery @relation(fields: [surgeryId], references: [id])
+  lensIolLot IolLot? @relation(fields: [lensIolLotId], references: [id])
+  readyBy    User?   @relation("PreOpMarkedReadyBy", fields: [readyById], references: [id])
+
+  @@index([tenantId, readyForSurgery])
+  @@index([tenantId, lensIolLotId])
+  @@map("pre_ops")
+}
+
+// =============================================================================
+// E3 — Eczane / Optikçi: tedarikçi listesi + reçete (ilaç veya gözlük)
+// Reçete oluşturulur → bir tedarikçi seçilir → "gönder" basılır (sentAt set,
+// audit log). v1'de fax/email transport yok; klinik QR'ı tarayıp dış sisteme
+// taşıyor. Public read endpoint sonraki PR'da (QR'dan açılır görünüm).
+// =============================================================================
+
+model Supplier {
+  id           String           @id @default(uuid()) @db.Uuid
+  tenantId     String           @map("tenant_id") @db.Uuid
+  name         String           @db.VarChar(200)
+  category     SupplierCategory
+  contactPhone String?          @map("contact_phone") @db.VarChar(20)
+  contactEmail String?          @map("contact_email") @db.VarChar(255)
+  address      String?          @db.VarChar(500)
+  notes        String?          @db.VarChar(1000)
+  isActive     Boolean          @default(true) @map("is_active")
+  createdAt    DateTime         @default(now()) @map("created_at")
+  updatedAt    DateTime         @default(now()) @updatedAt @map("updated_at")
+  deletedAt    DateTime?        @map("deleted_at")
+
+  tenant          Tenant          @relation(fields: [tenantId], references: [id])
+  prescriptions   Prescription[]
+  purchaseOrders  PurchaseOrder[]
+  pharmacyBatches PharmacyBatch[]
+
+  @@index([tenantId, category, isActive, deletedAt])
+  @@map("suppliers")
+}
+
+enum SupplierCategory {
+  pharmacy
+  optic
+  other
+}
+
+// #790 — Reçete dispense yaşam döngüsü. Eczacı POS'tan dağıttıkça işaretler;
+// kısmi = bazı kalemler verildi (kalan backorder/sonraki ziyaret).
+enum PrescriptionDispenseStatus {
+  pending // henüz dağıtılmadı
+  partial // bazı kalemler verildi
+  dispensed // tamamı verildi
+}
+
+model Prescription {
+  id             String                     @id @default(uuid()) @db.Uuid
+  tenantId       String                     @map("tenant_id") @db.Uuid
+  patientId      String                     @map("patient_id") @db.Uuid
+  type           PrescriptionType
+  supplierId     String?                    @map("supplier_id") @db.Uuid
+  items          Json                       @default("[]")
+  notes          String?                    @db.VarChar(2000)
+  sentAt         DateTime?                  @map("sent_at")
+  // #790 — eczane içi dispense durumu (eczacı POS'ta işaretler).
+  dispenseStatus PrescriptionDispenseStatus @default(pending) @map("dispense_status")
+  createdById    String?                    @map("created_by_id") @db.Uuid
+  createdAt      DateTime                   @default(now()) @map("created_at")
+  updatedAt      DateTime                   @default(now()) @updatedAt @map("updated_at")
+  deletedAt      DateTime?                  @map("deleted_at")
+
+  tenant        Tenant         @relation(fields: [tenantId], references: [id])
+  patient       Patient        @relation(fields: [patientId], references: [id])
+  supplier      Supplier?      @relation(fields: [supplierId], references: [id])
+  createdBy     User?          @relation("PrescriptionCreatedBy", fields: [createdById], references: [id])
+  // v0.4 #551 — Reçete → eczane satış köprüsü (#552 mantığı)
+  pharmacySales PharmacySale[]
+
+  @@index([tenantId, patientId, createdAt(sort: Desc)])
+  @@index([tenantId, type, sentAt])
+  @@index([tenantId, deletedAt])
+  @@map("prescriptions")
+}
+
+enum PrescriptionType {
+  drug
+  eyewear
+}
+
+// =============================================================================
+// v0.4 #548 — Satın Alma Siparişi (Purchase Order)
+//
+// Generic PO: hem klinik (IOL/sarf) hem eczane (perakende ilaç) siparişleri
+// AYNI yapıyı kullanır; `domain` ile ayrılır (plan §3.6). Tedarikçi ortak
+// `Supplier` modeli. Eşik üstü tutar → finans onay iş akışı (#549). Görev
+// ayrılığı: oluşturan (createdById) ≠ onaylayan (approvedById) — service guard.
+// Bu İP (#548) yalnız VERİTABANI yapısı; yaşam döngüsü/onay mantığı #549'da.
+// =============================================================================
+enum PurchaseOrderStatus {
+  draft // taslak
+  submitted // gönderildi (tedarikçiye)
+  pending_approval // onay bekliyor (eşik üstü → finans)
+  approved // onaylı
+  received // mal kabul yapıldı
+  cancelled // iptal
+}
+
+enum PurchaseOrderDomain {
+  clinic
+  pharmacy
+}
+
+model PurchaseOrder {
+  id                String              @id @default(uuid()) @db.Uuid
+  tenantId          String              @map("tenant_id") @db.Uuid
+  // Tenant içinde benzersiz, insan-okur sipariş no (üretim #549'da, race-free).
+  orderNo           String              @map("order_no") @db.VarChar(30)
+  supplierId        String              @map("supplier_id") @db.Uuid
+  domain            PurchaseOrderDomain @default(clinic)
+  status            PurchaseOrderStatus @default(draft)
+  currency          Currency            @default(TJS)
+  totalAmount       Decimal             @default(0) @map("total_amount") @db.Decimal(10, 2)
+  // Onay eşiği snapshot'ı: sipariş bu tutarın üstündeyse finans onayı gerekir.
+  // Sipariş anındaki tenant eşiği buraya kopyalanır (#549); null = eşik yok.
+  approvalThreshold Decimal?            @map("approval_threshold") @db.Decimal(10, 2)
+  notes             String?             @db.VarChar(2000)
+  // Görev ayrılığı: oluşturan ≠ onaylayan (#549 FINANCE_APPROVAL_ROLES guard).
+  createdById       String?             @map("created_by_id") @db.Uuid
+  approvedById      String?             @map("approved_by_id") @db.Uuid
+  submittedAt       DateTime?           @map("submitted_at")
+  approvedAt        DateTime?           @map("approved_at")
+  receivedAt        DateTime?           @map("received_at")
+  cancelledAt       DateTime?           @map("cancelled_at")
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @default(now()) @updatedAt @map("updated_at")
+  deletedAt         DateTime?           @map("deleted_at")
+
+  tenant     Tenant              @relation(fields: [tenantId], references: [id])
+  supplier   Supplier            @relation(fields: [supplierId], references: [id])
+  createdBy  User?               @relation("PurchaseOrderCreatedBy", fields: [createdById], references: [id])
+  approvedBy User?               @relation("PurchaseOrderApprovedBy", fields: [approvedById], references: [id])
+  items      PurchaseOrderItem[]
+
+  @@unique([tenantId, orderNo])
+  @@index([tenantId, domain, status, deletedAt])
+  @@index([tenantId, supplierId, createdAt(sort: Desc)])
+  @@map("purchase_orders")
+}
+
+model PurchaseOrderItem {
+  id              String   @id @default(uuid()) @db.Uuid
+  tenantId        String   @map("tenant_id") @db.Uuid
+  purchaseOrderId String   @map("purchase_order_id") @db.Uuid
+  itemName        String   @map("item_name") @db.VarChar(200)
+  // Opsiyonel stok-kalemi referansı (mal kabul → stok hareketi köprüsü, #549):
+  // referenceType: 'consumable' | 'pharmacy_product' | null (#713). Mal kabul →
+  // stok bu tipe göre yönlendirir. iol_model KASTEN yok: IolLot fiziksel kutu
+  // verisi (power/SKT/lot) ister, PO satırından üretilemez; IOL kendi lot intake'i.
+  referenceType   String?  @map("reference_type") @db.VarChar(40)
+  referenceId     String?  @map("reference_id") @db.Uuid
+  quantity        Int      @default(1)
+  unitPrice       Decimal  @default(0) @map("unit_price") @db.Decimal(10, 2)
+  lineTotal       Decimal  @default(0) @map("line_total") @db.Decimal(10, 2)
+  // Mal kabulde teslim alınan miktar (kısmi kabul mümkün; #549).
+  receivedQty     Int      @default(0) @map("received_qty")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
+
+  tenant        Tenant        @relation(fields: [tenantId], references: [id])
+  purchaseOrder PurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, purchaseOrderId])
+  @@map("purchase_order_items")
+}
+
+// =============================================================================
+// v0.4 #551 — Eczane Perakende (Pharmacy Retail)
+//
+// Klinik stoğundan (IolModel/Consumable/ServiceItem) TAMAMEN ayrı dünya:
+// perakende satış (POS), parti/SKT bazlı satış fiyatı, gün sonu kasa + finansa
+// teslim. Tedarikçi ortak `Supplier`, sipariş ortak `PurchaseOrder(domain=pharmacy)`.
+// KVKK: walk-in satış anonim olabilir (isim alınmadan). Reçete → satış köprüsü.
+// Bu İP (#551) yalnız VERİTABANI yapısı; satış/iade/kasa mantığı #552'de.
+// =============================================================================
+enum PharmacySaleStatus {
+  completed // tamamlandı
+  voided // iptal edildi (satış geri alındı)
+}
+
+enum PharmacyCashStatus {
+  open // kasa açık (gün sürüyor)
+  closed // gün sonu sayım yapıldı, kapatıldı
+  handed_to_finance // finansa teslim edildi (mutabakat)
+}
+
+enum PharmacyMovementType {
+  intake // mal kabul / giriş (+)
+  sale // satış (−)
+  return // iade (+)
+  adjustment // sayım düzeltme (+/−)
+  disposal // imha / fire (−)
+  expire // SKT geçti, düşürme (−)
+}
+
+model PharmacyProduct {
+  id                   String    @id @default(uuid()) @db.Uuid
+  tenantId             String    @map("tenant_id") @db.Uuid
+  code                 String    @db.VarChar(50)
+  barcode              String?   @db.VarChar(64)
+  name                 String    @db.VarChar(200)
+  nameRu               String?   @map("name_ru") @db.VarChar(200)
+  nameTg               String?   @map("name_tg") @db.VarChar(200)
+  // 'drug' (ilaç) | 'supply' (sarf) | 'cosmetic' | 'other' — perakende gruplaması.
+  category             String?   @db.VarChar(60)
+  unit                 String?   @db.VarChar(30)
+  requiresPrescription Boolean   @default(false) @map("requires_prescription")
+  isActive             Boolean   @default(true) @map("is_active")
+  createdAt            DateTime  @default(now()) @map("created_at")
+  updatedAt            DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt            DateTime? @map("deleted_at")
+
+  tenant         Tenant                  @relation(fields: [tenantId], references: [id])
+  batches        PharmacyBatch[]
+  saleItems      PharmacySaleItem[]
+  stockMovements PharmacyStockMovement[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId, barcode])
+  @@index([tenantId, isActive, deletedAt])
+  @@map("pharmacy_products")
+}
+
+model PharmacyBatch {
+  id           String    @id @default(uuid()) @db.Uuid
+  tenantId     String    @map("tenant_id") @db.Uuid
+  productId    String    @map("product_id") @db.Uuid
+  lotNumber    String?   @map("lot_number") @db.VarChar(100)
+  // Son kullanma tarihi — FEFO satış + SKT uyarısı (#552).
+  expiresAt    DateTime? @map("expires_at") @db.Date
+  // Alış maliyeti (kârlılık raporu) + perakende satış fiyatı (parti bazlı).
+  costPrice    Decimal?  @map("cost_price") @db.Decimal(10, 2)
+  salePrice    Decimal   @map("sale_price") @db.Decimal(10, 2)
+  currency     Currency  @default(TJS)
+  availableQty Int       @default(0) @map("available_qty")
+  // Optimistic concurrency token (IolLot deseni): conditional WHERE version=X.
+  version      Int       @default(0)
+  supplierId   String?   @map("supplier_id") @db.Uuid
+  receivedAt   DateTime? @map("received_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+
+  tenant         Tenant                  @relation(fields: [tenantId], references: [id])
+  product        PharmacyProduct         @relation(fields: [productId], references: [id])
+  supplier       Supplier?               @relation(fields: [supplierId], references: [id])
+  saleItems      PharmacySaleItem[]
+  stockMovements PharmacyStockMovement[]
+
+  @@index([tenantId, productId, expiresAt])
+  @@index([tenantId, deletedAt])
+  @@map("pharmacy_batches")
+}
+
+model PharmacySale {
+  id             String             @id @default(uuid()) @db.Uuid
+  tenantId       String             @map("tenant_id") @db.Uuid
+  saleNo         String             @map("sale_no") @db.VarChar(30)
+  status         PharmacySaleStatus @default(completed)
+  // KVKK: walk-in anonim satış (isim alınmadan). patientId opsiyonel bağ.
+  isAnonymous    Boolean            @default(true) @map("is_anonymous")
+  patientId      String?            @map("patient_id") @db.Uuid
+  // Reçete → eczane köprüsü (doktor reçetesi satışa çevrilirse).
+  prescriptionId String?            @map("prescription_id") @db.Uuid
+  subtotal       Decimal            @default(0) @db.Decimal(10, 2)
+  discount       Decimal            @default(0) @db.Decimal(10, 2)
+  totalAmount    Decimal            @default(0) @map("total_amount") @db.Decimal(10, 2)
+  currency       Currency           @default(TJS)
+  paymentMethod  PaymentMethod      @default(cash) @map("payment_method")
+  // Gün sonu kasaya dahil edildiği kapanış.
+  cashClosureId  String?            @map("cash_closure_id") @db.Uuid
+  soldById       String?            @map("sold_by_id") @db.Uuid
+  voidedAt       DateTime?          @map("voided_at")
+  soldAt         DateTime           @default(now()) @map("sold_at")
+  createdAt      DateTime           @default(now()) @map("created_at")
+  updatedAt      DateTime           @default(now()) @updatedAt @map("updated_at")
+  deletedAt      DateTime?          @map("deleted_at")
+
+  tenant       Tenant               @relation(fields: [tenantId], references: [id])
+  patient      Patient?             @relation(fields: [patientId], references: [id])
+  prescription Prescription?        @relation(fields: [prescriptionId], references: [id])
+  soldBy       User?                @relation("PharmacySaleSoldBy", fields: [soldById], references: [id])
+  cashClosure  PharmacyCashClosure? @relation(fields: [cashClosureId], references: [id])
+  items        PharmacySaleItem[]
+  returns      PharmacyReturn[]
+
+  @@unique([tenantId, saleNo])
+  @@index([tenantId, soldAt(sort: Desc)])
+  @@index([tenantId, status, deletedAt])
+  @@index([tenantId, cashClosureId])
+  @@map("pharmacy_sales")
+}
+
+model PharmacySaleItem {
+  id                    String   @id @default(uuid()) @db.Uuid
+  tenantId              String   @map("tenant_id") @db.Uuid
+  saleId                String   @map("sale_id") @db.Uuid
+  productId             String?  @map("product_id") @db.Uuid
+  batchId               String?  @map("batch_id") @db.Uuid
+  // Satış anındaki ürün adı snapshot'ı (katalog sonradan değişse de makbuz sabit).
+  itemName              String   @map("item_name") @db.VarChar(200)
+  // #790 — bu satır hangi reçete kalemini karşıladı (eczacı manuel eşledi).
+  // Muadil (ürün ≠ reçete metni) + kısmi (qty < reçete) audit izi; null = serbest satış.
+  prescriptionItemLabel String?  @map("prescription_item_label") @db.VarChar(200)
+  quantity              Int      @default(1)
+  unitPrice             Decimal  @default(0) @map("unit_price") @db.Decimal(10, 2)
+  lineTotal             Decimal  @default(0) @map("line_total") @db.Decimal(10, 2)
+  createdAt             DateTime @default(now()) @map("created_at")
+
+  tenant  Tenant           @relation(fields: [tenantId], references: [id])
+  sale    PharmacySale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  product PharmacyProduct? @relation(fields: [productId], references: [id])
+  batch   PharmacyBatch?   @relation(fields: [batchId], references: [id])
+
+  @@index([tenantId, saleId])
+  @@map("pharmacy_sale_items")
+}
+
+model PharmacyReturn {
+  id            String   @id @default(uuid()) @db.Uuid
+  tenantId      String   @map("tenant_id") @db.Uuid
+  returnNo      String   @map("return_no") @db.VarChar(30)
+  saleId        String   @map("sale_id") @db.Uuid
+  reason        String?  @db.VarChar(500)
+  totalAmount   Decimal  @default(0) @map("total_amount") @db.Decimal(10, 2)
+  currency      Currency @default(TJS)
+  processedById String?  @map("processed_by_id") @db.Uuid
+  cashClosureId String?  @map("cash_closure_id") @db.Uuid
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @default(now()) @updatedAt @map("updated_at")
+
+  tenant      Tenant               @relation(fields: [tenantId], references: [id])
+  sale        PharmacySale         @relation(fields: [saleId], references: [id])
+  processedBy User?                @relation("PharmacyReturnProcessedBy", fields: [processedById], references: [id])
+  cashClosure PharmacyCashClosure? @relation(fields: [cashClosureId], references: [id])
+  items       PharmacyReturnItem[]
+
+  @@unique([tenantId, returnNo])
+  @@index([tenantId, saleId])
+  @@index([tenantId, createdAt(sort: Desc)])
+  @@map("pharmacy_returns")
+}
+
+model PharmacyReturnItem {
+  id         String   @id @default(uuid()) @db.Uuid
+  tenantId   String   @map("tenant_id") @db.Uuid
+  returnId   String   @map("return_id") @db.Uuid
+  saleItemId String?  @map("sale_item_id") @db.Uuid
+  productId  String?  @map("product_id") @db.Uuid
+  batchId    String?  @map("batch_id") @db.Uuid
+  quantity   Int      @default(1)
+  unitPrice  Decimal  @default(0) @map("unit_price") @db.Decimal(10, 2)
+  lineTotal  Decimal  @default(0) @map("line_total") @db.Decimal(10, 2)
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  tenant         Tenant         @relation(fields: [tenantId], references: [id])
+  pharmacyReturn PharmacyReturn @relation(fields: [returnId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, returnId])
+  @@map("pharmacy_return_items")
+}
+
+model PharmacyCashClosure {
+  id                  String             @id @default(uuid()) @db.Uuid
+  tenantId            String             @map("tenant_id") @db.Uuid
+  businessDate        DateTime           @map("business_date") @db.Date
+  status              PharmacyCashStatus @default(open)
+  currency            Currency           @default(TJS)
+  openingFloat        Decimal            @default(0) @map("opening_float") @db.Decimal(10, 2)
+  // Beklenen = açılış + satış − iade (sistem). Sayım = fiziksel. Fark = sapma.
+  salesTotal          Decimal            @default(0) @map("sales_total") @db.Decimal(12, 2)
+  refundTotal         Decimal            @default(0) @map("refund_total") @db.Decimal(12, 2)
+  expectedAmount      Decimal            @default(0) @map("expected_amount") @db.Decimal(12, 2)
+  countedAmount       Decimal?           @map("counted_amount") @db.Decimal(12, 2)
+  variance            Decimal?           @db.Decimal(12, 2)
+  saleCount           Int                @default(0) @map("sale_count")
+  refundCount         Int                @default(0) @map("refund_count")
+  openedById          String?            @map("opened_by_id") @db.Uuid
+  closedById          String?            @map("closed_by_id") @db.Uuid
+  // Finansa teslim mutabakatı (eczacı → finans).
+  handedToFinanceAt   DateTime?          @map("handed_to_finance_at")
+  handedToFinanceById String?            @map("handed_to_finance_by_id") @db.Uuid
+  // #664 — 2-aşama kasa devri: finans mutabakatı (görev ayrılığı: teslim eden ≠
+  // mutabakat eden). reconciledAt set = finans onayladı; status handed_to_finance kalır.
+  reconciledAt        DateTime?          @map("reconciled_at")
+  reconciledById      String?            @map("reconciled_by_id") @db.Uuid
+  notes               String?            @db.VarChar(1000)
+  openedAt            DateTime           @default(now()) @map("opened_at")
+  closedAt            DateTime?          @map("closed_at")
+  createdAt           DateTime           @default(now()) @map("created_at")
+  updatedAt           DateTime           @default(now()) @updatedAt @map("updated_at")
+
+  tenant          Tenant           @relation(fields: [tenantId], references: [id])
+  openedBy        User?            @relation("PharmacyCashOpenedBy", fields: [openedById], references: [id])
+  closedBy        User?            @relation("PharmacyCashClosedBy", fields: [closedById], references: [id])
+  handedToFinance User?            @relation("PharmacyCashHandedBy", fields: [handedToFinanceById], references: [id])
+  reconciledBy    User?            @relation("PharmacyCashReconciledBy", fields: [reconciledById], references: [id])
+  sales           PharmacySale[]
+  returns         PharmacyReturn[]
+
+  @@index([tenantId, businessDate(sort: Desc)])
+  @@index([tenantId, status])
+  @@map("pharmacy_cash_closures")
+}
+
+model PharmacyStockMovement {
+  id            String               @id @default(uuid()) @db.Uuid
+  tenantId      String               @map("tenant_id") @db.Uuid
+  productId     String               @map("product_id") @db.Uuid
+  batchId       String?              @map("batch_id") @db.Uuid
+  type          PharmacyMovementType
+  // + giriş (mal kabul/iade), − çıkış (satış/imha/SKT).
+  quantityDelta Int                  @map("quantity_delta")
+  // Polimorfik kaynak: 'sale' | 'return' | 'purchase_order' | 'adjustment'.
+  referenceType String?              @map("reference_type") @db.VarChar(40)
+  referenceId   String?              @map("reference_id") @db.Uuid
+  notes         String?              @db.VarChar(500)
+  createdById   String?              @map("created_by_id") @db.Uuid
+  createdAt     DateTime             @default(now()) @map("created_at")
+
+  tenant    Tenant          @relation(fields: [tenantId], references: [id])
+  product   PharmacyProduct @relation(fields: [productId], references: [id])
+  batch     PharmacyBatch?  @relation(fields: [batchId], references: [id])
+  createdBy User?           @relation("PharmacyStockMovementBy", fields: [createdById], references: [id])
+
+  @@index([tenantId, productId, createdAt(sort: Desc)])
+  @@index([tenantId, type, createdAt(sort: Desc)])
+  @@map("pharmacy_stock_movements")
+}
+
+// =============================================================================
+// E2 — Doktor Hakediş & Komisyon (v0.2 dilimi)
+//
+// v0.2 scope: PER_SURGERY + PERCENTAGE kurallar, manuel onay/ödeme workflow.
+// v0.3'e ertelendi: REFERRAL hakediş, VisitingWindow, B3 doctorShareSnapshot
+// integration, DoctorPerformanceMetric cache cron, PDF/Excel export, currency
+// dönüşüm (TJS↔USD).
+//
+// Hesaplama akışı:
+// 1. Source (surgery / procedure) tamamlandığında admin "calculate" çağırır
+// 2. Service active rule'lardan en yüksek priority + doktor-spesifik olanı seçer
+// 3. Doktor-spesifik kural yoksa klinik default (doctorId=null) kural devreye
+// 4. Yine yoksa Doctor.commissionRate fallback (PERCENTAGE, manuel baseAmount)
+// 5. Entry pending status'ta oluşur → admin approve/reject/markPaid
+// =============================================================================
+
+model CommissionRule {
+  id                       String                 @id @default(uuid()) @db.Uuid
+  tenantId                 String                 @map("tenant_id") @db.Uuid
+  // null = klinik-geneli default (tüm doktorlar için fallback)
+  doctorId                 String?                @map("doctor_id") @db.Uuid
+  type                     CommissionRuleType
+  // PER_SURGERY: sabit tutar (örn. 500 USD). PERCENTAGE: 0-100 yüzde.
+  value                    Decimal                @db.Decimal(10, 2)
+  currency                 String                 @default("USD") @db.VarChar(3)
+  // Hangi cerrahi tiplerine uygulanacak. Boş array = hepsi.
+  applicableSurgeryTypes   String[]               @default([]) @map("applicable_surgery_types")
+  // Hangi prosedür tiplerine uygulanacak. Boş array = hepsi.
+  applicableProcedureTypes ProcedureType[]        @default([]) @map("applicable_procedure_types")
+  // S12b — müşteri görüşmesi sonrası: hangi sourceType'lara uygulansın (boş = hepsi).
+  // Rule kategorize edilirse her tipte ayrı yüzde tanımlamak mümkün
+  // (örn. muayene = %30, lab = %15, cerrahi = %40).
+  applicableSourceTypes    CommissionSourceType[] @default([]) @map("applicable_source_types")
+  // Yüksek priority önce eşleşir (overlapping rules için tiebreaker).
+  priority                 Int                    @default(0)
+  validFrom                DateTime               @map("valid_from") @db.Date
+  validTo                  DateTime?              @map("valid_to") @db.Date
+  isActive                 Boolean                @default(true) @map("is_active")
+  notes                    String?                @db.VarChar(1000)
+  createdAt                DateTime               @default(now()) @map("created_at")
+  updatedAt                DateTime               @default(now()) @updatedAt @map("updated_at")
+  deletedAt                DateTime?              @map("deleted_at")
+
+  tenant  Tenant            @relation(fields: [tenantId], references: [id])
+  doctor  Doctor?           @relation(fields: [doctorId], references: [id])
+  entries CommissionEntry[]
+
+  @@index([tenantId, doctorId, isActive, deletedAt])
+  @@index([tenantId, validFrom, validTo])
+  @@map("commission_rules")
+}
+
+enum CommissionRuleType {
+  per_surgery
+  percentage
+}
+
+model CommissionEntry {
+  id               String                     @id @default(uuid()) @db.Uuid
+  tenantId         String                     @map("tenant_id") @db.Uuid
+  doctorId         String                     @map("doctor_id") @db.Uuid
+  ruleId           String?                    @map("rule_id") @db.Uuid
+  sourceType       CommissionSourceType       @map("source_type")
+  sourceId         String                     @map("source_id") @db.Uuid
+  // Hesaplanan tutar. PER_SURGERY: rule.value. PERCENTAGE: baseAmount * value/100.
+  amount           Decimal                    @db.Decimal(10, 2)
+  // PERCENTAGE için kullanılan base; PER_SURGERY için null.
+  baseAmount       Decimal?                   @map("base_amount") @db.Decimal(10, 2)
+  currency         String                     @default("USD") @db.VarChar(3)
+  status           CommissionEntryStatus      @default(pending)
+  // Rule + source field snapshot — kural geriden değişse bile hesabın
+  // gerekçesi audit log gibi kayıtlı kalır.
+  snapshotData     Json                       @default("{}") @map("snapshot_data")
+  rejectionReason  String?                    @map("rejection_reason") @db.VarChar(500)
+  paidAt           DateTime?                  @map("paid_at")
+  paidMethod       String?                    @map("paid_method") @db.VarChar(50)
+  // S11e — Tahsilat eşleme: hasta ödedi mi? (Karma entegrasyon karar tutanağı §10)
+  // pending  = invoice henüz tahsilat yok
+  // partial  = invoice kısmen ödendi (collectedAmount > 0, < amount)
+  // collected = invoice tam ödendi (collectedAmount >= amount)
+  collectionStatus CommissionCollectionStatus @default(pending) @map("collection_status")
+  // İlgili invoice'ların net ödenmiş TJS karşılığı (refund düşülmüş).
+  // Surgery/procedure'a bağlı invoice'lar PaymentService.create sonrası yeniden hesaplanır.
+  collectedAmount  Decimal                    @default(0) @map("collected_amount") @db.Decimal(10, 2)
+  reviewedById     String?                    @map("reviewed_by_id") @db.Uuid
+  reviewedAt       DateTime?                  @map("reviewed_at")
+  calculatedAt     DateTime                   @default(now()) @map("calculated_at")
+  updatedAt        DateTime                   @default(now()) @updatedAt @map("updated_at")
+  deletedAt        DateTime?                  @map("deleted_at")
+
+  tenant     Tenant          @relation(fields: [tenantId], references: [id])
+  doctor     Doctor          @relation(fields: [doctorId], references: [id])
+  rule       CommissionRule? @relation(fields: [ruleId], references: [id])
+  reviewedBy User?           @relation("CommissionReviewedBy", fields: [reviewedById], references: [id])
+
+  @@unique([tenantId, sourceType, sourceId])
+  @@index([tenantId, doctorId, calculatedAt(sort: Desc)])
+  @@index([tenantId, status, calculatedAt(sort: Desc)])
+  @@index([tenantId, deletedAt])
+  @@map("commission_entries")
+}
+
+enum CommissionEntryStatus {
+  pending
+  approved
+  paid
+  cancelled
+}
+
+// S11e — Tahsilat eşleme durumu (Commission ↔ Payment karma entegrasyon)
+enum CommissionCollectionStatus {
+  pending // hasta henüz ödemedi
+  partial // kısmi ödendi
+  collected // tamamı tahsil edildi
+}
+
+enum CommissionSourceType {
+  surgery
+  procedure
+  // S12b — müşteri görüşmesi sonrası: doktor her işlemden hakediş alıyor.
+  examination
+  lab
+  measurement
+}
+
+// =============================================================================
+// E6 — Fraud Detection (kural-tabanlı, v0.2 dilimi)
+//
+// 4 default kural pilot için:
+// - night_operations: 22:00-06:00 (Asia/Dushanbe) audit mutation → MEDIUM
+// - stock_consume_without_surgery: IolStockMovement.consume + surgeryId null → HIGH
+// - multi_ip_login: aynı user_id, 1 saat içinde 2+ farklı IP'den login → MEDIUM
+// - frequent_patient_appointment: aynı hasta, 30 gün içinde 6+ randevu → MEDIUM
+//
+// Scan cron her saat çalışır (@nestjs/schedule); kural eşleştiğinde FraudAlert
+// satırı eklenir (deduped by signatureKey — aynı uyarı tekrarlanmaz). Admin
+// alert'i review eder: new → reviewing → resolved | false_positive.
+//
+// v0.3'e ertelendi: WebSocket real-time + admin email + custom rule editor +
+// advanced audit-log filter UI.
+// =============================================================================
+
+model FraudRule {
+  id        String        @id @default(uuid()) @db.Uuid
+  tenantId  String        @map("tenant_id") @db.Uuid
+  key       FraudRuleKey
+  name      String        @db.VarChar(150)
+  severity  FraudSeverity
+  config    Json          @default("{}")
+  isActive  Boolean       @default(true) @map("is_active")
+  createdAt DateTime      @default(now()) @map("created_at")
+  updatedAt DateTime      @default(now()) @updatedAt @map("updated_at")
+
+  tenant Tenant       @relation(fields: [tenantId], references: [id])
+  alerts FraudAlert[]
+
+  @@unique([tenantId, key])
+  @@index([tenantId, isActive])
+  @@map("fraud_rules")
+}
+
+enum FraudRuleKey {
+  night_operations
+  stock_consume_without_surgery
+  multi_ip_login
+  frequent_patient_appointment
+}
+
+enum FraudSeverity {
+  low
+  medium
+  high
+}
+
+model FraudAlert {
+  id           String           @id @default(uuid()) @db.Uuid
+  tenantId     String           @map("tenant_id") @db.Uuid
+  ruleId       String           @map("rule_id") @db.Uuid
+  ruleKey      FraudRuleKey     @map("rule_key")
+  severity     FraudSeverity
+  // İlgili kullanıcı (audit log actor) — opsiyonel, kural bazlı
+  actorUserId  String?          @map("actor_user_id") @db.Uuid
+  // Entity hedef tipi + id (ör. surgery, patient, iol_lot)
+  entityType   String?          @map("entity_type") @db.VarChar(50)
+  entityId     String?          @map("entity_id") @db.Uuid
+  // Aynı uyarının tekrarlanmasını önlemek için deterministik anahtar
+  signatureKey String           @map("signature_key") @db.VarChar(255)
+  details      Json             @default("{}")
+  status       FraudAlertStatus @default(new)
+  reviewNote   String?          @map("review_note") @db.VarChar(1000)
+  reviewedById String?          @map("reviewed_by_id") @db.Uuid
+  reviewedAt   DateTime?        @map("reviewed_at")
+  createdAt    DateTime         @default(now()) @map("created_at")
+  updatedAt    DateTime         @default(now()) @updatedAt @map("updated_at")
+
+  tenant     Tenant    @relation(fields: [tenantId], references: [id])
+  rule       FraudRule @relation(fields: [ruleId], references: [id])
+  actorUser  User?     @relation("FraudAlertActor", fields: [actorUserId], references: [id])
+  reviewedBy User?     @relation("FraudAlertReviewedBy", fields: [reviewedById], references: [id])
+
+  @@unique([tenantId, signatureKey])
+  @@index([tenantId, status, severity, createdAt(sort: Desc)])
+  @@index([tenantId, ruleId, createdAt(sort: Desc)])
+  @@index([tenantId, actorUserId, createdAt(sort: Desc)])
+  @@map("fraud_alerts")
+}
+
+enum FraudAlertStatus {
+  new
+  reviewing
+  resolved
+  false_positive
+}
+
+// =============================================================================
+// C2 — Onam & Hukuki Evrak
+//
+// İki tablo: ConsentTemplate (procedure-bazlı şablonlar, dilbazlı) ve
+// ConsentSigning (imzalı kayıtlar, immutable — revokedAt ile soft-revoke).
+//
+// İmza:
+//   - signatureData: base64 PNG (HTML5 canvas çıktısı, frontend'de üretilir)
+//   - contentSnapshot: imza anındaki şablon içeriği DOND ediltirilir (template
+//     sonradan değişse bile imzalanan metin korunur — hukuki gereklilik)
+//   - signedByUserId: imzayı kayda alan personel (klinik kullanıcısı); hastanın
+//     kendisinin ekran imzası signatureData'da
+//
+// B3 entegrasyon: surgeryId verilirse, ilgili PreOp'un checklist'inde
+// "consent_signed" maddesi otomatik tamamlanır (ConsentService bunu prisma ile
+// doğrudan yapar — döngüsel servis bağımlılığından kaçınmak için).
+// =============================================================================
+
+model ConsentTemplate {
+  id            String               @id @default(uuid()) @db.Uuid
+  tenantId      String               @map("tenant_id") @db.Uuid
+  procedureType ConsentProcedureType @map("procedure_type")
+  language      ConsentLanguage
+  version       Int                  @default(1)
+  title         String               @db.VarChar(200)
+  content       String               @db.Text
+  isActive      Boolean              @default(true) @map("is_active")
+  createdById   String?              @map("created_by_id") @db.Uuid
+  createdAt     DateTime             @default(now()) @map("created_at")
+  updatedAt     DateTime             @default(now()) @updatedAt @map("updated_at")
+  deletedAt     DateTime?            @map("deleted_at")
+
+  tenant    Tenant           @relation(fields: [tenantId], references: [id])
+  createdBy User?            @relation("ConsentTemplateCreatedBy", fields: [createdById], references: [id])
+  signings  ConsentSigning[]
+
+  @@unique([tenantId, procedureType, language, version])
+  @@index([tenantId, procedureType, language, isActive])
+  @@index([tenantId, deletedAt])
+  @@map("consent_templates")
+}
+
+model ConsentSigning {
+  id                   String                @id @default(uuid()) @db.Uuid
+  tenantId             String                @map("tenant_id") @db.Uuid
+  templateId           String                @map("template_id") @db.Uuid
+  patientId            String                @map("patient_id") @db.Uuid
+  surgeryId            String?               @map("surgery_id") @db.Uuid
+  language             ConsentLanguage
+  contentSnapshot      String                @map("content_snapshot") @db.Text
+  signatureData        String                @map("signature_data") @db.Text
+  signedAt             DateTime              @default(now()) @map("signed_at")
+  signedByUserId       String?               @map("signed_by_user_id") @db.Uuid
+  witnessName          String?               @map("witness_name") @db.VarChar(200)
+  ipAddress            String?               @map("ip_address") @db.VarChar(45)
+  revokedAt            DateTime?             @map("revoked_at")
+  revokeReason         String?               @map("revoke_reason") @db.VarChar(500)
+  // S15-PR7 — Pediatrik veli onam (hasta yaş <18). signedByGuardian true ise
+  // guardianName + guardianRelationship zorunlu (service-layer guard).
+  // Audit trail: KVKK + Tacik veri yasası gereği veli imzası ayrı işaretlenir.
+  signedByGuardian     Boolean               @default(false) @map("signed_by_guardian")
+  guardianName         String?               @map("guardian_name") @db.VarChar(200)
+  guardianRelationship GuardianRelationship? @map("guardian_relationship")
+  guardianIdentityNo   String?               @map("guardian_identity_no") @db.VarChar(50)
+  createdAt            DateTime              @default(now()) @map("created_at")
+
+  tenant   Tenant          @relation(fields: [tenantId], references: [id])
+  template ConsentTemplate @relation(fields: [templateId], references: [id])
+  patient  Patient         @relation(fields: [patientId], references: [id])
+  surgery  Surgery?        @relation(fields: [surgeryId], references: [id])
+  signedBy User?           @relation("ConsentSigningSignedBy", fields: [signedByUserId], references: [id])
+
+  @@index([tenantId, patientId, signedAt(sort: Desc)])
+  @@index([tenantId, surgeryId])
+  @@index([tenantId, templateId])
+  @@map("consent_signings")
+}
+
+enum ConsentProcedureType {
+  cataract
+  retina
+  laser
+  intravitreal
+  refractive
+  general
+}
+
+enum ConsentLanguage {
+  tr
+  ru
+  tg
+}
+
+// =============================================================================
+// F6 — Feature Flags (v0.2 dilimi)
+//
+// Pilot scaling: yeni feature'ı tüm tenant'lara açmadan önce DemoEye'da test,
+// bug çıkarsa instant kapat. Global default + per-tenant override.
+// Maintenance mode + broadcast spec'in geri kalanı v0.3'e ertelendi (tek
+// pilot için direkt kanaldan iletişim daha pratik).
+// =============================================================================
+
+model FeatureFlagDefinition {
+  key          String   @id @db.VarChar(80)
+  name         String   @db.VarChar(255)
+  description  String?  @db.VarChar(2000)
+  defaultValue Boolean  @default(false) @map("default_value")
+  isGlobal     Boolean  @default(false) @map("is_global")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at")
+
+  overrides FeatureFlagOverride[]
+
+  @@map("feature_flag_definitions")
+}
+
+model FeatureFlagOverride {
+  flagKey  String   @map("flag_key") @db.VarChar(80)
+  tenantId String   @map("tenant_id") @db.Uuid
+  value    Boolean
+  setById  String?  @map("set_by_id") @db.Uuid
+  setAt    DateTime @default(now()) @map("set_at")
+
+  flag FeatureFlagDefinition @relation(fields: [flagKey], references: [key], onDelete: Cascade)
+
+  @@id([flagKey, tenantId])
+  @@index([tenantId])
+  @@map("feature_flag_overrides")
+}
+
+// =============================================================================
+// S11a — Billing / Faturalama modülü (2026-05-28 tasarımı)
+// Karar tutanağı: docs/audits/2026-05-28-tahsilat-modul-tasarimi.md
+//
+// Veri akışı:
+//   ServiceItem (katalog) → Invoice → InvoiceItem (kalemler)
+//                                  ↓
+//                                Payment (çoklu, kısmi)
+//                                  ↓ (iptal/iade)
+//                                Refund (yönetici onayı)
+//                                  ↓
+//                          CashRegisterClosure (Z-raporu: o ana kadarki payment+refund'lar)
+// =============================================================================
+
+enum Currency {
+  TJS
+  USD
+}
+
+enum PaymentMethod {
+  cash
+  card
+  transfer
+  insurance
+}
+
+enum ServiceCategory {
+  examination
+  surgery
+  procedure
+  lab
+  measurement
+  other
+}
+
+enum InvoiceStatus {
+  open // henüz tahsilat yok veya çok az
+  partial // kısmi ödendi (açık bakiye var)
+  paid // tam ödendi
+  cancelled // fatura iptali (audit kaldı)
+  refunded // tüm tahsilatlar iade edildi
+  // S14 — v0.1 indirim onayı port: kullanıcı rolünün maxDiscountSelf cap'ini
+  // aşan indirimle açılan fatura, onaylanana kadar bu state'te bekler.
+  // Onay verilirse → open/partial/paid akışına döner; reddedilirse → cancelled.
+  pending_approval
+}
+
+// Hizmet kataloğu — admin tanımlar (örn. "Katarakt ameliyatı = 5000 TJS").
+// Faturada kalem oluştururken seçilir; manuel ezilebilir.
+model ServiceItem {
+  id                    String          @id @default(uuid()) @db.Uuid
+  tenantId              String          @map("tenant_id") @db.Uuid
+  code                  String          @db.VarChar(50) // tenant scope unique: EXAM_BASIC, CATARACT_PHACO, IVT_INJECTION
+  name                  String          @db.VarChar(200) // TR
+  nameRu                String?         @map("name_ru") @db.VarChar(200)
+  nameTg                String?         @map("name_tg") @db.VarChar(200)
+  category              ServiceCategory
+  defaultPrice          Decimal         @map("default_price") @db.Decimal(10, 2)
+  defaultCurrency       Currency        @default(TJS) @map("default_currency")
+  // S14 — v0.1 indirim onayı port. Bu kalem için rol-bağımsız global cap'ler.
+  // maxDiscountSelf = rol başına (PermissionAssignment'tan okunan) cap'in fallback'i;
+  // service tekil cap istemiyorsa 0 (tüm indirimler onay ister). 100 = onay yok.
+  // İleri faz: Service × Role × maxDiscount matrisi (şimdilik global tek değer).
+  maxDiscountSelf       Decimal         @default(0) @map("max_discount_self") @db.Decimal(5, 2)
+  maxDiscountApprovable Decimal         @default(100) @map("max_discount_approvable") @db.Decimal(5, 2)
+  // Madde 5 — ön şartlar. JSON yapı:
+  //   minAge / maxAge: hasta yaş limit (null = yok)
+  //   requiredServiceCodes: aynı gün önceden tamamlanmış olmalı (cerrahide
+  //     ölçüm zorunluluğu — uygulama hard block)
+  //   ageDiscount: { minAge, percent } eşik üstü hasta için otomatik %
+  preconditions         Json            @default("{}")
+  // #362 — kategori-özel yapısal metadata (gating DEĞİL; preconditions'tan ayrı).
+  // Cerrahi kalemlerde: { surgeryGroup, lens: 'Monofokal'|'Trifokal'|'EDOF'|null,
+  //   materials: string[] }. Diğer kategorilerde boş. Lens tipi buradan
+  //   ServiceItem ↔ InvoiceItem(serviceItemId) ↔ Invoice.surgeryId zinciriyle okunur.
+  metadata              Json            @default("{}")
+  isActive              Boolean         @default(true) @map("is_active")
+  sortOrder             Int             @default(0) @map("sort_order")
+  createdById           String?         @map("created_by_id") @db.Uuid
+  createdAt             DateTime        @default(now()) @map("created_at")
+  updatedAt             DateTime        @default(now()) @updatedAt @map("updated_at")
+  deletedAt             DateTime?       @map("deleted_at")
+
+  tenant       Tenant        @relation(fields: [tenantId], references: [id])
+  createdBy    User?         @relation("ServiceItemCreatedBy", fields: [createdById], references: [id])
+  invoiceItems InvoiceItem[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId, category, isActive])
+  @@index([tenantId, deletedAt])
+  @@map("service_items")
+}
+
+// Fatura — hastaya kesilir. Surgery/Procedure/Appointment ile opsiyonel
+// bağlanır (bağımsız fatura da olabilir, örn. dış lab kaydı için).
+model Invoice {
+  id            String        @id @default(uuid()) @db.Uuid
+  tenantId      String        @map("tenant_id") @db.Uuid
+  invoiceNumber String        @map("invoice_number") @db.VarChar(20) // 2026-0001 (per tenant)
+  patientId     String        @map("patient_id") @db.Uuid
+  status        InvoiceStatus @default(open)
+  currency      Currency      @default(TJS)
+  subtotal      Decimal       @default(0) @db.Decimal(10, 2)
+  discount      Decimal       @default(0) @db.Decimal(10, 2)
+  total         Decimal       @default(0) @db.Decimal(10, 2)
+  // #419 — Fatura kesim anındaki base→TJS kuru snapshot'ı (TJS fatura = 1).
+  // getOpenBalance USD faturayı bununla TJS'e indirger; legacy backfill TJS=1/USD=11.
+  exchangeRate  Decimal       @default(1) @map("exchange_rate") @db.Decimal(12, 4)
+  notes         String?       @db.Text
+  // Klinik bağlamı (opsiyonel — bilgi amaçlı; hakediş eşlemesi S11e)
+  surgeryId     String?       @map("surgery_id") @db.Uuid
+  procedureId   String?       @map("procedure_id") @db.Uuid
+  appointmentId String?       @map("appointment_id") @db.Uuid
+  // İptal
+  cancelledAt   DateTime?     @map("cancelled_at")
+  cancelledById String?       @map("cancelled_by_id") @db.Uuid
+  cancelReason  String?       @map("cancel_reason") @db.VarChar(500)
+  // Audit
+  createdById   String?       @map("created_by_id") @db.Uuid
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @default(now()) @updatedAt @map("updated_at")
+  deletedAt     DateTime?     @map("deleted_at")
+
+  tenant      Tenant        @relation(fields: [tenantId], references: [id])
+  patient     Patient       @relation(fields: [patientId], references: [id])
+  surgery     Surgery?      @relation(fields: [surgeryId], references: [id])
+  procedure   Procedure?    @relation(fields: [procedureId], references: [id])
+  appointment Appointment?  @relation(fields: [appointmentId], references: [id])
+  createdBy   User?         @relation("InvoiceCreatedBy", fields: [createdById], references: [id])
+  cancelledBy User?         @relation("InvoiceCancelledBy", fields: [cancelledById], references: [id])
+  items       InvoiceItem[]
+  payments    Payment[]
+
+  @@unique([tenantId, invoiceNumber])
+  @@index([tenantId, patientId, createdAt(sort: Desc)])
+  @@index([tenantId, status, createdAt(sort: Desc)])
+  @@index([tenantId, surgeryId])
+  @@index([tenantId, procedureId])
+  @@index([tenantId, deletedAt])
+  // #1055 — invoice.list araması invoiceNumber'da ILIKE '%q%' kullanır; unique
+  // btree contains'i kapsamaz, index'siz OR kolu tüm aramayı seq scan yapar.
+  @@index([invoiceNumber(ops: raw("gin_trgm_ops"))], type: Gin, map: "invoices_invoice_number_trgm")
+  @@map("invoices")
+}
+
+// Fatura kalemleri — bir fatura içinde N kalem (örn. ameliyat + lens primi).
+// Katalogtan seçilebilir veya manuel girilebilir.
+model InvoiceItem {
+  id            String   @id @default(uuid()) @db.Uuid
+  tenantId      String   @map("tenant_id") @db.Uuid
+  invoiceId     String   @map("invoice_id") @db.Uuid
+  serviceItemId String?  @map("service_item_id") @db.Uuid // null = manuel
+  description   String   @db.VarChar(300) // katalogtan kopya veya elle
+  quantity      Int      @default(1)
+  unitPrice     Decimal  @map("unit_price") @db.Decimal(10, 2)
+  lineTotal     Decimal  @map("line_total") @db.Decimal(10, 2) // quantity * unitPrice
+  sortOrder     Int      @default(0) @map("sort_order")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  tenant      Tenant       @relation(fields: [tenantId], references: [id])
+  invoice     Invoice      @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  serviceItem ServiceItem? @relation(fields: [serviceItemId], references: [id])
+
+  @@index([tenantId, invoiceId])
+  @@map("invoice_items")
+}
+
+// Tahsilat — bir faturaya karşı çoklu tahsilat (kısmi ödeme).
+// Farklı para biriminde gelirse exchangeRate kaydedilir, tjsEquivalent raporlama
+// için hesaplanır.
+model Payment {
+  id                    String        @id @default(uuid()) @db.Uuid
+  tenantId              String        @map("tenant_id") @db.Uuid
+  invoiceId             String        @map("invoice_id") @db.Uuid
+  amount                Decimal       @db.Decimal(10, 2) // ödeme biriminde
+  currency              Currency
+  // currency != invoice.currency ise: 1 birim ödeme = exchangeRate birim invoice currency
+  exchangeRate          Decimal       @default(1) @map("exchange_rate") @db.Decimal(12, 4)
+  // raporlama için her zaman TJS karşılığı (TJS payment'ta = amount; USD'de = amount*kur)
+  tjsEquivalent         Decimal       @map("tjs_equivalent") @db.Decimal(12, 2)
+  method                PaymentMethod
+  referenceNumber       String?       @map("reference_number") @db.VarChar(100) // POS slip, havale dekont
+  notes                 String?       @db.VarChar(500)
+  takenAt               DateTime      @default(now()) @map("taken_at")
+  takenById             String        @map("taken_by_id") @db.Uuid
+  // Z-raporu kapanışı: o tahsilat hangi kapanışa dahil
+  cashRegisterClosureId String?       @map("cash_register_closure_id") @db.Uuid
+  // İade tetiklendiyse
+  refundedAt            DateTime?     @map("refunded_at")
+  createdAt             DateTime      @default(now()) @map("created_at")
+  deletedAt             DateTime?     @map("deleted_at")
+
+  tenant              Tenant               @relation(fields: [tenantId], references: [id])
+  invoice             Invoice              @relation(fields: [invoiceId], references: [id])
+  takenBy             User                 @relation("PaymentTakenBy", fields: [takenById], references: [id])
+  cashRegisterClosure CashRegisterClosure? @relation(fields: [cashRegisterClosureId], references: [id])
+  refunds             Refund[]
+
+  @@index([tenantId, invoiceId, takenAt])
+  @@index([tenantId, takenAt(sort: Desc)])
+  @@index([tenantId, cashRegisterClosureId])
+  @@index([tenantId, deletedAt])
+  @@map("payments")
+}
+
+// S15-PR15b — İade approval gate.
+//   pending — resepsiyon/asistan talep etti (henüz Payment etkilenmedi)
+//   approved — yönetici onayladı (Payment.refundedAt + commission sync side-effect)
+//   rejected — yönetici reddetti (Payment dokunulmaz)
+//   reversed — yönetici 24h içinde geri aldı (Payment effects geri alındı)
+enum RefundApprovalStatus {
+  pending
+  approved
+  rejected
+  reversed
+}
+
+// İade — bir Payment'a karşı (kısmi mümkün). PR15b: 2-aşamalı akış —
+// resepsiyon/asistan talep eder (pending), yönetici onaylar (approved) →
+// Payment side-effects çalışır. 24 saat içinde reverse edilebilir.
+model Refund {
+  id                    String               @id @default(uuid()) @db.Uuid
+  tenantId              String               @map("tenant_id") @db.Uuid
+  paymentId             String               @map("payment_id") @db.Uuid
+  amount                Decimal              @db.Decimal(10, 2)
+  currency              Currency
+  tjsEquivalent         Decimal              @map("tjs_equivalent") @db.Decimal(12, 2)
+  reason                String               @db.VarChar(500) // zorunlu, min 10 char (service-level)
+  // PR15b — talep eden (resepsiyon/asistan/yönetici).
+  requestedById         String               @map("requested_by_id") @db.Uuid
+  // PR15b — onaylayan (nullable: pending durumda null).
+  approvedById          String?              @map("approved_by_id") @db.Uuid
+  approvedAt            DateTime?            @map("approved_at")
+  approvalStatus        RefundApprovalStatus @default(approved) @map("approval_status")
+  rejectionReason       String?              @map("rejection_reason") @db.VarChar(500)
+  reversedAt            DateTime?            @map("reversed_at")
+  reversedById          String?              @map("reversed_by_id") @db.Uuid
+  refundedAt            DateTime             @default(now()) @map("refunded_at")
+  cashRegisterClosureId String?              @map("cash_register_closure_id") @db.Uuid
+  createdAt             DateTime             @default(now()) @map("created_at")
+
+  tenant              Tenant               @relation(fields: [tenantId], references: [id])
+  payment             Payment              @relation(fields: [paymentId], references: [id])
+  requestedBy         User                 @relation("RefundRequestedBy", fields: [requestedById], references: [id])
+  approvedBy          User?                @relation("RefundApprovedBy", fields: [approvedById], references: [id])
+  reversedBy          User?                @relation("RefundReversedBy", fields: [reversedById], references: [id])
+  cashRegisterClosure CashRegisterClosure? @relation(fields: [cashRegisterClosureId], references: [id])
+
+  @@index([tenantId, paymentId])
+  @@index([tenantId, refundedAt(sort: Desc)])
+  @@index([tenantId, cashRegisterClosureId])
+  @@index([tenantId, approvalStatus])
+  @@map("refunds")
+}
+
+// Z-raporu — gün sonu kasayı kapatır. O ana kadarki payment + refund'lar
+// bu closure'a "ait" hale gelir (cashRegisterClosureId set olur).
+// Bir kez kapatıldıktan sonra değiştirilemez (audit log dışında ekleme yok).
+enum CashClosureStatus {
+  draft // R5 (#727) — asistan kapatma taslağı hazırladı (henüz finalize yok)
+  finalized // gün sonu kasası kapatıldı (donmuş Z-raporu)
+}
+
+model CashRegisterClosure {
+  id       String @id @default(uuid()) @db.Uuid
+  tenantId String @map("tenant_id") @db.Uuid
+
+  // R5 (#727) — 2-aşama: asistan 'draft' hazırlar, yönetici/finans 'finalized'
+  // eder. Legacy + direkt kapatmalar default 'finalized'. Draft payment/refund
+  // BAĞLAMAZ (finalize'da bağlanır); finalize closedBy/closedAt set eder.
+  status       CashClosureStatus @default(finalized)
+  preparedById String?           @map("prepared_by_id") @db.Uuid
+  preparedAt   DateTime?         @map("prepared_at")
+  closedAt     DateTime?         @default(now()) @map("closed_at")
+  closedById   String?           @map("closed_by_id") @db.Uuid
+
+  // Toplamlar (raporun donmuş hali — closure sonrası değişmez)
+  totalTjs           Decimal @default(0) @map("total_tjs") @db.Decimal(12, 2)
+  totalUsd           Decimal @default(0) @map("total_usd") @db.Decimal(12, 2)
+  totalTjsEquivalent Decimal @default(0) @map("total_tjs_equivalent") @db.Decimal(12, 2)
+
+  // Yöntem × birim dağılım
+  cashTjs      Decimal @default(0) @map("cash_tjs") @db.Decimal(12, 2)
+  cashUsd      Decimal @default(0) @map("cash_usd") @db.Decimal(12, 2)
+  cardTjs      Decimal @default(0) @map("card_tjs") @db.Decimal(12, 2)
+  cardUsd      Decimal @default(0) @map("card_usd") @db.Decimal(12, 2)
+  transferTjs  Decimal @default(0) @map("transfer_tjs") @db.Decimal(12, 2)
+  transferUsd  Decimal @default(0) @map("transfer_usd") @db.Decimal(12, 2)
+  insuranceTjs Decimal @default(0) @map("insurance_tjs") @db.Decimal(12, 2)
+  insuranceUsd Decimal @default(0) @map("insurance_usd") @db.Decimal(12, 2)
+
+  // İade toplamları (negatif)
+  refundTjs Decimal @default(0) @map("refund_tjs") @db.Decimal(12, 2)
+  refundUsd Decimal @default(0) @map("refund_usd") @db.Decimal(12, 2)
+
+  // Net (toplam - iade)
+  netTjsEquivalent Decimal @default(0) @map("net_tjs_equivalent") @db.Decimal(12, 2)
+
+  paymentCount Int @default(0) @map("payment_count")
+  refundCount  Int @default(0) @map("refund_count")
+
+  notes String? @db.VarChar(1000)
+
+  tenant     Tenant    @relation(fields: [tenantId], references: [id])
+  closedBy   User?     @relation("CashRegisterClosedBy", fields: [closedById], references: [id])
+  preparedBy User?     @relation("CashRegisterPreparedBy", fields: [preparedById], references: [id])
+  payments   Payment[]
+  refunds    Refund[]
+
+  @@index([tenantId, closedAt(sort: Desc)])
+  @@index([tenantId, status])
+  @@map("cash_register_closures")
+}
+
+// =============================================================================
+// S14 — v0.1 port: Dashboard widget framework, Permission matrix, Discount
+// approvals, Webhook subscription + delivery. (ApiKey zaten var; bu blok
+// onun üzerine bina ediyor.)
+// =============================================================================
+
+// Per-tenant + per-role (opsiyonel per-user) dashboard widget layout. widgets
+// JSON: [{ key, x, y, w, h, config? }]. roleKey + userId NULL = tenant default
+// (rol bazlı fallback için defaults.ts kullanılır). Pilot için read-only render;
+// drag-to-reorder ileri faz.
+model DashboardLayout {
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  roleKey   RoleKey  @map("role_key")
+  userId    String?  @map("user_id") @db.Uuid // null = role default
+  widgets   Json     @default("[]")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, roleKey, userId])
+  @@index([tenantId, roleKey])
+  @@map("dashboard_layouts")
+}
+
+// Permission matrisi — rol × resource (page:billing, action:patient.create, vb.).
+// Varsayılan davranış kod-bazlı (RolesGuard); bu tablo opsiyonel override.
+// İlk port: page:* ekran erişimi UI'da yönetilir; action:* ileri faz.
+model PermissionAssignment {
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  roleKey   RoleKey  @map("role_key")
+  resource  String   @db.VarChar(100) // page:billing, action:patient.create
+  allowed   Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, roleKey, resource])
+  @@index([tenantId, roleKey])
+  @@map("permission_assignments")
+}
+
+// İndirim onayı — kullanıcının kendi rol cap'ini aşan indirim talebi. Invoice
+// veya Surgery'ye bağlanır (en az biri dolu). Race-free review: service
+// katmanı SELECT ... FOR UPDATE kullanır. Onay sonrası Invoice statu
+// pending_approval → open/partial/paid; red sonrası → cancelled.
+model DiscountApproval {
+  id              String    @id @default(uuid()) @db.Uuid
+  tenantId        String    @map("tenant_id") @db.Uuid
+  invoiceId       String?   @map("invoice_id") @db.Uuid
+  surgeryId       String?   @map("surgery_id") @db.Uuid
+  requestedById   String    @map("requested_by_id") @db.Uuid
+  discountPercent Decimal   @map("discount_percent") @db.Decimal(5, 2)
+  discountAmount  Decimal   @map("discount_amount") @db.Decimal(12, 2)
+  reason          String    @db.VarChar(500)
+  status          String    @default("pending") @db.VarChar(20) // pending|approved|rejected
+  reviewedById    String?   @map("reviewed_by_id") @db.Uuid
+  reviewedAt      DateTime? @map("reviewed_at")
+  reviewNote      String?   @map("review_note") @db.VarChar(500)
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, status, createdAt(sort: Desc)])
+  @@index([tenantId, invoiceId])
+  @@index([tenantId, surgeryId])
+  @@index([tenantId, requestedById])
+  @@map("discount_approvals")
+}
+
+// Webhook abonelikleri — tenant başına N URL × M event. secret HMAC-SHA256
+// imza üretmek için kullanılır; events array örn ['invoice.paid',
+// 'appointment.no_show']. Eşleşen event olduğunda WebhookDelivery yaratılır
+// ve webhook-retry cron'u POST eder.
+model Webhook {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  name        String   @db.VarChar(100)
+  url         String   @db.VarChar(500)
+  secret      String   @db.VarChar(128) // HMAC SHA256 signing secret
+  events      String[] @default([])
+  isActive    Boolean  @default(true) @map("is_active")
+  createdById String?  @map("created_by_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
+
+  tenant     Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  deliveries WebhookDelivery[]
+
+  @@index([tenantId, isActive])
+  @@map("webhooks")
+}
+
+// Webhook teslim denemesi — emit anında pending oluşur, cron retryWebhooks
+// işler. Exponential schedule: [1m, 5m, 30m, 2h, 24h]; 5. fail = dead_letter.
+// Idempotency: emit() event başına aynı payload için aynı kaydı yeniden
+// oluşturmaz; cron başarısız olanları nextRetryAt sırasına göre çeker.
+model WebhookDelivery {
+  id           String    @id @default(uuid()) @db.Uuid
+  tenantId     String    @map("tenant_id") @db.Uuid
+  webhookId    String    @map("webhook_id") @db.Uuid
+  event        String    @db.VarChar(100)
+  payload      Json
+  status       String    @default("pending") @db.VarChar(20) // pending|delivered|failed|dead_letter
+  attemptCount Int       @default(0) @map("attempt_count")
+  nextRetryAt  DateTime? @map("next_retry_at")
+  lastResponse String?   @map("last_response") @db.VarChar(1000)
+  lastError    String?   @map("last_error") @db.VarChar(1000)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  deliveredAt  DateTime? @map("delivered_at")
+
+  tenant  Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  webhook Webhook @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+
+  @@index([status, nextRetryAt])
+  @@index([tenantId, webhookId, createdAt(sort: Desc)])
+  @@map("webhook_deliveries")
+}
+
+// =============================================================================
+// S15-P3 — Lab abnormal threshold (klinik özel eşikler). Pilot esnasında her
+// klinik kendi referans aralıklarını yönetir. testCode + sex + age range +
+// low/high + unit. Lab sonuç giriş ekranında otomatik flag.
+// =============================================================================
+
+enum LabThresholdSex {
+  any
+  male
+  female
+}
+
+model LabAbnormalThreshold {
+  id        String          @id @default(uuid()) @db.Uuid
+  tenantId  String          @map("tenant_id") @db.Uuid
+  testCode  String          @map("test_code") @db.VarChar(60)
+  sex       LabThresholdSex @default(any)
+  ageMin    Int?            @map("age_min")
+  ageMax    Int?            @map("age_max")
+  lowLimit  Decimal?        @map("low_limit") @db.Decimal(12, 4)
+  highLimit Decimal?        @map("high_limit") @db.Decimal(12, 4)
+  unit      String?         @db.VarChar(30)
+  notes     String?         @db.VarChar(500)
+  isActive  Boolean         @default(true) @map("is_active")
+  createdAt DateTime        @default(now()) @map("created_at")
+  updatedAt DateTime        @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime?       @map("deleted_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@unique([tenantId, testCode, sex, ageMin, ageMax])
+  @@index([tenantId, testCode, isActive])
+  @@map("lab_abnormal_thresholds")
+}
+
+// =============================================================================
+// S15-PR25 — Surgical Kit (ameliyat sarf reçetesi). Bir cerrahi tip için
+// gerekli komponentlerin listesi. IolModel'e referans (opsiyonel, IOL içerikli
+// kitler için) + ad-hoc component (genel sarf, ilaç, eldiven vb.).
+// =============================================================================
+
+model SurgicalKit {
+  id          String    @id @default(uuid()) @db.Uuid
+  tenantId    String    @map("tenant_id") @db.Uuid
+  code        String    @db.VarChar(40)
+  name        String    @db.VarChar(150)
+  surgeryType String    @map("surgery_type") @db.VarChar(60)
+  isActive    Boolean   @default(true) @map("is_active")
+  notes       String?   @db.VarChar(500)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  tenant     Tenant                 @relation(fields: [tenantId], references: [id])
+  components SurgicalKitComponent[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId, surgeryType, isActive])
+  @@map("surgical_kits")
+}
+
+model SurgicalKitComponent {
+  id            String   @id @default(uuid()) @db.Uuid
+  tenantId      String   @map("tenant_id") @db.Uuid
+  kitId         String   @map("kit_id") @db.Uuid
+  // Ya iolModelId set ya da componentName ad-hoc.
+  iolModelId    String?  @map("iol_model_id") @db.Uuid
+  componentName String?  @map("component_name") @db.VarChar(150)
+  quantity      Int      @default(1)
+  isRequired    Boolean  @default(true) @map("is_required")
+  notes         String?  @db.VarChar(500)
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  tenant   Tenant      @relation(fields: [tenantId], references: [id])
+  kit      SurgicalKit @relation(fields: [kitId], references: [id], onDelete: Cascade)
+  iolModel IolModel?   @relation(fields: [iolModelId], references: [id])
+
+  @@index([tenantId, kitId])
+  @@map("surgical_kit_components")
+}
+
+// =============================================================================
+// S15-PR20 — Recall (post-op takip kayıp hastalar) yönetim modülü.
+// =============================================================================
+
+enum RecallAttemptResult {
+  reached
+  no_answer
+  rescheduled
+  voicemail
+  wrong_number
+}
+
+enum RecallAttemptMethod {
+  sms
+  phone
+  email
+}
+
+// Post-op kontrol kaçıran (no-show) veya yaklaşan kontrol için klinik
+// personelinin yaptığı hatırlatma denemeleri. Bir Appointment için N attempt.
+model RecallAttempt {
+  id            String              @id @default(uuid()) @db.Uuid
+  tenantId      String              @map("tenant_id") @db.Uuid
+  appointmentId String              @map("appointment_id") @db.Uuid
+  patientId     String              @map("patient_id") @db.Uuid
+  method        RecallAttemptMethod
+  result        RecallAttemptResult
+  notes         String?             @db.VarChar(500)
+  attemptedById String              @map("attempted_by_id") @db.Uuid
+  attemptedAt   DateTime            @default(now()) @map("attempted_at")
+  createdAt     DateTime            @default(now()) @map("created_at")
+
+  tenant      Tenant      @relation(fields: [tenantId], references: [id])
+  appointment Appointment @relation("AppointmentRecallAttempts", fields: [appointmentId], references: [id], onDelete: Cascade)
+  patient     Patient     @relation("PatientRecallAttempts", fields: [patientId], references: [id])
+  attemptedBy User        @relation("RecallAttemptedBy", fields: [attemptedById], references: [id])
+
+  @@index([tenantId, appointmentId, attemptedAt(sort: Desc)])
+  @@index([tenantId, patientId, attemptedAt(sort: Desc)])
+  @@map("recall_attempts")
+}
+
+// =============================================================================
+// S15-PR19 — Bağlamsal mesajlaşma (klinik personeli arasında, hasta-bağlı).
+// =============================================================================
+
+// Hasta-bağlı sohbet konusu. Bir hasta için birden fazla thread olabilir
+// (örn: cerrahi planlaması, post-op takip ayrı konular). Klinik personeli
+// arasında iletişim — hasta görmez.
+model PatientMessageThread {
+  id            String    @id @default(uuid()) @db.Uuid
+  tenantId      String    @map("tenant_id") @db.Uuid
+  patientId     String    @map("patient_id") @db.Uuid
+  subject       String?   @db.VarChar(200)
+  createdById   String    @map("created_by_id") @db.Uuid
+  lastMessageAt DateTime  @default(now()) @map("last_message_at")
+  isArchived    Boolean   @default(false) @map("is_archived")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
+
+  tenant    Tenant                 @relation(fields: [tenantId], references: [id])
+  patient   Patient                @relation(fields: [patientId], references: [id])
+  createdBy User                   @relation("ThreadCreatedBy", fields: [createdById], references: [id])
+  messages  PatientThreadMessage[]
+
+  @@index([tenantId, patientId, lastMessageAt(sort: Desc)])
+  @@index([tenantId, isArchived, lastMessageAt(sort: Desc)])
+  @@map("patient_message_threads")
+}
+
+// Thread içindeki tek mesaj. Body max 4000 char (uzun klinik notlar için yeterli).
+// Edit/delete v0.3 — pilot için append-only.
+model PatientThreadMessage {
+  id        String    @id @default(uuid()) @db.Uuid
+  tenantId  String    @map("tenant_id") @db.Uuid
+  threadId  String    @map("thread_id") @db.Uuid
+  authorId  String    @map("author_id") @db.Uuid
+  body      String    @db.VarChar(4000)
+  createdAt DateTime  @default(now()) @map("created_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  tenant Tenant               @relation(fields: [tenantId], references: [id])
+  thread PatientMessageThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  author User                 @relation("ThreadMessageAuthor", fields: [authorId], references: [id])
+
+  @@index([tenantId, threadId, createdAt])
+  @@map("patient_thread_messages")
+}
+
+// =============================================================================
+// I2 — Geri-Bildirim Merkezi (Feedback & Auto-Fix Loop, EPIC #812 / #818)
+// =============================================================================
+
+model FeedbackRequest {
+  id             String   @id @default(uuid()) @db.Uuid
+  tenantId       String   @map("tenant_id") @db.Uuid
+  submittedById  String   @map("submitted_by_id") @db.Uuid
+  kind           String   @db.VarChar(20) // bug | improvement | question
+  title          String   @db.VarChar(200)
+  description    String   @db.Text
+  routePath      String   @map("route_path") @db.VarChar(200)
+  appVersion     String   @map("app_version") @db.VarChar(40)
+  contextJson    Json     @map("context_json")
+  status         String   @default("submitted") @db.VarChar(20) // submitted|in_progress|shipped|rejected
+  githubIssueNo  Int?     @map("github_issue_no")
+  shippedVersion String?  @map("shipped_version") @db.VarChar(40)
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  tenant      Tenant               @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  submittedBy User                 @relation("FeedbackSubmittedBy", fields: [submittedById], references: [id])
+  attachments FeedbackAttachment[]
+
+  @@index([tenantId, submittedById, createdAt(sort: Desc)])
+  @@map("feedback_requests")
+}
+
+model FeedbackAttachment {
+  id         String  @id @default(uuid()) @db.Uuid
+  tenantId   String  @map("tenant_id") @db.Uuid
+  requestId  String  @map("request_id") @db.Uuid
+  kind       String  @db.VarChar(20) // screenshot | video | file | annotation
+  storageKey String  @map("storage_key") @db.VarChar(300)
+  redacted   Boolean @default(false)
+
+  tenant  Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  request FeedbackRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, requestId])
+  @@map("feedback_attachments")
+}
+
+// ---------------------------------------------------------------------------
+// EPIC #1018 — AI Hasta Asistanı (otomasyon). Chatwoot inbox ↔ HBYS köprüsü.
+// #1020 iskelet: konuşma + mesaj logu + bot aksiyon denetimi + tenant-başına
+// agent config. Orkestrasyon #1021, yönetici ekranı #1022, devir bildirimi #1023.
+// ---------------------------------------------------------------------------
+
+enum AgentChannel {
+  whatsapp
+  instagram
+  facebook
+  telegram
+  webchat
+  other
+}
+
+enum AgentConversationStatus {
+  bot_active // bot cevaplıyor
+  human_active // personel devraldı — bot susar (Chatwoot open)
+  closed // çözüldü (Chatwoot resolved)
+}
+
+enum AgentMessageRole {
+  patient // hastadan gelen (Chatwoot incoming)
+  assistant // bot cevabı
+  staff // personelin Chatwoot'tan yazdığı (outgoing echo)
+  system // tool özeti / durum notu
+}
+
+enum AgentActionType {
+  appointment_created
+  appointment_cancelled
+  patient_created
+  patient_matched
+  handoff
+  returned_to_bot // #1038 — personel konuşmayı HBYS ekranından bota geri verdi
+  error
+}
+
+// Tenant başına tek agent config (v1). API token/webhook secret GİBİ SIRLAR
+// BURADA TUTULMAZ (env: CHATWOOT_API_TOKEN, AUTOMATION_WEBHOOK_SECRET);
+// channelSettings yalnız kimlik/adres taşır: { chatwootAccountId, chatwootBaseUrl }.
+model AgentConfig {
+  id              String   @id @default(uuid()) @db.Uuid
+  tenantId        String   @unique @map("tenant_id") @db.Uuid
+  enabled         Boolean  @default(false)
+  provider        String   @default("anthropic") @db.VarChar(40)
+  model           String   @default("claude-opus-4-8") @db.VarChar(120)
+  systemPrompt    String   @map("system_prompt")
+  knowledgeBase   String?  @map("knowledge_base")
+  channelSettings Json?    @map("channel_settings")
+  // #1070 — webhook tenant çözümü index'li kolondan (eskiden channelSettings
+  // JSONB path sorgusu = her webhook'ta seq scan). updateConfig
+  // channelSettings.chatwootAccountId ile senkron tutar.
+  chatwootAccountId Int?   @unique @map("chatwoot_account_id")
+  // #1034 — Sırlar ekrandan, DB'de AES-256-GCM şifreli (SecretCryptoService,
+  // #914 TOTP anahtar altyapısı). API'ye ASLA düz dönmez (write-only + last4).
+  webhookSecretEnc    String? @map("webhook_secret_enc")
+  chatwootBotTokenEnc String? @map("chatwoot_bot_token_enc")
+  anthropicKeyEnc     String? @map("anthropic_key_enc")
+  openrouterKeyEnc    String? @map("openrouter_key_enc")
+  revision        Int      @default(1)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
+
+  tenant    Tenant                @relation(fields: [tenantId], references: [id])
+  revisions AgentConfigRevision[]
+
+  @@map("agent_configs")
+}
+
+// Append-only config geçmişi: her update öncesi mevcut hâl buraya yazılır
+// (kim, ne zaman, hangi prompt/model). Rollback + denetim izi.
+model AgentConfigRevision {
+  id           String   @id @default(uuid()) @db.Uuid
+  tenantId     String   @map("tenant_id") @db.Uuid
+  configId     String   @map("config_id") @db.Uuid
+  revision     Int
+  provider     String   @db.VarChar(40)
+  model        String   @db.VarChar(120)
+  systemPrompt String   @map("system_prompt")
+  createdById  String?  @map("created_by_id") @db.Uuid
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  tenant    Tenant      @relation(fields: [tenantId], references: [id])
+  config    AgentConfig @relation(fields: [configId], references: [id], onDelete: Cascade)
+  createdBy User?       @relation("AgentConfigRevisionCreatedBy", fields: [createdById], references: [id])
+
+  @@unique([configId, revision])
+  @@map("agent_config_revisions")
+}
+
+// Chatwoot konuşması ↔ HBYS eşlemesi. patientId telefon eşleşince bağlanır
+// (patient.duplicates). status insan-devri makinesi: bot_active → human_active
+// (devir) → bot_active/closed (Chatwoot pending/resolved senkronu, #1023).
+model AgentConversation {
+  id                     String                  @id @default(uuid()) @db.Uuid
+  tenantId               String                  @map("tenant_id") @db.Uuid
+  channel                AgentChannel
+  chatwootConversationId Int                     @map("chatwoot_conversation_id")
+  patientId              String?                 @map("patient_id") @db.Uuid
+  contactName            String?                 @map("contact_name") @db.VarChar(200)
+  contactPhone           String?                 @map("contact_phone") @db.VarChar(20)
+  status                 AgentConversationStatus @default(bot_active)
+  lastMessageAt          DateTime                @default(now()) @map("last_message_at")
+  handedOffAt            DateTime?               @map("handed_off_at")
+  closedAt               DateTime?               @map("closed_at")
+  createdAt              DateTime                @default(now()) @map("created_at")
+  updatedAt              DateTime                @default(now()) @updatedAt @map("updated_at")
+  deletedAt              DateTime?               @map("deleted_at")
+
+  tenant   Tenant         @relation(fields: [tenantId], references: [id])
+  patient  Patient?       @relation(fields: [patientId], references: [id])
+  messages AgentMessage[]
+  actions  AgentAction[]
+
+  @@unique([tenantId, chatwootConversationId])
+  @@index([tenantId, status, lastMessageAt(sort: Desc)])
+  @@index([tenantId, patientId])
+  @@map("agent_conversations")
+}
+
+// Konuşma içindeki tek mesaj. Inbound (role=patient) satırlar processedAt=null
+// ile kuyruğa girer; worker orkestratörü çalıştırıp işler (DB-kuyruk kalıbı —
+// MessagingWorker ile aynı; Bull yok). chatwootMessageId webhook dedupe anahtarı.
+model AgentMessage {
+  id                String           @id @default(uuid()) @db.Uuid
+  tenantId          String           @map("tenant_id") @db.Uuid
+  conversationId    String           @map("conversation_id") @db.Uuid
+  role              AgentMessageRole
+  content           String
+  toolCalls         Json?            @map("tool_calls")
+  chatwootMessageId Int?             @map("chatwoot_message_id")
+  processedAt       DateTime?        @map("processed_at")
+  error             String?          @db.VarChar(1000)
+  // #1089 — token kullanımı (assistant mesajında; provider usage'ından). Maliyet
+  // UI'da model-fiyat tablosuyla hesaplanır (DB'ye USD yazılmaz — fiyat değişir).
+  inputTokens       Int?             @map("input_tokens")
+  outputTokens      Int?             @map("output_tokens")
+  model             String?          @db.VarChar(100)
+  createdAt         DateTime         @default(now()) @map("created_at")
+
+  tenant       Tenant            @relation(fields: [tenantId], references: [id])
+  conversation AgentConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, chatwootMessageId])
+  @@index([tenantId, conversationId, createdAt])
+  @@index([tenantId, role, processedAt])
+  // #1058 — cross-tenant worker taraması için partial index (Prisma partial
+  // index'i modelleyemez; kaynak raw SQL, tenant_impersonations emsali):
+  // agent_messages_unprocessed_idx ON (created_at)
+  //   WHERE role='patient' AND processed_at IS NULL
+  @@map("agent_messages")
+}
+
+// Bot'un HBYS'ye yaptığı her yazım / kritik olay — yönetici denetim tablosu.
+// refId polimorfik (appointment/patient id); FK yok, tip type alanından belli.
+model AgentAction {
+  id             String          @id @default(uuid()) @db.Uuid
+  tenantId       String          @map("tenant_id") @db.Uuid
+  conversationId String?         @map("conversation_id") @db.Uuid
+  type           AgentActionType
+  refId          String?         @map("ref_id") @db.Uuid
+  summary        String          @db.VarChar(500)
+  payload        Json?
+  createdAt      DateTime        @default(now()) @map("created_at")
+
+  tenant       Tenant             @relation(fields: [tenantId], references: [id])
+  conversation AgentConversation? @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, createdAt(sort: Desc)])
+  @@index([tenantId, type, createdAt(sort: Desc)])
+  @@map("agent_actions")
+}

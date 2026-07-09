@@ -1,0 +1,57 @@
+# Staging Caddy — yalnız yönlendirme, TLS YOK (TLS'i `tailscale serve` sonlandırır).
+#   :8890 (klinik app, tailscale 443)
+#     /           → apps/web/dist (SPA, /srv/web'e mount'lu) + index.html fallback
+#     /api/*      → api:3001
+#     /socket.io/* → api:3001 (gerçek-zamanlı bildirim socket'i)
+#   :8891 (DNA Platform Admin, tailscale 8444 — #845)
+#     /           → apps/admin/dist (SPA, /srv/admin'e mount'lu)
+#     /platform/* → api:3001 (platform endpoint'leri; admin same-origin /platform çağırır)
+# X-Forwarded-Proto https: dış istek Tailscale üstünden HTTPS olduğundan api'ye bildirilir
+# (Secure cookie + doğru origin için).
+#
+# GlitchTip paneli (I1.4 #816) bu Caddy'den GEÇMEZ — ayrı compose project'i
+# (docker-compose.glitchtip.staging.yml) olduğundan 127.0.0.1:8889'da kendi web'iyle
+# yayınlanır ve AYRI bir `tailscale serve` mapping'iyle açılır (runbook §4). Böylece
+# uygulama ile GlitchTip aynı tailnet'te ama farklı port/host'ta izole kalır.
+
+:8890 {
+	handle /api/* {
+		reverse_proxy api:3001 {
+			header_up X-Forwarded-Proto https
+		}
+	}
+
+	# socket.io (SyncGateway /sync namespace) — gerçek-zamanlı bildirim; yoksa 60sn poll fallback.
+	handle /socket.io/* {
+		reverse_proxy api:3001 {
+			header_up X-Forwarded-Proto https
+		}
+	}
+
+	handle {
+		root * /srv/web
+		try_files {path} /index.html
+		file_server
+	}
+
+	encode gzip zstd
+}
+
+# DNA Platform Admin (apps/admin) — ayrı origin, tailscale https=8444 → 127.0.0.1:8891.
+# Admin relative `/platform` çağırır → burada api'ye proxy'lenir (same-origin, CORS yok).
+# Klinik app (:8890) ve GlitchTip (:8889) etkilenmez.
+:8891 {
+	handle /platform/* {
+		reverse_proxy api:3001 {
+			header_up X-Forwarded-Proto https
+		}
+	}
+
+	handle {
+		root * /srv/admin
+		try_files {path} /index.html
+		file_server
+	}
+
+	encode gzip zstd
+}

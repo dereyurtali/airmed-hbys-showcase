@@ -1,0 +1,74 @@
+name: Security
+
+# Faz 0 — hijyen + güvenlik. Asıl secret savunması LOKAL pre-commit hook'tadır
+# (.husky/pre-commit → gitleaks, 0 CI dk). Bu workflow backstop. Önceden HER main
+# merge'inde koşuyordu (~110 dk!) → 2 runner'ı saatlerce tutuyordu. Artık NIGHTLY
+# (gece 1 kez) + manuel: pre-commit gitleaks zaten her commit'i tarıyor, CI nightly yeter.
+on:
+  schedule:
+    - cron: '0 2 * * *' # her gece 02:00 UTC (05:00 Istanbul) — main per-merge yerine
+  workflow_dispatch:
+
+concurrency:
+  group: security-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  secret-scan:
+    name: Secret scan (gitleaks)
+    runs-on: [self-hosted, airmed]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # gitleaks tam git history'yi tarasın
+      - name: Install gitleaks
+        env:
+          GITLEAKS_VERSION: 8.18.4
+        run: |
+          curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" -o gitleaks.tar.gz
+          tar -xzf gitleaks.tar.gz gitleaks
+          ./gitleaks version
+      - name: Run gitleaks (full history)
+        # Self-hosted runner: sudo yok → binary'i /usr/local/bin'e taşımadan workdir'den çalıştır.
+        run: ./gitleaks detect --source . --config .gitleaks.toml --redact --no-banner --exit-code 1
+
+  dependency-audit:
+    name: Dependency audit (npm)
+    runs-on: [self-hosted, airmed]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      # #971 — supply-chain: audit/gitleaks/semgrep app'i çalıştırmaz → --ignore-scripts yeterli.
+      - run: npm ci --ignore-scripts
+      - name: Audit production deps (high+critical → fail)
+        run: npm audit --omit=dev --audit-level=high
+      - name: Audit all deps (informational)
+        if: always()
+        run: npm audit || true
+
+  sast:
+    name: SAST (semgrep)
+    runs-on: [self-hosted, airmed]
+    container:
+      image: semgrep/semgrep
+    steps:
+      - uses: actions/checkout@v7
+      - name: Semgrep scan (informational — main kırmızıya boyamaz)
+        # İlk rollout: raporlar log'a düşer, build'i bloklamaz. Triyaj sonrası
+        # gerçek riskler için `|| exit 1` ekleyip bloklayıcıya çevrilebilir.
+        run: |
+          semgrep scan \
+            --config p/default \
+            --config p/owasp-top-ten \
+            --config p/typescript \
+            --config p/secrets \
+            --metrics off --error || true

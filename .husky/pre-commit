@@ -1,0 +1,14 @@
+# Secret tarama — staged değişiklikleri commit'ten ÖNCE tara (sıfır CI dakikası).
+# gitleaks kurulu değilse atlanır (kimseyi bloklamaz); CI backstop (security.yml)
+# main'de yine yakalar. Lokal kurulum: `brew install gitleaks`.
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks protect --staged --redact --no-banner --config .gitleaks.toml || {
+    echo ""
+    echo "✖ gitleaks: staged değişikliklerde olası secret bulundu."
+    echo "  Gerçekse: secret'ı kaldır (.env / .mcp.json gitignored — oraya koy)."
+    echo "  Yanlış alarmsa: .gitleaks.toml allowlist'e ekle."
+    exit 1
+  }
+fi
+
+npx --no-install lint-staged
