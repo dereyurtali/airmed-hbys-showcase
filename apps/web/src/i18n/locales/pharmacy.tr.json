@@ -1,0 +1,80 @@
+{
+  "interactions": {
+    "title": "İlaç etkileşim uyarıları",
+    "checking": "Etkileşim kontrol ediliyor…",
+    "clean": "Bilinen kritik etkileşim bulunamadı.",
+    "severity": {
+      "contraindicated": "Kontrendike",
+      "severe": "Şiddetli",
+      "moderate": "Orta",
+      "mild": "Hafif"
+    },
+    "kind": {
+      "interaction": "İlaç etkileşimi",
+      "allergy": "Alerji",
+      "anticoagulant": "Antikoagülan çatışması"
+    }
+  },
+  "section": {
+    "title": "Reçeteler",
+    "new": "Reçete ekle",
+    "empty": "Bu hasta için reçete yok."
+  },
+  "type": {
+    "drug": "İlaç reçetesi",
+    "eyewear": "Gözlük reçetesi"
+  },
+  "supplierCategory": {
+    "pharmacy": "Eczane",
+    "optic": "Optikçi",
+    "other": "Diğer"
+  },
+  "status": {
+    "draft": "Taslak",
+    "sent": "{{date}} tarihinde gönderildi"
+  },
+  "rxForm": {
+    "title": "Yeni reçete",
+    "description": "Hastaya reçete oluştur, tedarikçi seç ve QR ile gönder.",
+    "type": "Reçete tipi",
+    "supplier": "Tedarikçi",
+    "noSupplier": "Tedarikçi seçilmedi",
+    "drugItems": "İlaçlar",
+    "drugName": "İlaç adı",
+    "dose": "Doz",
+    "frequency": "Sıklık",
+    "duration": "Süre",
+    "addItem": "İlaç ekle",
+    "eyewearItems": "Gözlük reçetesi",
+    "eye": "Göz",
+    "sphere": "Sferik",
+    "cylinder": "Silindir",
+    "axis": "Aks",
+    "add": "Yakın",
+    "pd": "PD",
+    "notes": "Notlar",
+    "submit": "Kaydet"
+  },
+  "actions": {
+    "send": "Gönder",
+    "viewQr": "QR göster"
+  },
+  "qr": {
+    "title": "Reçete QR kodu",
+    "scanHint": "Hastaya QR'ı tarayın",
+    "supplierHint": "{{name}} tedarikçisine bu QR'ı gönderin",
+    "rxIdLabel": "Reçete",
+    "altLabel": "Reçete QR kodu"
+  },
+  "toast": {
+    "created": "Reçete oluşturuldu",
+    "sent": "Reçete gönderildi",
+    "deleted": "Reçete silindi"
+  },
+  "errors": {
+    "unknown": "Beklenmedik hata",
+    "noItems": "En az bir kalem girilmeli",
+    "supplierCategoryMismatch": "Tedarikçi kategorisi reçete tipiyle uyuşmuyor",
+    "supplierInactive": "Tedarikçi bulunamadı veya pasif"
+  }
+}

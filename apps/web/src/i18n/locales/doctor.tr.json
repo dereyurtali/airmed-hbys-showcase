@@ -1,0 +1,207 @@
+{
+  "list": {
+    "title": "Doktorlar",
+    "countDescription": "{{count}} kayıt",
+    "newDoctor": "Yeni doktor",
+    "searchPlaceholder": "Ad veya uzmanlık ile ara",
+    "showInactive": "Pasif kayıtları da göster",
+    "columns": {
+      "fullName": "Ad Soyad",
+      "specialty": "Uzmanlık",
+      "type": "Tip",
+      "contact": "İletişim",
+      "status": "Durum"
+    },
+    "status": {
+      "active": "Aktif",
+      "inactive": "Pasif"
+    },
+    "loadFailed": "Liste yüklenemedi: {{message}}",
+    "noResultsForQuery": "\"{{query}}\" için sonuç bulunamadı.",
+    "empty": "Henüz doktor yok. Yeni bir doktor kaydı ekleyin."
+  },
+  "form": {
+    "createTitle": "Yeni doktor",
+    "editTitle": "Doktoru düzenle",
+    "description": "Klinik personeli, misafir doktor veya sevk eden hekim kaydı.",
+    "fields": {
+      "name": "Ad Soyad",
+      "specialty": "Uzmanlık",
+      "specialtyHint": "Örn: Göz Hastalıkları, Retina, Glokom",
+      "type": "Tip",
+      "phone": "Telefon",
+      "email": "E-posta",
+      "commission": "Komisyon oranı (%)",
+      "commissionHint": "Sevk eden veya misafir doktorlar için (boş bırakılabilir)",
+      "commissionPlaceholder": "0 - 100",
+      "notes": "Notlar",
+      "isActive": "Aktif (listelemede görünür, randevu için seçilebilir)"
+    },
+    "submitCreate": "Kaydet",
+    "submitUpdate": "Değişiklikleri kaydet",
+    "errors": {
+      "create": "Kayıt başarısız",
+      "update": "Güncelleme başarısız"
+    }
+  },
+  "detail": {
+    "title": "Doktor",
+    "sections": {
+      "contact": "İletişim",
+      "details": "Detay",
+      "notes": "Notlar",
+      "weeklyHours": "Haftalık çalışma saatleri",
+      "weeklyHoursDescription": "Randevu sisteminde bu doktor için takvim açılması bu listeye göre yapılır. Her gün için bir veya birden fazla disjoint zaman aralığı tanımlayabilirsiniz."
+    },
+    "fields": {
+      "phone": "Telefon",
+      "email": "E-posta",
+      "type": "Tip",
+      "commission": "Komisyon",
+      "commissionValue": "%{{value}}",
+      "status": "Durum"
+    },
+    "actions": {
+      "backToList": "Listeye dön",
+      "edit": "Düzenle",
+      "deactivate": "Pasif yap",
+      "deactivateConfirm": "Bu doktoru pasif yapmak istediğinizden emin misiniz?",
+      "manageAccount": "Hesabı yönet"
+    },
+    "identityManagedHint": "Ad, telefon, e-posta ve durum bu doktorun hesabından yönetilir."
+  },
+  "type": {
+    "local": "Klinik personeli",
+    "visiting": "Misafir doktor",
+    "referral": "Sevk eden / dışarıdan",
+    "shortLocal": "Klinik personeli",
+    "shortVisiting": "Misafir",
+    "shortReferral": "Sevk"
+  },
+  "status": {
+    "active": "Aktif",
+    "inactive": "Pasif"
+  },
+  "availability": {
+    "columns": {
+      "day": "Gün",
+      "hours": "Çalışma saatleri"
+    },
+    "noWork": "Çalışmıyor",
+    "addSlot": "Saat ekle",
+    "remove": "Kaldır",
+    "ariaStart": "{{day}} başlangıç",
+    "ariaEnd": "{{day}} bitiş",
+    "errors": {
+      "format": "Saat HH:MM formatında olmalı",
+      "endAfterStart": "Bitiş başlangıçtan sonra olmalı",
+      "overlap": "Saatler çakışıyor"
+    },
+    "saveError": "Müsaitlik kaydedilemedi",
+    "dirty": "Kaydedilmemiş değişiklikler var.",
+    "clean": "Tüm değişiklikler kaydedildi.",
+    "revert": "Geri al",
+    "save": "Kaydet",
+    "noneDefined": "Henüz çalışma saati tanımlanmamış."
+  },
+  "leaves": {
+    "title": "İzin / tatil",
+    "description": "Doktorun çalışmadığı tarih aralıkları. Bu günlerde randevu takvimi blokludur.",
+    "loading": "Yükleniyor…",
+    "empty": "Aktif veya gelecek izin yok.",
+    "fields": {
+      "start": "Başlangıç",
+      "end": "Bitiş",
+      "reason": "Sebep",
+      "reasonPlaceholder": "Yıllık izin, kongre, vb. (opsiyonel)"
+    },
+    "actions": {
+      "add": "Ekle",
+      "remove": "Sil",
+      "removeConfirm": "Bu izin kaydını silmek istediğinize emin misiniz?"
+    },
+    "errors": {
+      "bothDates": "Başlangıç ve bitiş tarihlerini girin.",
+      "endBeforeStart": "Bitiş tarihi başlangıçtan önce olamaz.",
+      "addFailed": "İzin eklenemedi.",
+      "removeFailed": "İzin silinemedi."
+    },
+    "toast": {
+      "added": "İzin eklendi.",
+      "removed": "İzin silindi."
+    }
+  },
+  "visitingWindows": {
+    "title": "Geliş Pencereleri",
+    "description": "Misafir doktorun klinikte bulunacağı tarih/saat aralıkları. Randevu yalnız bu pencereler içinde verilebilir.",
+    "loading": "Yükleniyor…",
+    "empty": "Aktif veya gelecek geliş penceresi yok.",
+    "noneBanner": "Geliş tarihi tanımlı değil — randevuya kapalı.",
+    "fields": {
+      "start": "Başlangıç",
+      "startTime": "Başlangıç saati",
+      "end": "Bitiş",
+      "endTime": "Bitiş saati",
+      "notes": "Not",
+      "notesPlaceholder": "Örn. aylık poliklinik ziyareti (opsiyonel)"
+    },
+    "actions": {
+      "add": "Ekle",
+      "remove": "Sil",
+      "removeConfirm": "Bu geliş penceresini silmek istediğinize emin misiniz? Pencere silinince bu aralık randevuya kapanır."
+    },
+    "errors": {
+      "allFields": "Başlangıç ve bitiş tarih/saatlerini girin.",
+      "endBeforeStart": "Bitiş başlangıçtan önce olamaz.",
+      "addFailed": "Geliş penceresi eklenemedi.",
+      "removeFailed": "Geliş penceresi silinemedi."
+    },
+    "toast": {
+      "added": "Geliş penceresi eklendi.",
+      "removed": "Geliş penceresi silindi."
+    }
+  },
+  "days": {
+    "monday": "Pazartesi",
+    "tuesday": "Salı",
+    "wednesday": "Çarşamba",
+    "thursday": "Perşembe",
+    "friday": "Cuma",
+    "saturday": "Cumartesi",
+    "sunday": "Pazar",
+    "shortMonday": "Pzt",
+    "shortTuesday": "Sal",
+    "shortWednesday": "Çar",
+    "shortThursday": "Per",
+    "shortFriday": "Cum",
+    "shortSaturday": "Cmt",
+    "shortSunday": "Paz"
+  },
+  "publicProfile": {
+    "title": "Hasta-Facing Profil",
+    "description": "Açıkken hasta asistanı ve hasta yüzeyleri bu profili gösterebilir; CV ve dökümanlar asla hastaya çıkmaz.",
+    "statusOn": "Hastaya açık",
+    "statusOff": "Kapalı",
+    "titleField": "Unvan",
+    "titlePlaceholder": "örn. Prof. Dr.",
+    "bio": "Kısa Tanıtım",
+    "bioHint": "Hastaya gösterilecek kısa tanıtım metni",
+    "languages": "Konuşulan Diller",
+    "languagesPlaceholder": "Dil yazıp Enter’a basın",
+    "removeLanguage": "Kaldır",
+    "publicSwitch": "Hastaya açık profil",
+    "save": "Kaydet",
+    "saved": "Profil kaydedildi",
+    "photoUpload": "Fotoğraf yükle",
+    "photoReplace": "Fotoğrafı değiştir",
+    "photoHint": "PNG, JPG veya WebP — en fazla 2MB",
+    "photoMimeError": "Desteklenmeyen görsel türü (PNG, JPG, WebP)",
+    "photoSizeError": "Fotoğraf 2MB'ı aşamaz",
+    "photoUploaded": "Fotoğraf yüklendi",
+    "photoError": "Fotoğraf yüklenemedi",
+    "selfHeading": "Hastaya açık profilim",
+    "selfEditNote": "Bu bilgiler yönetici tarafından düzenlenir. Değişiklik için kliniğe başvurun.",
+    "statusPublished": "Yayında",
+    "statusHidden": "Gizli"
+  }
+}

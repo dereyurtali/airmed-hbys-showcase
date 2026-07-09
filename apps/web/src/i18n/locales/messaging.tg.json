@@ -1,0 +1,74 @@
+{
+  "page": {
+    "title": "Паёмҳо",
+    "subtitle": "Қолабҳо, триггерҳо ва таърихи фиристониш"
+  },
+  "thread": {
+    "title": "Паёмҳои бемор",
+    "new": "Мавзӯи нав",
+    "create": "Мавзӯро кушодан",
+    "createSuccess": "Мавзӯи паёмҳо кушода шуд",
+    "subjectPlaceholder": "Унвони мавзӯъ (ихтиёрӣ)",
+    "initialMessagePlaceholder": "Паёми аввалинро нависед…",
+    "composePlaceholder": "Паём нависед…",
+    "empty": "Ҳоло мавзӯи паём нест.",
+    "noSubject": "(беунвон)",
+    "selectPrompt": "Аз тарафи чап як мавзӯъ интихоб кунед ё мавзӯи нав созед."
+  },
+  "tabs": {
+    "templates": "Қолабҳо",
+    "triggers": "Триггерҳо",
+    "deliveries": "Фиристониш"
+  },
+  "templates": {
+    "header": "Қолабҳо (TR/RU/TG)",
+    "language": "Забон",
+    "channel": "Канал",
+    "triggerKey": "Триггер",
+    "subject": "Сарлавҳа",
+    "body": "Матн",
+    "isActive": "Фаъол",
+    "edit": "Тағйир",
+    "save": "Захира",
+    "cancel": "Бекор",
+    "saved": "Захира шуд",
+    "emptyState": "Барои ин филтр қолаб нест",
+    "vars": "Тағйирёбандаҳо"
+  },
+  "triggers": {
+    "header": "Конфигуратсияи триггерҳо",
+    "category": "Категория",
+    "name": "Ном",
+    "key": "Калид",
+    "enabled": "Фаъол",
+    "channels": "Каналҳо",
+    "quietHours": "Соатҳои хомӯш",
+    "mandatory": "Ҳатмӣ",
+    "mandatoryHint": "Хомӯш карда намешавад (бехатарӣ)",
+    "all": "Ҳама",
+    "saved": "Конфигуратсия нав шуд",
+    "categoryRandevu": "Қабул",
+    "categoryTetkik": "Таҳлилҳо",
+    "categoryFatura": "Пардохт",
+    "categoryOnam": "Розигӣ",
+    "categoryDiger": "Дигар"
+  },
+  "deliveries": {
+    "header": "Таърихи фиристониш",
+    "filterStatus": "Ҳолат",
+    "filterTrigger": "Триггер",
+    "filterRecipient": "Қабулкунанда",
+    "status": "Ҳолат",
+    "trigger": "Триггер",
+    "recipient": "Қабулкунанда",
+    "scheduledAt": "Нақшаи",
+    "sentAt": "Фиристода",
+    "attempts": "Кӯшишҳо",
+    "lastError": "Хатои охирин",
+    "emptyState": "Барои ин филтр фиристониш нест",
+    "all": "Ҳама"
+  },
+  "errors": {
+    "unknown": "Хатои номаълум"
+  }
+}

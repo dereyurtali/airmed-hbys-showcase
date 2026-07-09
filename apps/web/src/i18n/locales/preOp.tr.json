@@ -1,0 +1,57 @@
+{
+  "section": {
+    "title": "Pre-op hazırlık",
+    "openButton": "Pre-op aç",
+    "editButton": "Pre-op düzenle",
+    "ready": "Ameliyata hazır",
+    "notReady": "Hazırlık devam ediyor",
+    "progress": "{{done}}/{{total}} madde tamam",
+    "markReady": "Hazır olarak işaretle",
+    "unmarkReady": "Hazırlığı geri al"
+  },
+  "dialog": {
+    "title": "Pre-op kontrol",
+    "description": "Vitaller, dilatasyon, anestezi ve checklist maddelerini doldurun. Tüm gerekli maddeler tamamlanınca ameliyata hazır olarak işaretleyebilirsiniz.",
+    "vitalsTitle": "Vital bulgular",
+    "systolic": "Sistolik",
+    "diastolic": "Diyastolik",
+    "pulse": "Nabız",
+    "bloodSugar": "Kan şekeri",
+    "temperatureC": "Ateş",
+    "oxygenSaturation": "SpO₂",
+    "weightKg": "Kilo",
+    "dilatationAt": "Dilatasyon zamanı",
+    "anesthesiaNotes": "Anestezi notu",
+    "lensTitle": "IOL lens rezervasyonu",
+    "lensSelect": "Lot seçin",
+    "lensNone": "Lens rezervasyonu yok",
+    "checklistTitle": "Hazırlık checklist'i",
+    "save": "Kaydet",
+    "close": "Kapat"
+  },
+  "checklist": {
+    "fasting_8h": "Açlık (8 saat) onaylandı",
+    "blood_sugar": "Kan şekeri kontrolü",
+    "blood_pressure": "Tansiyon kontrolü",
+    "pupil_dilation": "Pupil dilatasyonu",
+    "antibiotic_prophylaxis": "Antibiyotik profilaksisi",
+    "consent_signed": "Onam imzalandı",
+    "lens_reserved": "IOL lens rezerve edildi",
+    "surgeon_ready": "Cerrah hazır",
+    "anesthesia_consult_completed": "Anestezi konsültasyonu tamamlandı"
+  },
+  "toast": {
+    "created": "Pre-op kaydı oluşturuldu",
+    "updated": "Pre-op güncellendi",
+    "ready": "Ameliyat hazır olarak işaretlendi",
+    "unmarked": "Hazırlık durumu geri alındı"
+  },
+  "errors": {
+    "unknown": "Beklenmedik hata",
+    "vitalsRequired": "En az bir vital değer girin",
+    "dilatationRequired": "Dilatasyon zamanı eksik",
+    "checklistIncomplete": "Tüm zorunlu maddeler tamamlanmalı",
+    "lensOutOfStock": "Seçilen lot stokta yok",
+    "lockedAfterReady": "Hazır olarak işaretlendikten sonra düzenlenemez"
+  }
+}

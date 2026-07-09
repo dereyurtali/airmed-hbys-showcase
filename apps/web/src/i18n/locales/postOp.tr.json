@@ -1,0 +1,28 @@
+{
+  "section": {
+    "planButton": "Post-op kontrol planı",
+    "scheduled_one": "{{count}} kontrol randevusu planlandı",
+    "scheduled_other": "{{count}} kontrol randevusu planlandı",
+    "clear": "Sıfırla"
+  },
+  "dialog": {
+    "title": "Post-op kontrol randevuları",
+    "description": "Ameliyat sonrası kontrol için 7 / 30 / 90 gün önerileri. Tarih ve saatleri ihtiyaca göre düzenleyebilirsiniz.",
+    "followUpHeader": "{{n}}. kontrol — {{days}} gün sonra",
+    "startsAt": "Başlangıç",
+    "endsAt": "Bitiş",
+    "submit": "Randevuları oluştur"
+  },
+  "toast": {
+    "scheduled_one": "{{count}} kontrol randevusu oluşturuldu",
+    "scheduled_other": "{{count}} kontrol randevusu oluşturuldu",
+    "deleted": "Post-op kontrol planı sıfırlandı"
+  },
+  "errors": {
+    "unknown": "Beklenmedik hata",
+    "alreadyScheduled": "Bu ameliyat için zaten post-op kontrol planı var. Önce sıfırlayın.",
+    "conflict": "Önerilen saat başka bir randevuyla çakışıyor",
+    "forbidden": "Bu işlem için ameliyatı yapan cerrah veya yönetici yetkisi gerekir",
+    "surgeonNoProfile": "Cerrahın doktor profili yok — önce profil tanımlayın"
+  }
+}

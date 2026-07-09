@@ -1,0 +1,97 @@
+{
+  "title": "Yönetici Paneli",
+  "description": "Klinik performansının canlı görünümü",
+  "registerPatient": {
+    "title": "Yeni Hasta Kaydı",
+    "description": "Yeni hasta kaydı oluştur"
+  },
+  "loading": "Yükleniyor…",
+  "error": "Metrikler yüklenemedi.",
+  "filters": {
+    "dateFrom": "Başlangıç",
+    "dateTo": "Bitiş",
+    "doctor": "Doktor",
+    "allDoctors": "Tüm doktorlar",
+    "preset": {
+      "today": "Bugün",
+      "week": "Bu hafta",
+      "month": "Bu ay",
+      "quarter": "Son 3 ay"
+    }
+  },
+  "today": {
+    "title": "Bugün",
+    "appointments": "Bugünkü randevu",
+    "examinations": "Tamamlanan muayene",
+    "surgeries": "Gerçekleşen ameliyat",
+    "newPatients": "Yeni hasta"
+  },
+  "kpi": {
+    "totalAppointments": "Toplam randevu",
+    "completed": "Tamamlanan",
+    "noShowRate": "Gelmedi oranı",
+    "examinations": "Muayene",
+    "surgeries": "Ameliyat",
+    "complicationRate": "Komplikasyon oranı",
+    "newPatients": "Yeni hasta"
+  },
+  "charts": {
+    "appointmentTrend": {
+      "title": "Randevu trendi",
+      "yLabel": "Randevu sayısı"
+    },
+    "doctorPerformance": {
+      "title": "Doktor performansı",
+      "completed": "Tamamlanan",
+      "noShow": "Gelmedi",
+      "rate": "Tamamlanma oranı"
+    },
+    "noData": "Bu aralıkta veri yok."
+  },
+  "widget": {
+    "dailyHuddle": {
+      "title": "Günlük Toplantı",
+      "error": "Toplantı verisi alınamadı",
+      "todayAppointments": "Bugün randevu",
+      "inExam": "Muayenede",
+      "awaitingMeasurement": "Ölçüm beklemede",
+      "awaitingSurgerySales": "Satışta",
+      "activeBypass": "{{count}} aktif acil bypass"
+    },
+    "doctorLag": {
+      "title": "Doktor Bekleme Süreleri",
+      "error": "Bekleme süresi alınamadı",
+      "empty": "Bugün aktif ziyaret yok.",
+      "avgMax": "ort {{avg}}dk / maks {{max}}dk"
+    },
+    "paymentCompliance": {
+      "title": "Önce Öde Uyumu",
+      "error": "Uyum verisi alınamadı",
+      "unpaidActive": "ödenmemiş aktif hizmet",
+      "activeBypass": "Aktif bypass:",
+      "totalBypassToday": "Bugün toplam bypass:",
+      "goToCash": "Kasaya git →"
+    },
+    "pendingApprovals": {
+      "title": "Bekleyen Onaylar",
+      "error": "Onay sayısı alınamadı",
+      "discountApproval": "indirim onayı",
+      "awaitingResponse": "yanıt bekleniyor"
+    },
+    "quickActions": {
+      "title": "Hızlı Erişim",
+      "newPatient": "Yeni Hasta",
+      "newPatientDesc": "Hasta kaydı oluştur",
+      "patientList": "Hasta Listesi",
+      "patientListDesc": "Aramayı aç",
+      "changePassword": "Şifre Değiştir",
+      "changePasswordDesc": "Güvenli kal"
+    },
+    "todayAppointments": {
+      "title": "Bugünün Randevuları",
+      "error": "Randevular alınamadı",
+      "empty": "Bugün için randevu yok",
+      "checkIn": "check-in:"
+    }
+  }
+}

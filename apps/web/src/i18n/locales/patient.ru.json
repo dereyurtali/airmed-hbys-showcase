@@ -1,0 +1,193 @@
+{
+  "list": {
+    "title": "Пациенты",
+    "countDescription": "{{count}} записей",
+    "newPatient": "Новый пациент",
+    "searchPlaceholder": "Поиск по имени, фамилии, MRN или 4 последним цифрам",
+    "columns": {
+      "mrn": "MRN",
+      "fullName": "Ф.И.О.",
+      "birthDate": "Дата рожд.",
+      "phone": "Телефон",
+      "createdAt": "Регистрация"
+    },
+    "loadFailed": "Не удалось загрузить список: {{message}}",
+    "noResultsForQuery": "По запросу «{{query}}» ничего не найдено.",
+    "empty": "Пока нет пациентов. Добавьте нового пациента.",
+    "filterByTag": "Фильтр по меткам",
+    "visitingScopeNote": "Приглашённый врач: показаны только ваши пациенты (поиск по клинике отключён).",
+    "visitingNoAccessHint": "Этого пациента нет в вашем списке — обратитесь к администратору за доступом."
+  },
+  "form": {
+    "createTitle": "Новый пациент",
+    "editTitle": "Изменить пациента",
+    "createDescription": "Добавить нового пациента в записи клиники.",
+    "editDescription": "Обновить существующие сведения.",
+    "sections": {
+      "emergency": "Экстренный контакт",
+      "tags": "Метки",
+      "leadSource": "Источник пациента",
+      "medical": "Медицинские сведения",
+      "pediatric": "Законный представитель"
+    },
+    "leadSourceNotePlaceholder": "Кампания, имя врача и т.п.",
+    "medicalHint": "Жизненно важные сведения, используемые при операции и назначении лекарств. Поле необязательное, но рекомендуется заполнить.",
+    "allergiesHint": "Все известные аллергии на лекарства и вещества (например, пенициллин, латекс).",
+    "allergiesPlaceholder": "Enter для добавления...",
+    "anticoagulantsHint": "Принимаемые пациентом препараты, разжижающие кровь (варфарин, аспирин, клопидогрел и т.п.).",
+    "anticoagulantsPlaceholder": "Enter для добавления...",
+    "pediatricHint": "Пациенту меньше 18 лет. Для информированного согласия требуется подпись законного представителя.",
+    "pediatricBadge": "Педиатрия ({{age}} лет)",
+    "fields": {
+      "firstName": "Имя",
+      "lastName": "Фамилия",
+      "birthDate": "Дата рождения",
+      "gender": "Пол",
+      "phone": "Телефон",
+      "email": "Электронная почта",
+      "identityNo": "Удостоверение",
+      "passportNo": "Паспорт",
+      "emergencyName": "Контактное лицо",
+      "emergencyPhone": "Телефон контакта",
+      "address": "Адрес",
+      "notes": "Примечания",
+      "leadSource": "Канал",
+      "leadSourceNote": "Описание",
+      "allergies": "Аллергии",
+      "anticoagulants": "Антикоагулянты",
+      "bloodType": "Группа крови",
+      "guardianName": "Ф.И.О. представителя",
+      "guardianPhone": "Телефон представителя",
+      "guardianRelationship": "Степень родства",
+      "genderPlaceholder": "Выберите…"
+    },
+    "submitCreate": "Сохранить",
+    "submitUpdate": "Обновить",
+    "loadFailed": "Не удалось загрузить пациента: {{message}}",
+    "duplicates": {
+      "title": "Возможный дубликат",
+      "reason": "{{id}} — причина совпадения: {{reason}}",
+      "dismiss": "Отмена",
+      "force": "Всё равно сохранить"
+    }
+  },
+  "detail": {
+    "fields": {
+      "birthDate": "Дата рождения",
+      "gender": "Пол",
+      "phone": "Телефон",
+      "email": "Электронная почта",
+      "identityNo": "Удостоверение",
+      "passportNo": "Паспорт",
+      "emergencyName": "Контактное лицо",
+      "emergencyPhone": "Телефон контакта",
+      "address": "Адрес",
+      "notes": "Примечания",
+      "leadSource": "Канал",
+      "leadSourceNote": "Заметка о канале",
+      "bloodType": "Группа крови",
+      "createdAt": "Дата регистрации",
+      "updatedAt": "Последнее изменение"
+    },
+    "allergiesWarning": "Внимание: аллергии",
+    "anticoagulantsWarning": "Внимание: антикоагулянты",
+    "edit": "Изменить",
+    "delete": "Удалить",
+    "newAppointment": "Новая запись",
+    "notFound": "Пациент не найден",
+    "notFoundWithMessage": "Пациент не найден: {{message}}",
+    "confirm": {
+      "title": "Удалить пациента?",
+      "description": "Применяется мягкое удаление; данные сохраняются, но не отображаются в списке и поиске.",
+      "cancel": "Отмена",
+      "confirm": "Да, удалить"
+    }
+  },
+  "gender": {
+    "female": "Женский",
+    "male": "Мужской",
+    "other": "Другой"
+  },
+  "leadSource": {
+    "unset": "Не указан",
+    "instagram": "Instagram",
+    "telegram": "Telegram",
+    "whatsapp": "WhatsApp",
+    "doctor_referral": "Направление врача",
+    "returning_patient": "Повторный пациент",
+    "optic_partner": "Оптика-партнёр",
+    "corporate_contract": "Корпоративный договор",
+    "field_rep": "Полевой представитель",
+    "walk_in": "Самостоятельное обращение",
+    "other": "Другое",
+    "second_opinion": "Второе мнение"
+  },
+  "leadFunnel": {
+    "title": "Воронка источников",
+    "description": "Какой канал приводит к записи, осмотру и операции.",
+    "from": "С",
+    "to": "По",
+    "quickFilter": "Быстрый фильтр:",
+    "clearFilter": "Сбросить фильтр",
+    "empty": "Нет данных за период.",
+    "allSources": "Все каналы",
+    "stages": {
+      "lead": "Лид",
+      "appointment": "Запись",
+      "examination": "Осмотр",
+      "surgery": "Операция",
+      "surgery_refused": "Отказ от операции"
+    },
+    "columns": {
+      "source": "Канал",
+      "conversion": "Конверсия"
+    }
+  },
+  "bloodType": {
+    "unset": "Не указано",
+    "a_pos": "A Rh+",
+    "a_neg": "A Rh-",
+    "b_pos": "B Rh+",
+    "b_neg": "B Rh-",
+    "ab_pos": "AB Rh+",
+    "ab_neg": "AB Rh-",
+    "o_pos": "0 Rh+",
+    "o_neg": "0 Rh-",
+    "unknown": "Неизвестно"
+  },
+  "guardianRelationship": {
+    "unset": "Не выбрано",
+    "mother": "Мать",
+    "father": "Отец",
+    "legal_guardian": "Опекун",
+    "grandparent": "Бабушка / дедушка",
+    "sibling": "Брат / сестра",
+    "other": "Другое"
+  },
+  "tags": {
+    "vip": "VIP",
+    "risk_high": "Высокий риск",
+    "risk_low": "Низкий риск",
+    "follow_up": "Под наблюдением",
+    "chronic": "Хронический",
+    "no_show_risk": "Опаздывает",
+    "insurance": "Страховой",
+    "pediatric": "Детский",
+    "geriatric": "Пожилой",
+    "hint": "Выберите одну или несколько меток для классификации пациента.",
+    "pickerLabel": "Выбрать метку"
+  },
+  "clinicalLists": {
+    "title": "Проблемы и лекарства",
+    "problems": "Проблемы",
+    "medications": "Лекарства",
+    "noProblems": "Нет записанных проблем",
+    "noMedications": "Нет записанных лекарств",
+    "resolve": "Отметить как решённое",
+    "stop": "Прекратить",
+    "problemPlaceholder": "Проблема / диагноз",
+    "medPlaceholder": "Название лекарства",
+    "dose": "Доза",
+    "frequency": "Частота"
+  }
+}

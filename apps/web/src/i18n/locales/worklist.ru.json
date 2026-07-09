@@ -1,0 +1,131 @@
+{
+  "page": {
+    "title": "Моя очередь",
+    "description": "Пациенты, направленные к вам сегодня",
+    "empty": "В вашей очереди нет пациентов",
+    "loading": "Загрузка…",
+    "loadFailed": "Не удалось загрузить очередь: {{message}}"
+  },
+  "columns": {
+    "patient": "Пациент",
+    "stage": "Статус",
+    "waiting": "Ожидание",
+    "appointment": "Приём",
+    "action": "Действие"
+  },
+  "filter": {
+    "allDoctors": "Все врачи",
+    "doctorLabel": "Врач"
+  },
+  "widget": {
+    "title": "Моя очередь",
+    "empty": "В очереди нет пациентов"
+  },
+  "stage": {
+    "registered": "Регистрация",
+    "awaitingExamPayment": "Ожидает оплату приёма",
+    "waitingDoctor": "Ожидает врача",
+    "inExam": "На приёме",
+    "awaitingMeasurementPayment": "Ожидает оплату измерений",
+    "inMeasurement": "На измерении",
+    "measurementReady": "Измерения готовы",
+    "awaitingSurgerySales": "Продажа операции",
+    "done": "Завершён",
+    "cancelled": "Отменён"
+  },
+  "queue": {
+    "title": "Очередь приёма",
+    "waitingPatients": "Ожидающие пациенты",
+    "search": "Поиск пациента",
+    "empty": "На этой вкладке нет пациентов",
+    "readyCount": "{{count}} измерений готово",
+    "examCap": "{{count}}/{{cap}} на приёме",
+    "examCapHint": "Лимит одновременных приёмов: {{cap}}",
+    "tabs": {
+      "sirada": "В очереди",
+      "ready": "Измерения готовы",
+      "unpaid": "Не оплачено"
+    },
+    "onlyActionable": "Только требующие действия"
+  },
+  "status": {
+    "inLine": "В очереди",
+    "inMeasurement": "На измерении",
+    "measurementReady": "Измерения готовы",
+    "unpaid": "Не оплачено",
+    "surgerySales": "Продажа операции"
+  },
+  "detail": {
+    "selectPrompt": "Выберите пациента слева",
+    "yearsOld": "лет",
+    "arrival": "Приход",
+    "appointmentAt": "Приём",
+    "allergies": "Аллергия",
+    "anticoagulants": "Антикоагулянт",
+    "ready": "Готово",
+    "history": "Анамнез и жалобы",
+    "pastExams": "Прошлые осмотры",
+    "complaint": "Жалоба",
+    "historyLabel": "Анамнез",
+    "treatmentPlan": "План лечения",
+    "prescription": "Рецепт",
+    "procedures": "Процедуры",
+    "surgery": "Операция",
+    "measurement": "Измерение",
+    "done": "выполнено",
+    "planned": "запланировано",
+    "noExtra": "Доп. деталь нет",
+    "measurements": "Результаты измерений",
+    "noHistory": "Нет записи анамнеза",
+    "noMeasurements": "Нет результатов измерений",
+    "col": {
+      "test": "Тест",
+      "right": "Прав.",
+      "left": "Лев."
+    }
+  },
+  "meas": {
+    "va": "Острота зрения (VA)",
+    "iop": "Внутриглазное давление (ВГД)",
+    "refraction": "Авторефрактометрия",
+    "keratometry": "Кератометрия",
+    "biometry": "Биометрия (ПЗО)",
+    "topography": "Топография",
+    "pachymetry": "Пахиметрия",
+    "perimetry": "Поле зрения (периметрия)",
+    "fundusPhoto": "Фото глазного дна",
+    "oct": "ОКТ"
+  },
+  "gender": {
+    "male": "Мужчина",
+    "female": "Женщина",
+    "other": "Другое"
+  },
+  "reasonFallback": "Приём",
+  "priority": {
+    "urgent": "СРОЧНО",
+    "vip": "VIP"
+  },
+  "toast": {
+    "completed": "Приём завершён",
+    "examStarted": "Приём начат",
+    "recalled": "Пациент возвращён"
+  },
+  "action": {
+    "startExam": "Начать приём",
+    "orderMeasurement": "Запросить измерение",
+    "newMeasurement": "Запросить измерение",
+    "prescription": "Выписать рецепт",
+    "suggestSurgery": "Предложить операцию",
+    "complete": "Завершить приём",
+    "capReachedHint": "Достигнут лимит одновременных приёмов — сначала завершите один",
+    "completeStageHint": "Завершить можно только пациента на приёме (in_exam)",
+    "recall": "Вернуть"
+  },
+  "decision": {
+    "title": "Следующий шаг",
+    "prescription": "Выписать рецепт",
+    "measurement": "Запросить измерение",
+    "surgery": "Операция (в продажи)"
+  }
+}

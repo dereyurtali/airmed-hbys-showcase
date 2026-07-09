@@ -1,0 +1,57 @@
+{
+  "title": "İlk Kurulum",
+  "subtitle": "Klinik hesabınızı oluşturun. Bu ekran yalnızca uygulamada hiçbir kullanıcı yokken görüntülenir.",
+  "stepClinic": "Klinik bilgileri",
+  "stepAdmin": "Yönetici hesabı",
+  "stepLabel": "Adım {{current}} / {{total}}",
+  "clinic": {
+    "intro": "Kliniğe özgü temel ayarlar. Slug, klinik adresinizin alt alan adı olur.",
+    "slugLabel": "Klinik kodu (slug)",
+    "slugHint": "3-40 karakter, küçük harf/rakam/tire (örn. demoeye-dushanbe).",
+    "nameLabel": "Klinik adı",
+    "nameHint": "Belgelerde ve giriş ekranında görünür.",
+    "mrnPrefixLabel": "Hasta numarası ön eki",
+    "mrnPrefixHint": "2-3 BÜYÜK harf (örn. TD). Hasta MRN'lerinde sabit olarak kullanılır.",
+    "localeLabel": "Varsayılan dil",
+    "timezoneLabel": "Saat dilimi",
+    "logoLabel": "Klinik logosu (opsiyonel)",
+    "logoHint": "Şimdi yükleyebilir veya sonra Ayarlar > Klinik Bilgileri'nden değiştirebilirsiniz. PNG, JPG, WebP veya SVG; en fazla 2 MB.",
+    "logoPick": "Dosya seç",
+    "logoReplace": "Değiştir",
+    "logoClear": "Kaldır",
+    "logoErrorMime": "Sadece PNG, JPG, WebP veya SVG yükleyebilirsiniz.",
+    "logoErrorSize": "Logo 2 MB sınırını aşıyor."
+  },
+  "admin": {
+    "intro": "Klinik yöneticisi hesabı. Giriş yaptıktan sonra diğer kullanıcıları (doktor, resepsiyon, hemşire vb.) Ayarlar bölümünden ekleyebilirsiniz.",
+    "nameLabel": "Yönetici adı",
+    "emailLabel": "E-posta",
+    "passwordLabel": "Şifre",
+    "passwordHint": "En az 12 karakter. Güvenli, eşsiz bir şifre seçin.",
+    "passwordConfirmLabel": "Şifre (tekrar)"
+  },
+  "actions": {
+    "next": "Devam et",
+    "back": "Geri",
+    "submit": "Kurulumu tamamla",
+    "submitting": "Kuruluyor…"
+  },
+  "validation": {
+    "slugPattern": "3-40 karakter, küçük harf/rakam/tire",
+    "nameMin": "En az 2 karakter",
+    "mrnPattern": "2-3 BÜYÜK harf",
+    "emailInvalid": "Geçerli bir e-posta girin",
+    "passwordMin": "Şifre en az 12 karakter",
+    "passwordMismatch": "Şifreler eşleşmiyor"
+  },
+  "successTitle": "Kurulum tamamlandı",
+  "successDescription": "Yönetici hesabınız hazır. Giriş yaparak diğer kullanıcıları ekleyebilirsiniz.",
+  "successCta": "Giriş ekranına git",
+  "alreadySetUp": "Sistem zaten kurulmuş; giriş ekranına yönlendiriliyorsunuz.",
+  "errorFallback": "Kurulum başarısız oldu. Bilgileri kontrol edip tekrar deneyin.",
+  "locales": {
+    "tr": "Türkçe",
+    "ru": "Rusça",
+    "tg": "Tacikçe"
+  }
+}

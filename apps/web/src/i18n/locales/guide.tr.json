@@ -1,0 +1,1697 @@
+{
+  "meta": {
+    "comingSoon": "Bu ekran için kılavuz yakında eklenecek.",
+    "thisScreenTab": "Bu Ekran",
+    "firstDayTab": "İlk Gün",
+    "purposeLabel": "Ne işe yarar",
+    "layoutLabel": "Ekran düzeni",
+    "tasksLabel": "Yapabilecekleriniz"
+  },
+  "default": {
+    "patients": {
+      "title": "Hastalar",
+      "purpose": "Klinikteki hastaları arayın, yeni hasta ekleyin ve hasta dosyalarına ulaşın.",
+      "layout": "Üstte arama kutusu ve etiket filtreleri; altta hasta listesi. Sağ üstte \"Yeni Hasta\".",
+      "tasks": [
+        {
+          "title": "Hasta arama",
+          "steps": [
+            "Arama kutusuna ad, MRN veya telefon son 4 hanesini yazın.",
+            "Listeden hastaya tıklayarak dosyasını açın."
+          ]
+        }
+      ]
+    },
+    "schedule": {
+      "title": "Randevu Takvimi",
+      "purpose": "Randevuları görüntüleyin ve yeni randevu oluşturun.",
+      "layout": "Üstte gün/hafta geçişi ve doktor/tip filtreleri; ana alanda takvim.",
+      "tasks": [
+        {
+          "title": "Randevu oluşturma",
+          "steps": [
+            "Takvimde boş bir slota tıklayın.",
+            "Hasta ve doktoru seçin, saati onaylayın, Kaydet."
+          ]
+        }
+      ]
+    },
+    "patientDetail": {
+      "title": "Hasta Dosyası",
+      "purpose": "Bir hastanın tüm klinik geçmişini tek yerde görün.",
+      "layout": "Üstte sabit hasta kimliği ve alerji uyarısı; altta muayene, ölçüm, cerrahi, fatura bölümleri.",
+      "tasks": [
+        {
+          "title": "Geçmişi inceleme",
+          "steps": [
+            "İlgili bölüm başlığına inin (muayene/ölçüm/cerrahi).",
+            "Kayda tıklayarak ayrıntıyı açın."
+          ]
+        }
+      ]
+    },
+    "billing": {
+      "title": "Faturalama",
+      "purpose": "Fatura kesin ve tahsilat yapın.",
+      "layout": "Fatura listesi + arama; sağ üstte yeni fatura.",
+      "tasks": [
+        {
+          "title": "Tahsilat",
+          "steps": ["Faturayı açın.", "Tahsil Et ile ödeme yöntemini seçip onaylayın."]
+        }
+      ]
+    },
+    "leads": {
+      "title": "Aday Hastalar (Lead)",
+      "purpose": "Potansiyel hasta adaylarını ve dönüşüm hunisini izlersiniz.",
+      "layout": "Aşamalara göre aday listesi.",
+      "tasks": [
+        {
+          "title": "Aday takibi",
+          "steps": ["Adayı aşamada görün; iletişim sonucunu kaydedin."]
+        }
+      ]
+    },
+    "procedures": {
+      "title": "İşlemler",
+      "purpose": "Yapılan işlemleri/prosedürleri listelersiniz.",
+      "layout": "İşlem listesi + filtre.",
+      "tasks": [
+        {
+          "title": "İşlem görüntüleme",
+          "steps": ["Tarih/hasta ile işlemleri filtreleyin."]
+        }
+      ]
+    },
+    "overview": {
+      "title": "Genel Bakış",
+      "purpose": "Bugünkü işinizin özeti: muayene sıranız, randevularınız, imza bekleyen kayıtlar ve bugünkü ameliyatlar.",
+      "layout": "Üstte 4 KPI kartı (Sıra / Randevu / Co-sign / Ameliyat) tıkla→ilgili ekran; altta kuyruk, imza ve ameliyat widget’ları.",
+      "tasks": [
+        {
+          "title": "Hızlı erişim",
+          "steps": [
+            "Bir KPI kartına tıklayın; sizi o ekrana ön-filtreli götürür.",
+            "Sağ üstteki büyük butonla doğrudan muayeneye başlayın."
+          ]
+        }
+      ]
+    },
+    "worklist": {
+      "title": "Muayene Sırası",
+      "purpose": "Size yönlendirilmiş hastaları görür, muayeneyi başlatır ve muayene sonrası kararı verirsiniz.",
+      "layout": "Sol tarafta hasta kuyruğu (bekleyen / muayenede / hazır), sağ tarafta seçili hastanın kartı.",
+      "tasks": [
+        {
+          "title": "Muayeneye başlama",
+          "steps": [
+            "Kuyruktan hastayı seçin.",
+            "“Muayeneye Başla” ile hastayı muayeneye alın (en fazla 3 aktif muayene)."
+          ]
+        },
+        {
+          "title": "Muayene sonrası karar",
+          "steps": [
+            "Muayene bittiğinde karar panelinden seçin: Reçete yaz, Ölçüm iste, Ameliyat öner veya Reddet.",
+            "“Ameliyat” seçilirse hasta satış ekibine düşer; “Ölçüm iste” ölçüm istasyonuna gider."
+          ]
+        }
+      ]
+    },
+    "surgeryDay": {
+      "title": "Ameliyat Günü Merkezi",
+      "purpose": "Bugünkü ameliyatları sırayla yürütürsünüz: güvenlik kontrol listesi, lens kaydı, tamamlama.",
+      "layout": "Her satır bir ameliyat pipeline’ı; “Tamamlamak için eksikler” paneli imzalı onam ve güvenlik kontrolünü gösterir.",
+      "tasks": [
+        {
+          "title": "Ameliyatı tamamlama",
+          "steps": [
+            "Güvenlik kontrol listesini (WHO) doldurun.",
+            "Kullanılan lensi kaydedin.",
+            "Eksik yoksa “Tamamla” ile ameliyatı bitirin (imzalı onam yoksa tamamlanamaz)."
+          ]
+        }
+      ]
+    },
+    "cosign": {
+      "title": "Co-sign (Ortak İmza)",
+      "purpose": "Hemşirenin sizin adınıza girdiği kayıtları onaylarsınız.",
+      "layout": "Bekleyen kayıt listesi; her kayıtta öncesi/sonrası fark (diff) gösterilir.",
+      "tasks": [
+        {
+          "title": "Kayıt onayı",
+          "steps": [
+            "Bekleyen kaydı açın, öncesi/sonrası farkı inceleyin.",
+            "Doğruysa onaylayın; yanlışsa reddedip hemşireye bildirin."
+          ]
+        }
+      ]
+    },
+    "receptionQueue": {
+      "title": "Karşılama",
+      "purpose": "Gelen hastayı karşılar, randevusuna “Geldi” der ve doğru istasyona yönlendirirsiniz.",
+      "layout": "Üç bölmeli kokpit: sol bekleyen randevular, orta seçili hasta, sağ kuyruk durumu. Her satırda randevu tipi rozeti.",
+      "tasks": [
+        {
+          "title": "Hasta check-in",
+          "steps": [
+            "Hastanın randevusunu bulun, “Geldi” butonuna basın.",
+            "Sistem randevu tipine göre yönlendirir: muayene/kontrol→ölçüm, ameliyat/enjeksiyon/lazer→doktor.",
+            "Gerekirse satırdaki “Doktora” ile hastayı doğrudan doktora gönderin."
+          ]
+        }
+      ]
+    },
+    "patientNew": {
+      "title": "Yeni Hasta Kaydı",
+      "purpose": "Sisteme yeni hasta kaydedersiniz.",
+      "layout": "Tek form: zorunlu alanlar ad, soyad, doğum, cinsiyet, telefon.",
+      "tasks": [
+        {
+          "title": "Kayıt",
+          "steps": ["Zorunlu alanları doldurun.", "Kaydet ile hastayı oluşturun."]
+        }
+      ]
+    },
+    "invoiceDetail": {
+      "title": "Fatura Detayı",
+      "purpose": "Bir faturanın ödemesini alır ve makbuz yazdırırsınız.",
+      "layout": "Fatura kalemleri + ödeme geçmişi + tahsilat butonu.",
+      "tasks": [
+        {
+          "title": "Ödeme + makbuz",
+          "steps": [
+            "Tahsil Et ile ödemeyi girin (kısmi ödeme mümkün).",
+            "Makbuzu yazdırın; cihaz tercihine göre otomatik veya yeni sekmede açılır."
+          ]
+        }
+      ]
+    },
+    "recall": {
+      "title": "Geri Çağırma (Recall)",
+      "purpose": "Kaçırılmış kontrolleri arar ve tekrar randevuya çevirirsiniz.",
+      "layout": "Aranacak hasta listesi; her satırda arama denemesi kaydı.",
+      "tasks": [
+        {
+          "title": "Hasta arama takibi",
+          "steps": [
+            "Listeden hastayı arayın; arama sonucunu kaydedin.",
+            "Uygunsa yeni kontrol randevusu oluşturun."
+          ]
+        }
+      ]
+    },
+    "receptionPrefs": {
+      "title": "Makbuz Tercihleri",
+      "purpose": "Bu cihazda makbuzun otomatik mi yazdırılacağını ayarlarsınız.",
+      "layout": "Basit açık/kapalı tercih.",
+      "tasks": [
+        {
+          "title": "Ayar",
+          "steps": ["Otomatik yazdırmayı açın veya kapatın; tercih bu cihazda saklanır."]
+        }
+      ]
+    },
+    "measurementQueue": {
+      "title": "Ölçüm Talepleri",
+      "purpose": "Doktorların istediği ölçümleri yaparsınız.",
+      "layout": "Bekleyen ölçüm talepleri listesi; her satırda başlat/tamamla.",
+      "tasks": [
+        {
+          "title": "Ölçüm yapma",
+          "steps": [
+            "Sıradaki talebi “Başlat” ile alın.",
+            "OD/OS değerlerini girip “Tamamla” deyin.",
+            "Yapamadığınız talebi Ertele veya Atla ile işaretleyin."
+          ]
+        }
+      ]
+    },
+    "measurementCompleted": {
+      "title": "Tamamlananlar",
+      "purpose": "Yaptığınız ölçümleri kontrol eder, gerekirse düzeltirsiniz.",
+      "layout": "Tamamlanan ölçümler listesi.",
+      "tasks": [
+        {
+          "title": "Kontrol/düzeltme",
+          "steps": ["Listeden ölçümü açın.", "Yanlış girdiyseniz değeri düzeltip tekrar kaydedin."]
+        }
+      ]
+    },
+    "surgerySales": {
+      "title": "Ameliyat Satış Kuyruğu",
+      "purpose": "Doktorun ameliyat önerdiği hastalara paket satar ve fatura oluşturursunuz.",
+      "layout": "Doktordan gelen satış-bekleyen hastalar listesi; her hastada paket seçimi.",
+      "tasks": [
+        {
+          "title": "Paket satışı",
+          "steps": [
+            "Kuyruktan hastayı seçin.",
+            "Ameliyat paketini seçin — paket tek fatura olarak oluşturulur; gerekirse yükseltme kalemi eklenir.",
+            "Faturayı kaydedin."
+          ]
+        }
+      ]
+    },
+    "surgeryCatalog": {
+      "title": "Ameliyat Kataloğu",
+      "purpose": "Ameliyat türlerini, fiyatlarını ve paketleri görürsünüz.",
+      "layout": "Ameliyat/paket listesi + fiyatlar.",
+      "tasks": [
+        {
+          "title": "Fiyat görüntüleme",
+          "steps": ["Katalogdan ameliyat türünü bulun.", "Paket içeriğini ve fiyatını inceleyin."]
+        }
+      ]
+    },
+    "surgeryCalendar": {
+      "title": "Ameliyat Takvimi",
+      "purpose": "Planlanmış ameliyatları görürsünüz.",
+      "layout": "Takvim + ödeme durumu hızlı filtresi.",
+      "tasks": [
+        {
+          "title": "Ödeme durumu filtresi",
+          "steps": ["Takvimde “Ödemesi tamam” filtresini kullanarak hazır ameliyatları ayırın."]
+        }
+      ]
+    },
+    "pharmacyPos": {
+      "title": "Satış (POS)",
+      "purpose": "İlaç satışı yaparsınız.",
+      "layout": "Ürün arama + sepet + ödeme. Alıcı seçimi (kayıtlı hasta veya anonim).",
+      "tasks": [
+        {
+          "title": "Satış yapma",
+          "steps": [
+            "Ürünleri sepete ekleyin (kategoriden veya arayarak).",
+            "Alıcıyı seçin: kayıtlı hasta ya da anonim (isim istemeden).",
+            "Ödemeyi alın."
+          ]
+        },
+        {
+          "title": "İndirim",
+          "steps": [
+            "%10’a kadar indirim serbesttir.",
+            "%10’u aşan indirimde süpervizör (yönetici/finans) PIN’i gerekir; PIN yoksa indirim %10 ile sınırlanır."
+          ]
+        }
+      ]
+    },
+    "pharmacyPrescriptions": {
+      "title": "Reçete Kuyruğu",
+      "purpose": "Doktordan gelen reçeteleri karşılarsınız.",
+      "layout": "Bekleyen reçete listesi; her reçetenin kalemleri.",
+      "tasks": [
+        {
+          "title": "Reçeteyi karşılama",
+          "steps": [
+            "Reçeteyi açın, kalemleri görün.",
+            "İlaçları POS sepetine elle ekleyin (otomatik isim eşleştirme yoktur — doğru ürünü eczacı seçer).",
+            "Teslim edilen kalemi “verildi” olarak işaretleyin."
+          ]
+        }
+      ]
+    },
+    "pharmacyStock": {
+      "title": "Eczane Stok",
+      "purpose": "İlaç stoğunu görür ve yönetirsiniz.",
+      "layout": "Ürün listesi + miktar + kritik seviye.",
+      "tasks": [
+        {
+          "title": "Stok kontrolü",
+          "steps": ["Kritik seviyedeki ürünleri görün.", "Miktarları güncelleyin."]
+        }
+      ]
+    },
+    "pharmacyPurchase": {
+      "title": "Satın Alma",
+      "purpose": "Tedarikçiden ilaç siparişi verirsiniz.",
+      "layout": "Sipariş oluşturma + tedarikçi seçimi.",
+      "tasks": [
+        {
+          "title": "Sipariş",
+          "steps": ["Tedarikçiyi ve ürünleri seçin.", "Siparişi oluşturun."]
+        }
+      ]
+    },
+    "pharmacySuppliers": {
+      "title": "Tedarikçiler",
+      "purpose": "İlaç tedarikçilerini yönetirsiniz.",
+      "layout": "Tedarikçi listesi.",
+      "tasks": [
+        {
+          "title": "Tedarikçi ekleme",
+          "steps": ["Yeni tedarikçiyi bilgileriyle ekleyin."]
+        }
+      ]
+    },
+    "pharmacyReturns": {
+      "title": "İadeler",
+      "purpose": "Satılan ürünlerin iadesini alırsınız.",
+      "layout": "İade listesi + iade banner’ı.",
+      "tasks": [
+        {
+          "title": "İade alma",
+          "steps": [
+            "İade edilecek satışı bulun.",
+            "İade işlemini tamamlayın; iade banner’ında görünür."
+          ]
+        }
+      ]
+    },
+    "pharmacyCash": {
+      "title": "Gün-Sonu Kasa",
+      "purpose": "Gün sonunda kasayı sayar ve finansa devredersiniz.",
+      "layout": "Gün-sonu özet + devir.",
+      "tasks": [
+        {
+          "title": "Kasa devri",
+          "steps": [
+            "Gün-sonu kasa özetini kontrol edin.",
+            "Kasayı finansa devredin (iki aşamalı: hazırla → onayla)."
+          ]
+        }
+      ]
+    },
+    "pharmacyReports": {
+      "title": "Raporlar",
+      "purpose": "Eczane satış ve stok raporlarını görürsünüz.",
+      "layout": "Rapor listesi.",
+      "tasks": [
+        {
+          "title": "Rapor görüntüleme",
+          "steps": ["İlgili raporu seçip inceleyin."]
+        }
+      ]
+    },
+    "cashRegister": {
+      "title": "Kasa",
+      "purpose": "Kasayı kapatır ve finalize edersiniz.",
+      "layout": "Kasa özeti + kapatma.",
+      "tasks": [
+        {
+          "title": "Kasa kapatma",
+          "steps": [
+            "Gün-sonu kasa özetini kontrol edin.",
+            "Kapatmayı finalize edin (asistan yalnız taslak hazırlar; finalize sizde)."
+          ]
+        }
+      ]
+    },
+    "approvals": {
+      "title": "Onaylar",
+      "purpose": "İndirim, iade ve satın alma siparişi onaylarını yönetirsiniz.",
+      "layout": "Sekmeli: İndirim / İade / PO.",
+      "tasks": [
+        {
+          "title": "PO onayı",
+          "steps": [
+            "PO sekmesinden bekleyen siparişi açın.",
+            "Birim fiyat stok ekibince girilir; siz yalnız onaylar/reddedersiniz (fiyatı değiştiremezsiniz — Karar 8)."
+          ]
+        }
+      ]
+    },
+    "commission": {
+      "title": "Hakediş",
+      "purpose": "Doktor hakedişlerini görür ve öder.",
+      "layout": "Hakediş listesi + ödeme.",
+      "tasks": [
+        {
+          "title": "Hakediş ödeme",
+          "steps": ["Onaylı hakedişleri seçin.", "Ödemeyi işaretleyin."]
+        }
+      ]
+    },
+    "fraud": {
+      "title": "Fraud İzleme",
+      "purpose": "Şüpheli mali işlemleri incelersiniz (salt görüntüleme).",
+      "layout": "Fraud uyarı listesi.",
+      "tasks": [
+        {
+          "title": "İnceleme",
+          "steps": ["Uyarıyı açıp ayrıntıyı inceleyin."]
+        }
+      ]
+    },
+    "reports": {
+      "title": "Raporlar",
+      "purpose": "Mali raporları görürsünüz.",
+      "layout": "Rapor listesi.",
+      "tasks": [
+        {
+          "title": "Rapor",
+          "steps": ["İlgili raporu açın."]
+        }
+      ]
+    },
+    "iolInventory": {
+      "title": "Lens (IOL) Stok",
+      "purpose": "Göz içi lens stoğunu izlersiniz.",
+      "layout": "Lens listesi; her lensin durumu.",
+      "tasks": [
+        {
+          "title": "Stok kavramı",
+          "steps": [
+            "Her lens üç durumda sayılır: müsait, ayrılmış (bir ameliyata rezerve), kullanılmış.",
+            "Müsait sayısı düşükse sipariş verin."
+          ]
+        }
+      ]
+    },
+    "iolManage": {
+      "title": "Lens Yönetimi",
+      "purpose": "Lens modellerini ve stoğunu yönetirsiniz.",
+      "layout": "Model listesi + düzenleme.",
+      "tasks": [
+        {
+          "title": "Model ekleme",
+          "steps": ["Yeni lens modelini bilgileriyle ekleyin."]
+        }
+      ]
+    },
+    "consumables": {
+      "title": "Sarf Malzeme",
+      "purpose": "Sarf malzeme stoğunu yönetirsiniz.",
+      "layout": "Sarf listesi + miktar.",
+      "tasks": [
+        {
+          "title": "Stok güncelleme",
+          "steps": ["Miktarları güncelleyin; kritik seviyeyi izleyin."]
+        }
+      ]
+    },
+    "stockMovements": {
+      "title": "Stok Hareketleri",
+      "purpose": "Giriş/çıkış hareketlerini görürsünüz.",
+      "layout": "Hareket listesi.",
+      "tasks": [
+        {
+          "title": "Hareket izleme",
+          "steps": ["Tarih/ürün ile hareketleri filtreleyin."]
+        }
+      ]
+    },
+    "suppliers": {
+      "title": "Tedarikçiler",
+      "purpose": "Tedarikçileri yönetirsiniz.",
+      "layout": "Tedarikçi listesi.",
+      "tasks": [
+        {
+          "title": "Tedarikçi ekleme",
+          "steps": ["Yeni tedarikçiyi ekleyin."]
+        }
+      ]
+    },
+    "purchaseOrders": {
+      "title": "Satın Alma Siparişleri",
+      "purpose": "Sipariş oluşturur ve mal kabul yaparsınız.",
+      "layout": "Sipariş listesi + oluşturma + mal kabul.",
+      "tasks": [
+        {
+          "title": "Sipariş oluşturma",
+          "steps": [
+            "Ürünleri ve birim fiyatı girin, siparişi oluşturun.",
+            "Mal geldiğinde kısmi veya tam teslim alın."
+          ]
+        }
+      ]
+    },
+    "stockForecast": {
+      "title": "Stok Tahmini",
+      "purpose": "Gelecek stok ihtiyacını görür, taslak sipariş üretirsiniz.",
+      "layout": "Tahmin listesi.",
+      "tasks": [
+        {
+          "title": "Taslak sipariş",
+          "steps": [
+            "Tahminden eksik çıkacak ürünleri görün.",
+            "Taslak satın alma siparişi oluşturun."
+          ]
+        }
+      ]
+    },
+    "adminAnalysis": {
+      "title": "Analiz",
+      "purpose": "Klinik analiz ve raporlarına ulaşırsınız.",
+      "layout": "Analiz kartları hub’ı.",
+      "tasks": [
+        {
+          "title": "Analiz",
+          "steps": ["İlgili analiz kartını açın."]
+        }
+      ]
+    },
+    "automations": {
+      "title": "Otomasyonlar",
+      "purpose": "AI hasta asistanını yönetirsiniz.",
+      "layout": "Asistan durumu + prompt/bilgi tabanı düzenleme.",
+      "tasks": [
+        {
+          "title": "Asistan yönetimi",
+          "steps": [
+            "Asistanı açın/kapatın.",
+            "Prompt ve bilgi tabanını ekrandan düzenleyin (deploy gerekmez)."
+          ]
+        }
+      ]
+    },
+    "adminSettings": {
+      "title": "Ayarlar",
+      "purpose": "Klinik ayarlarını yönetirsiniz.",
+      "layout": "Ayar kartları hub’ı.",
+      "tasks": [
+        {
+          "title": "Ayar",
+          "steps": ["İlgili ayar kartını açıp düzenleyin."]
+        }
+      ]
+    },
+    "users": {
+      "title": "Kullanıcılar",
+      "purpose": "Personel hesaplarını yönetirsiniz.",
+      "layout": "Kullanıcı listesi + yeni kullanıcı.",
+      "tasks": [
+        {
+          "title": "Kullanıcı",
+          "steps": [
+            "Satıra tıklayıp detay/rol/mod düzenleyin.",
+            "Yeni kullanıcıyı rolüyle ekleyin."
+          ]
+        }
+      ]
+    },
+    "permissions": {
+      "title": "Yetkiler",
+      "purpose": "Rol yetkilerini görüntüler/düzenlersiniz.",
+      "layout": "Yetki matrisi.",
+      "tasks": [
+        {
+          "title": "Yetki",
+          "steps": ["Rol × yetki matrisinden değişiklik yapın."]
+        }
+      ]
+    },
+    "clinicSettings": {
+      "title": "Klinik Bilgileri",
+      "purpose": "Klinik kimlik bilgilerini düzenlersiniz.",
+      "layout": "Ad/adres/logo/vergi formu.",
+      "tasks": [
+        {
+          "title": "Düzenleme",
+          "steps": ["Bilgileri güncelleyip kaydedin."]
+        }
+      ]
+    },
+    "serviceCatalog": {
+      "title": "Hizmet Kataloğu",
+      "purpose": "Hizmet/fiyat kataloğunu yönetirsiniz.",
+      "layout": "Hizmet listesi + fiyat.",
+      "tasks": [
+        {
+          "title": "Hizmet",
+          "steps": ["Hizmet ekleyin/fiyat güncelleyin."]
+        }
+      ]
+    },
+    "consentTemplates": {
+      "title": "Onam Şablonları",
+      "purpose": "Onam belgelerini yönetirsiniz.",
+      "layout": "Şablon listesi.",
+      "tasks": [
+        {
+          "title": "Şablon",
+          "steps": ["Şablon içeriğini düzenleyin."]
+        }
+      ]
+    },
+    "messaging": {
+      "title": "Mesajlaşma",
+      "purpose": "Otomatik mesaj şablon/tetikleyicilerini yönetirsiniz.",
+      "layout": "Şablon + tetikleyici sekmeleri.",
+      "tasks": [
+        {
+          "title": "Mesaj",
+          "steps": ["Şablonları düzenleyin, tetikleyicileri açıp kapatın."]
+        }
+      ]
+    },
+    "doctors": {
+      "title": "Doktorlar",
+      "purpose": "Klinik doktorlarını görür ve yönetirsiniz.",
+      "layout": "Doktor listesi + yeni doktor.",
+      "tasks": [
+        {
+          "title": "Doktor yönetimi",
+          "steps": [
+            "Doktora tıklayıp detay/müsaitlik düzenleyin.",
+            "Yeni doktoru bilgileriyle ekleyin."
+          ]
+        }
+      ]
+    },
+    "patientForm": {
+      "title": "Hasta Kaydı/Düzenleme",
+      "purpose": "Hasta bilgilerini kaydeder veya günceller.",
+      "layout": "Tek form: zorunlu alanlar ad, soyad, doğum, cinsiyet, telefon.",
+      "tasks": [
+        {
+          "title": "Kayıt/güncelleme",
+          "steps": ["Alanları doldurun/güncelleyin.", "Kaydet."]
+        }
+      ],
+      "note": "Bu ekran yalnız kayıt açar — hastayı kuyruğa SOKMAZ. Sıraya almak için randevu oluşturup “Geldi” deyin."
+    },
+    "doctorDetail": {
+      "title": "Doktor Detayı",
+      "purpose": "Bir doktorun bilgilerini, müsaitliğini ve profilini görürsünüz.",
+      "layout": "Üstte doktor kimliği; altta müsaitlik, izin, geliş penceresi ve hasta-facing profil bölümleri.",
+      "tasks": [
+        {
+          "title": "Doktor yönetimi",
+          "steps": [
+            "Müsaitlik/izin bölümlerini düzenleyin.",
+            "Hasta-facing profili (unvan/bio/foto) yönetici düzenler."
+          ]
+        }
+      ]
+    },
+    "doctorForm": {
+      "title": "Doktor Ekleme/Düzenleme",
+      "purpose": "Yeni doktor ekler veya bilgilerini güncellersiniz.",
+      "layout": "Doktor formu: ad, uzmanlık, tip, iletişim.",
+      "tasks": [
+        {
+          "title": "Kayıt",
+          "steps": ["Doktor bilgilerini girin.", "Kaydet."]
+        }
+      ]
+    },
+    "userDetail": {
+      "title": "Kullanıcı Detayı",
+      "purpose": "Bir personel hesabının profilini, rollerini ve dökümanlarını yönetirsiniz.",
+      "layout": "Sekmeli: Profil (telefon/dil/durum) · Roller & Mod · Dökümanlar.",
+      "tasks": [
+        {
+          "title": "Kullanıcı yönetimi",
+          "steps": [
+            "Profil sekmesinden telefon/dil/durum düzenleyin.",
+            "Rol & Mod sekmesinden hemşire modunu ayarlayın."
+          ]
+        }
+      ]
+    }
+  },
+  "doctor": {
+    "overview": {
+      "title": "Genel Bakış",
+      "purpose": "Bugünkü işinizin özeti: muayene sıranız, randevularınız, imza bekleyen kayıtlar ve bugünkü ameliyatlar.",
+      "layout": "Üstte 4 KPI kartı (Sıra / Randevu / Co-sign / Ameliyat) tıkla→ilgili ekran; altta kuyruk, imza ve ameliyat widget’ları.",
+      "tasks": [
+        {
+          "title": "Hızlı erişim",
+          "steps": [
+            "Bir KPI kartına tıklayın; sizi o ekrana ön-filtreli götürür.",
+            "Sağ üstteki büyük butonla doğrudan muayeneye başlayın."
+          ]
+        }
+      ]
+    },
+    "worklist": {
+      "title": "Muayene Sırası",
+      "purpose": "Size yönlendirilmiş hastaları görür, muayeneyi başlatır ve muayene sonrası kararı verirsiniz.",
+      "layout": "Sol tarafta hasta kuyruğu (bekleyen / muayenede / hazır), sağ tarafta seçili hastanın kartı.",
+      "tasks": [
+        {
+          "title": "Muayeneye başlama",
+          "steps": [
+            "Kuyruktan hastayı seçin.",
+            "“Muayeneye Başla” ile hastayı muayeneye alın (en fazla 3 aktif muayene)."
+          ]
+        },
+        {
+          "title": "Muayene sonrası karar",
+          "steps": [
+            "Muayene bittiğinde karar panelinden seçin: Reçete yaz, Ölçüm iste, Ameliyat öner veya Reddet.",
+            "“Ameliyat” seçilirse hasta satış ekibine düşer; “Ölçüm iste” ölçüm istasyonuna gider."
+          ]
+        }
+      ],
+      "note": "Misafir doktorsanız yalnız size atanmış hastaları görürsünüz."
+    },
+    "schedule": {
+      "title": "Randevu Takvimi",
+      "purpose": "Randevuları görüntülersiniz; her doktorun kendi rengi vardır.",
+      "layout": "Üstte gün/hafta geçişi + doktor ve tip filtreleri; ana alanda takvim (sol renk şeridi = doktor, zemin rengi = randevu tipi).",
+      "tasks": [
+        {
+          "title": "Kendi randevularınızı görme",
+          "steps": [
+            "Doktor filtresinden kendinizi seçin.",
+            "Renk rehberi Doktor filtre menüsündedir; rozet baş harfi doktoru gösterir."
+          ]
+        }
+      ]
+    },
+    "patients": {
+      "title": "Hastalarım",
+      "purpose": "Hastaları arar ve dosyalarına ulaşırsınız.",
+      "layout": "Üstte arama kutusu ve etiket filtreleri; altta hasta listesi.",
+      "tasks": [
+        {
+          "title": "Hasta arama",
+          "steps": [
+            "Ad, MRN veya telefon son 4 hanesini yazın.",
+            "Listeden hastaya tıklayarak dosyasını açın."
+          ]
+        }
+      ],
+      "note": "Misafir doktorsanız klinik-geneli arama kapalıdır; yalnız size atanmış hastaları görürsünüz."
+    },
+    "patientDetail": {
+      "title": "Hasta Dosyası",
+      "purpose": "Hastanın tüm klinik geçmişini görür; muayene, ölçüm ve ameliyat kaydı yaparsınız.",
+      "layout": "Üstte sabit hasta kimliği ve alerji uyarısı (kapatılamaz); altta muayene, ölçüm (OD/OS iki kolon), cerrahi, fatura bölümleri.",
+      "tasks": [
+        {
+          "title": "Ölçüm/muayene girişi",
+          "steps": [
+            "İlgili bölümü açın; göz tarafı (OD/OS) zorunludur, boş bırakılamaz.",
+            "Değerleri girip kaydedin."
+          ]
+        },
+        {
+          "title": "Geçmişi inceleme",
+          "steps": ["Muayene/ölçüm/cerrahi bölümüne inin.", "Kayda tıklayarak ayrıntıyı açın."]
+        }
+      ]
+    },
+    "surgeryDay": {
+      "title": "Ameliyat Günü Merkezi",
+      "purpose": "Bugünkü ameliyatları sırayla yürütürsünüz: güvenlik kontrol listesi, lens kaydı, tamamlama.",
+      "layout": "Her satır bir ameliyat pipeline’ı; “Tamamlamak için eksikler” paneli imzalı onam ve güvenlik kontrolünü gösterir.",
+      "tasks": [
+        {
+          "title": "Ameliyatı tamamlama",
+          "steps": [
+            "Güvenlik kontrol listesini (WHO) doldurun.",
+            "Kullanılan lensi kaydedin.",
+            "Eksik yoksa “Tamamla” ile ameliyatı bitirin (imzalı onam yoksa tamamlanamaz)."
+          ]
+        }
+      ]
+    },
+    "cosign": {
+      "title": "Co-sign (Ortak İmza)",
+      "purpose": "Hemşirenin sizin adınıza girdiği kayıtları onaylarsınız.",
+      "layout": "Bekleyen kayıt listesi; her kayıtta öncesi/sonrası fark (diff) gösterilir.",
+      "tasks": [
+        {
+          "title": "Kayıt onayı",
+          "steps": [
+            "Bekleyen kaydı açın, öncesi/sonrası farkı inceleyin.",
+            "Doğruysa onaylayın; yanlışsa reddedip hemşireye bildirin."
+          ]
+        }
+      ]
+    }
+  },
+  "reception": {
+    "overview": {
+      "title": "Genel Bakış",
+      "purpose": "Günün özeti: bekleyen hastalar, bugünkü randevular, tahsil edilecek ödemeler.",
+      "layout": "Üstte KPI kartları (tıkla→ilgili ekran); altta hızlı erişim.",
+      "tasks": [
+        {
+          "title": "Hızlı başlangıç",
+          "steps": ["Bir karta tıklayın; ilgili ekranı ön-filtreli açar."]
+        }
+      ]
+    },
+    "receptionQueue": {
+      "title": "Karşılama",
+      "purpose": "Gelen hastayı karşılar, randevusuna “Geldi” der ve doğru istasyona yönlendirirsiniz.",
+      "layout": "Üç bölmeli kokpit: sol bekleyen randevular, orta seçili hasta, sağ kuyruk durumu. Her satırda randevu tipi rozeti.",
+      "tasks": [
+        {
+          "title": "Hasta check-in",
+          "steps": [
+            "Hastanın randevusunu bulun, “Geldi” butonuna basın.",
+            "Sistem randevu tipine göre yönlendirir: muayene/kontrol→ölçüm, ameliyat/enjeksiyon/lazer→doktor.",
+            "Gerekirse satırdaki “Doktora” ile hastayı doğrudan doktora gönderin."
+          ]
+        }
+      ],
+      "note": "Muayene/lab girişinde önce ödeme alınmalıdır — ödeme yoksa hizmet ekranı açılmaz."
+    },
+    "schedule": {
+      "title": "Randevu Takvimi",
+      "purpose": "Randevu oluşturur ve takvimi görüntülersiniz.",
+      "layout": "Üstte gün/hafta + filtreler; boş slota tıklayarak randevu açılır.",
+      "tasks": [
+        {
+          "title": "Randevu oluşturma",
+          "steps": [
+            "Boş slota tıklayın; hasta arama kutusundan hastayı seçin.",
+            "Hasta kayıtlı değilse formdaki hızlı-ekle ile ekleyin (ad/soyad/doğum/cinsiyet/telefon).",
+            "Randevu tipini seçin (muayene/kontrol/ameliyat/enjeksiyon/lazer), saati onaylayıp Kaydet."
+          ]
+        }
+      ]
+    },
+    "patients": {
+      "title": "Hastalar",
+      "purpose": "Hastaları arar ve dosyalarına ulaşırsınız.",
+      "layout": "Arama kutusu + hasta listesi.",
+      "tasks": [
+        {
+          "title": "Hasta arama",
+          "steps": [
+            "Ad, MRN veya telefon son 4 hanesini yazın.",
+            "Hastaya tıklayarak dosyasını açın."
+          ]
+        }
+      ]
+    },
+    "patientDetail": {
+      "title": "Hasta Dosyası",
+      "purpose": "Hastanın iletişim bilgilerini, randevularını ve faturalarını görürsünüz.",
+      "layout": "Üstte hasta kimliği; altta randevu ve fatura bölümleri.",
+      "tasks": [
+        {
+          "title": "Bilgi güncelleme",
+          "steps": [
+            "İletişim bölümünden telefon/adres güncelleyin.",
+            "Faturalar bölümünden açık bakiyeyi görün."
+          ]
+        }
+      ]
+    },
+    "billing": {
+      "title": "Faturalama",
+      "purpose": "Fatura oluşturur ve giriş tahsilatı yaparsınız.",
+      "layout": "Fatura listesi + arama; “Yeni Fatura” ile fatura açılır.",
+      "tasks": [
+        {
+          "title": "Fatura + tahsilat",
+          "steps": [
+            "“Yeni Fatura” ile hasta seçin; randevu tipine göre ücret otomatik gelir (düzenlenebilir).",
+            "Faturayı kaydedip Tahsil Et ile ödeme yöntemini seçin."
+          ]
+        }
+      ],
+      "note": "Muayene/lab hizmeti için ödeme alınmadan sistem açılmaz (önce öde kuralı)."
+    },
+    "invoiceDetail": {
+      "title": "Fatura Detayı",
+      "purpose": "Bir faturanın ödemesini alır ve makbuz yazdırırsınız.",
+      "layout": "Fatura kalemleri + ödeme geçmişi + tahsilat butonu.",
+      "tasks": [
+        {
+          "title": "Ödeme + makbuz",
+          "steps": [
+            "Tahsil Et ile ödemeyi girin (kısmi ödeme mümkün).",
+            "Makbuzu yazdırın; cihaz tercihine göre otomatik veya yeni sekmede açılır."
+          ]
+        }
+      ]
+    },
+    "recall": {
+      "title": "Geri Çağırma (Recall)",
+      "purpose": "Kaçırılmış kontrolleri arar ve tekrar randevuya çevirirsiniz.",
+      "layout": "Aranacak hasta listesi; her satırda arama denemesi kaydı.",
+      "tasks": [
+        {
+          "title": "Hasta arama takibi",
+          "steps": [
+            "Listeden hastayı arayın; arama sonucunu kaydedin.",
+            "Uygunsa yeni kontrol randevusu oluşturun."
+          ]
+        }
+      ]
+    },
+    "receptionPrefs": {
+      "title": "Makbuz Tercihleri",
+      "purpose": "Bu cihazda makbuzun otomatik mi yazdırılacağını ayarlarsınız.",
+      "layout": "Basit açık/kapalı tercih.",
+      "tasks": [
+        {
+          "title": "Ayar",
+          "steps": ["Otomatik yazdırmayı açın veya kapatın; tercih bu cihazda saklanır."]
+        }
+      ]
+    },
+    "patientForm": {
+      "title": "Yeni Hasta Kaydı",
+      "purpose": "Sisteme yeni hasta kaydedersiniz.",
+      "layout": "Tek form: zorunlu alanlar ad, soyad, doğum, cinsiyet, telefon.",
+      "tasks": [
+        {
+          "title": "Kayıt",
+          "steps": ["Zorunlu alanları doldurun.", "Kaydet ile hastayı oluşturun."]
+        }
+      ],
+      "note": "Bu ekran yalnız kayıt açar — hastayı kuyruğa SOKMAZ. Hastayı sıraya almak için randevu oluşturup “Geldi” demeniz gerekir."
+    }
+  },
+  "nurse": {
+    "overview": {
+      "title": "Genel Bakış",
+      "purpose": "Modunuza göre günün özeti. Girişte üç mod seçebilirsiniz: Genel (klinik-geneli görevler), Asistan (bir doktor adına çalışma), Ölçüm (kilitli ölçüm istasyonu).",
+      "layout": "Üstte KPI kartları; içerik seçtiğiniz moda göre değişir.",
+      "tasks": [
+        {
+          "title": "Mod seçimi",
+          "steps": [
+            "Girişte modunuzu seçin.",
+            "Genel modda Ölçüm Talepleri, Asistan modda Muayene Sırası ana ekranınız olur."
+          ]
+        }
+      ]
+    },
+    "worklist": {
+      "title": "Muayene Sırası",
+      "purpose": "Asistan modda seçtiğiniz doktor adına muayene sırasını yönetirsiniz.",
+      "layout": "Sol kuyruk, sağ hasta kartı. Üstte hangi doktor adına çalıştığınız görünür (NurseSessionWidget).",
+      "tasks": [
+        {
+          "title": "Doktor adına çalışma",
+          "steps": [
+            "Asistan modda üstteki widget’tan çalışacağınız doktoru seçin.",
+            "Yaptığınız kayıtlar o doktor adına işlenir ve denetim kaydına düşer."
+          ]
+        }
+      ],
+      "note": "Bu ekran Asistan modda kullanılır; Genel modda ölçüm talepleri ana ekranınızdır."
+    },
+    "measurementQueue": {
+      "title": "Ölçüm Talepleri",
+      "purpose": "Doktorların istediği ölçümleri yaparsınız.",
+      "layout": "Bekleyen ölçüm talepleri listesi; her satırda başlat/tamamla.",
+      "tasks": [
+        {
+          "title": "Ölçüm yapma",
+          "steps": [
+            "Sıradaki talebi “Başlat” ile alın.",
+            "OD/OS değerlerini girip “Tamamla” deyin.",
+            "Yapamadığınız talebi Ertele veya Atla ile işaretleyin."
+          ]
+        }
+      ]
+    },
+    "patients": {
+      "title": "Hastalar",
+      "purpose": "Hastayı arar ve onam imzası alırsınız.",
+      "layout": "Arama + hasta listesi; hasta dosyasında onam bölümü.",
+      "tasks": [
+        {
+          "title": "Onam imzası",
+          "steps": [
+            "Hastayı bulun, onam belgesini açın.",
+            "Hastaya imzalatın — belge içeriğini değiştiremezsiniz, yalnız imza alırsınız."
+          ]
+        }
+      ]
+    },
+    "schedule": {
+      "title": "Randevu Takvimi",
+      "purpose": "Randevuları görüntülersiniz (salt görüntüleme).",
+      "layout": "Gün/hafta takvim + filtreler.",
+      "tasks": [
+        {
+          "title": "Görüntüleme",
+          "steps": ["Doktor/tarih filtreleyerek randevuları görün."]
+        }
+      ]
+    },
+    "surgeryDay": {
+      "title": "Ameliyat Günü",
+      "purpose": "Ameliyat güvenlik kontrol listesini doldurursunuz.",
+      "layout": "Ameliyat satırları + güvenlik kontrol listesi modalı.",
+      "tasks": [
+        {
+          "title": "Güvenlik listesi",
+          "steps": ["İlgili ameliyatın güvenlik kontrol listesini açın.", "Maddeleri işaretleyin."]
+        }
+      ]
+    },
+    "recall": {
+      "title": "Geri Çağırma (Recall)",
+      "purpose": "Kaçırılmış kontroller için hasta ararsınız.",
+      "layout": "Aranacak hasta listesi.",
+      "tasks": [
+        {
+          "title": "Arama",
+          "steps": ["Hastayı arayın, sonucu kaydedin."]
+        }
+      ]
+    }
+  },
+  "measurement": {
+    "measurementQueue": {
+      "title": "Ölçüm Talepleri",
+      "purpose": "Sıradaki hastanın ölçümünü yaparsınız. Bu istasyon kilitlidir — yalnız ölçüm ekranlarını kullanırsınız.",
+      "layout": "Bekleyen hastalar listesi + değer giriş alanı.",
+      "tasks": [
+        {
+          "title": "Ölçüm yapma",
+          "steps": [
+            "Sıradaki hastayı seçin.",
+            "OD (sağ göz) ve OS (sol göz) değerlerini girin.",
+            "Kaydedip bir sonraki hastaya geçin."
+          ]
+        }
+      ]
+    },
+    "measurementCompleted": {
+      "title": "Tamamlananlar",
+      "purpose": "Yaptığınız ölçümleri kontrol eder, gerekirse düzeltirsiniz.",
+      "layout": "Tamamlanan ölçümler listesi.",
+      "tasks": [
+        {
+          "title": "Kontrol/düzeltme",
+          "steps": ["Listeden ölçümü açın.", "Yanlış girdiyseniz değeri düzeltip tekrar kaydedin."]
+        }
+      ]
+    }
+  },
+  "sales": {
+    "overview": {
+      "title": "Genel Bakış",
+      "purpose": "Satış işinizin özeti: bekleyen ameliyat satışları, onam ve ödeme durumu riskli olan hastalar.",
+      "layout": "Üstte KPI kartları; altta onam+ödeme risk widget’ı (eksik onam/ödeme olan vakalar).",
+      "tasks": [
+        {
+          "title": "Riskli vakayı görme",
+          "steps": [
+            "Risk widget’ında onam veya ödemesi eksik hastayı görün.",
+            "Hastaya tıklayarak satış/fatura ekranına gidin."
+          ]
+        }
+      ]
+    },
+    "surgerySales": {
+      "title": "Ameliyat Satış Kuyruğu",
+      "purpose": "Doktorun ameliyat önerdiği hastalara paket satar ve fatura oluşturursunuz.",
+      "layout": "Doktordan gelen satış-bekleyen hastalar listesi; her hastada paket seçimi.",
+      "tasks": [
+        {
+          "title": "Paket satışı",
+          "steps": [
+            "Kuyruktan hastayı seçin.",
+            "Ameliyat paketini seçin — paket tek fatura olarak oluşturulur; gerekirse yükseltme kalemi eklenir.",
+            "Faturayı kaydedin."
+          ]
+        }
+      ]
+    },
+    "surgeryCatalog": {
+      "title": "Ameliyat Kataloğu",
+      "purpose": "Ameliyat türlerini, fiyatlarını ve paketleri görürsünüz.",
+      "layout": "Ameliyat/paket listesi + fiyatlar.",
+      "tasks": [
+        {
+          "title": "Fiyat görüntüleme",
+          "steps": ["Katalogdan ameliyat türünü bulun.", "Paket içeriğini ve fiyatını inceleyin."]
+        }
+      ]
+    },
+    "surgeryCalendar": {
+      "title": "Ameliyat Takvimi",
+      "purpose": "Planlanmış ameliyatları görürsünüz.",
+      "layout": "Takvim + ödeme durumu hızlı filtresi.",
+      "tasks": [
+        {
+          "title": "Ödeme durumu filtresi",
+          "steps": ["Takvimde “Ödemesi tamam” filtresini kullanarak hazır ameliyatları ayırın."]
+        }
+      ]
+    },
+    "billing": {
+      "title": "Cerrahi Faturalama",
+      "purpose": "Ameliyat faturasını oluşturur ve tahsilat yaparsınız.",
+      "layout": "Fatura + tahsilat; onam durumu bilgi olarak gösterilir.",
+      "tasks": [
+        {
+          "title": "Tahsilat",
+          "steps": [
+            "Faturayı açın, Tahsil Et ile ödeme alın.",
+            "Onam eksikse uyarı görürsünüz — bu ödemeyi engellemez; onam ameliyat günü tamamlanır."
+          ]
+        }
+      ],
+      "note": "Onam durumu yalnızca uyarıdır: ödeme almayı engellemez. İmzalı onam ameliyat günü tamamlanma anında zorunludur."
+    }
+  },
+  "pharmacy": {
+    "overview": {
+      "title": "Genel Bakış",
+      "purpose": "Eczanenin günlük özeti: satışlar, bekleyen reçeteler, kritik stok, gün-sonu kasa.",
+      "layout": "Üstte KPI kartları.",
+      "tasks": [
+        {
+          "title": "Hızlı başlangıç",
+          "steps": ["Bir karta tıklayın; ilgili ekranı açar."]
+        }
+      ]
+    },
+    "pharmacyPos": {
+      "title": "Satış (POS)",
+      "purpose": "İlaç satışı yaparsınız.",
+      "layout": "Ürün arama + sepet + ödeme. Alıcı seçimi (kayıtlı hasta veya anonim).",
+      "tasks": [
+        {
+          "title": "Satış yapma",
+          "steps": [
+            "Ürünleri sepete ekleyin (kategoriden veya arayarak).",
+            "Alıcıyı seçin: kayıtlı hasta ya da anonim (isim istemeden).",
+            "Ödemeyi alın."
+          ]
+        },
+        {
+          "title": "İndirim",
+          "steps": [
+            "%10’a kadar indirim serbesttir.",
+            "%10’u aşan indirimde süpervizör (yönetici/finans) PIN’i gerekir; PIN yoksa indirim %10 ile sınırlanır."
+          ]
+        }
+      ],
+      "note": "Anonim satış: alıcının kimlik bilgisi istenmez (KVKK). İsim yazmadan satış tamamlanabilir."
+    },
+    "pharmacyPrescriptions": {
+      "title": "Reçete Kuyruğu",
+      "purpose": "Doktordan gelen reçeteleri karşılarsınız.",
+      "layout": "Bekleyen reçete listesi; her reçetenin kalemleri.",
+      "tasks": [
+        {
+          "title": "Reçeteyi karşılama",
+          "steps": [
+            "Reçeteyi açın, kalemleri görün.",
+            "İlaçları POS sepetine elle ekleyin (otomatik isim eşleştirme yoktur — doğru ürünü eczacı seçer).",
+            "Teslim edilen kalemi “verildi” olarak işaretleyin."
+          ]
+        }
+      ]
+    },
+    "pharmacyStock": {
+      "title": "Eczane Stok",
+      "purpose": "İlaç stoğunu görür ve yönetirsiniz.",
+      "layout": "Ürün listesi + miktar + kritik seviye.",
+      "tasks": [
+        {
+          "title": "Stok kontrolü",
+          "steps": ["Kritik seviyedeki ürünleri görün.", "Miktarları güncelleyin."]
+        }
+      ]
+    },
+    "pharmacyPurchase": {
+      "title": "Satın Alma",
+      "purpose": "Tedarikçiden ilaç siparişi verirsiniz.",
+      "layout": "Sipariş oluşturma + tedarikçi seçimi.",
+      "tasks": [
+        {
+          "title": "Sipariş",
+          "steps": ["Tedarikçiyi ve ürünleri seçin.", "Siparişi oluşturun."]
+        }
+      ]
+    },
+    "pharmacySuppliers": {
+      "title": "Tedarikçiler",
+      "purpose": "İlaç tedarikçilerini yönetirsiniz.",
+      "layout": "Tedarikçi listesi.",
+      "tasks": [
+        {
+          "title": "Tedarikçi ekleme",
+          "steps": ["Yeni tedarikçiyi bilgileriyle ekleyin."]
+        }
+      ]
+    },
+    "pharmacyReturns": {
+      "title": "İadeler",
+      "purpose": "Satılan ürünlerin iadesini alırsınız.",
+      "layout": "İade listesi + iade banner’ı.",
+      "tasks": [
+        {
+          "title": "İade alma",
+          "steps": [
+            "İade edilecek satışı bulun.",
+            "İade işlemini tamamlayın; iade banner’ında görünür."
+          ]
+        }
+      ]
+    },
+    "pharmacyCash": {
+      "title": "Gün-Sonu Kasa",
+      "purpose": "Gün sonunda kasayı sayar ve finansa devredersiniz.",
+      "layout": "Gün-sonu özet + devir.",
+      "tasks": [
+        {
+          "title": "Kasa devri",
+          "steps": [
+            "Gün-sonu kasa özetini kontrol edin.",
+            "Kasayı finansa devredin (iki aşamalı: hazırla → onayla)."
+          ]
+        }
+      ]
+    },
+    "pharmacyReports": {
+      "title": "Raporlar",
+      "purpose": "Eczane satış ve stok raporlarını görürsünüz.",
+      "layout": "Rapor listesi.",
+      "tasks": [
+        {
+          "title": "Rapor görüntüleme",
+          "steps": ["İlgili raporu seçip inceleyin."]
+        }
+      ]
+    }
+  },
+  "finans": {
+    "overview": {
+      "title": "Genel Bakış",
+      "purpose": "Mali durumun özeti: tahsilat, onay bekleyen indirim/iade/PO, kasa durumu.",
+      "layout": "Üstte KPI kartları; altta onay kuyrukları.",
+      "tasks": [
+        {
+          "title": "Onay takibi",
+          "steps": ["Onay bekleyen kalemi karttan açın."]
+        }
+      ]
+    },
+    "billing": {
+      "title": "Faturalama",
+      "purpose": "Faturaları görür, iadeleri onaylarsınız.",
+      "layout": "Fatura listesi + iade onay bölümü.",
+      "tasks": [
+        {
+          "title": "İade onayı",
+          "steps": ["İade talebini açın, gerekçeyi inceleyin, onaylayın veya reddedin."]
+        }
+      ],
+      "note": "Cerrahi-bağlı faturaları görürsünüz (okuma + iade onayı) ama oluşturamaz/düzenleyemezsiniz — mali izolasyon (Karar 7)."
+    },
+    "cashRegister": {
+      "title": "Kasa",
+      "purpose": "Kasayı kapatır ve finalize edersiniz.",
+      "layout": "Kasa özeti + kapatma.",
+      "tasks": [
+        {
+          "title": "Kasa kapatma",
+          "steps": [
+            "Gün-sonu kasa özetini kontrol edin.",
+            "Kapatmayı finalize edin (asistan yalnız taslak hazırlar; finalize sizde)."
+          ]
+        }
+      ]
+    },
+    "approvals": {
+      "title": "Onaylar",
+      "purpose": "İndirim, iade ve satın alma siparişi onaylarını yönetirsiniz.",
+      "layout": "Sekmeli: İndirim / İade / PO.",
+      "tasks": [
+        {
+          "title": "PO onayı",
+          "steps": [
+            "PO sekmesinden bekleyen siparişi açın.",
+            "Birim fiyat stok ekibince girilir; siz yalnız onaylar/reddedersiniz (fiyatı değiştiremezsiniz — Karar 8)."
+          ]
+        }
+      ]
+    },
+    "commission": {
+      "title": "Hakediş",
+      "purpose": "Doktor hakedişlerini görür ve öder.",
+      "layout": "Hakediş listesi + ödeme.",
+      "tasks": [
+        {
+          "title": "Hakediş ödeme",
+          "steps": ["Onaylı hakedişleri seçin.", "Ödemeyi işaretleyin."]
+        }
+      ]
+    },
+    "fraud": {
+      "title": "Fraud İzleme",
+      "purpose": "Şüpheli mali işlemleri incelersiniz (salt görüntüleme).",
+      "layout": "Fraud uyarı listesi.",
+      "tasks": [
+        {
+          "title": "İnceleme",
+          "steps": ["Uyarıyı açıp ayrıntıyı inceleyin."]
+        }
+      ]
+    },
+    "reports": {
+      "title": "Raporlar",
+      "purpose": "Mali raporları görürsünüz.",
+      "layout": "Rapor listesi.",
+      "tasks": [
+        {
+          "title": "Rapor",
+          "steps": ["İlgili raporu açın."]
+        }
+      ]
+    }
+  },
+  "stok": {
+    "overview": {
+      "title": "Genel Bakış",
+      "purpose": "Depo durumu: kritik stok, bekleyen siparişler, lens ihtiyacı.",
+      "layout": "Üstte KPI kartları.",
+      "tasks": [
+        {
+          "title": "Kritik stok",
+          "steps": ["Kritik stok kartından eksik ürünleri görün."]
+        }
+      ]
+    },
+    "iolInventory": {
+      "title": "Lens (IOL) Stok",
+      "purpose": "Göz içi lens stoğunu izlersiniz.",
+      "layout": "Lens listesi; her lensin durumu.",
+      "tasks": [
+        {
+          "title": "Stok kavramı",
+          "steps": [
+            "Her lens üç durumda sayılır: müsait, ayrılmış (bir ameliyata rezerve), kullanılmış.",
+            "Müsait sayısı düşükse sipariş verin."
+          ]
+        }
+      ]
+    },
+    "iolManage": {
+      "title": "Lens Yönetimi",
+      "purpose": "Lens modellerini ve stoğunu yönetirsiniz.",
+      "layout": "Model listesi + düzenleme.",
+      "tasks": [
+        {
+          "title": "Model ekleme",
+          "steps": ["Yeni lens modelini bilgileriyle ekleyin."]
+        }
+      ]
+    },
+    "consumables": {
+      "title": "Sarf Malzeme",
+      "purpose": "Sarf malzeme stoğunu yönetirsiniz.",
+      "layout": "Sarf listesi + miktar.",
+      "tasks": [
+        {
+          "title": "Stok güncelleme",
+          "steps": ["Miktarları güncelleyin; kritik seviyeyi izleyin."]
+        }
+      ]
+    },
+    "stockMovements": {
+      "title": "Stok Hareketleri",
+      "purpose": "Giriş/çıkış hareketlerini görürsünüz.",
+      "layout": "Hareket listesi.",
+      "tasks": [
+        {
+          "title": "Hareket izleme",
+          "steps": ["Tarih/ürün ile hareketleri filtreleyin."]
+        }
+      ]
+    },
+    "suppliers": {
+      "title": "Tedarikçiler",
+      "purpose": "Tedarikçileri yönetirsiniz.",
+      "layout": "Tedarikçi listesi.",
+      "tasks": [
+        {
+          "title": "Tedarikçi ekleme",
+          "steps": ["Yeni tedarikçiyi ekleyin."]
+        }
+      ]
+    },
+    "purchaseOrders": {
+      "title": "Satın Alma Siparişleri",
+      "purpose": "Sipariş oluşturur ve mal kabul yaparsınız.",
+      "layout": "Sipariş listesi + oluşturma + mal kabul.",
+      "tasks": [
+        {
+          "title": "Sipariş oluşturma",
+          "steps": [
+            "Ürünleri ve birim fiyatı girin, siparişi oluşturun.",
+            "Mal geldiğinde kısmi veya tam teslim alın."
+          ]
+        }
+      ],
+      "note": "Siparişi siz oluşturur, birim fiyatı siz girersiniz; ONAY finanstadır. Onaylayamamanız normaldir — görev ayrılığı."
+    },
+    "stockForecast": {
+      "title": "Stok Tahmini",
+      "purpose": "Gelecek stok ihtiyacını görür, taslak sipariş üretirsiniz.",
+      "layout": "Tahmin listesi.",
+      "tasks": [
+        {
+          "title": "Taslak sipariş",
+          "steps": [
+            "Tahminden eksik çıkacak ürünleri görün.",
+            "Taslak satın alma siparişi oluşturun."
+          ]
+        }
+      ]
+    }
+  },
+  "admin": {
+    "overview": {
+      "title": "Genel Bakış",
+      "purpose": "Kliniğin günlük özeti: bugünkü muayene/tahsilat, bekleyen onaylar, kritik stok, satış durumu.",
+      "layout": "Üstte 4 KPI kartı (tıkla→ilgili ekran); altta bekleyen indirim + kritik stok + lens ihtiyacı widget’ları.",
+      "tasks": [
+        {
+          "title": "Hızlı yönetim",
+          "steps": [
+            "Bir KPI kartına tıklayın; ön-filtreli ekrana gider.",
+            "Bekleyen onayları widget’tan doğrudan işleyin."
+          ]
+        }
+      ]
+    },
+    "worklist": {
+      "title": "Muayene Sırası",
+      "purpose": "Klinik hasta akışını izlersiniz.",
+      "layout": "Kuyruk sütunları + hasta kartı.",
+      "tasks": [
+        {
+          "title": "Akış izleme",
+          "steps": ["Bekleyen/muayenede/hazır sütunlarından hasta durumunu görün."]
+        }
+      ]
+    },
+    "schedule": {
+      "title": "Randevu Takvimi",
+      "purpose": "Tüm randevuları görür ve yönetirsiniz.",
+      "layout": "Gün/hafta + doktor/tip filtreleri.",
+      "tasks": [
+        {
+          "title": "Randevu",
+          "steps": ["Boş slota tıklayıp randevu oluşturun."]
+        }
+      ]
+    },
+    "surgeryDay": {
+      "title": "Ameliyat Günü",
+      "purpose": "Günün ameliyatlarını izlersiniz.",
+      "layout": "Ameliyat pipeline satırları.",
+      "tasks": [
+        {
+          "title": "İzleme",
+          "steps": ["Güvenlik/lens/tamamlama durumunu görün."]
+        }
+      ]
+    },
+    "billing": {
+      "title": "Faturalama",
+      "purpose": "Faturaları yönetirsiniz.",
+      "layout": "Fatura listesi + tahsilat.",
+      "tasks": [
+        {
+          "title": "Tahsilat",
+          "steps": ["Faturayı açıp ödeme alın."]
+        }
+      ]
+    },
+    "cashRegister": {
+      "title": "Kasa",
+      "purpose": "Kasayı yönetir ve kapatırsınız.",
+      "layout": "Kasa özeti + kapatma.",
+      "tasks": [
+        {
+          "title": "Kasa kapatma",
+          "steps": ["Gün-sonu özetini kontrol edip kapatın."]
+        }
+      ]
+    },
+    "approvals": {
+      "title": "Onaylar",
+      "purpose": "İndirim, iade ve satın alma onaylarını verirsiniz.",
+      "layout": "Sekmeli: İndirim / İade / PO.",
+      "tasks": [
+        {
+          "title": "Onay",
+          "steps": ["Bekleyen kalemi açın, gerekçeyi görün, onaylayın veya reddedin."]
+        }
+      ]
+    },
+    "cosign": {
+      "title": "Co-sign",
+      "purpose": "Hemşire kayıtlarını onaylarsınız.",
+      "layout": "Bekleyen kayıt + öncesi/sonrası fark.",
+      "tasks": [
+        {
+          "title": "Onay",
+          "steps": ["Farkı inceleyip onaylayın."]
+        }
+      ]
+    },
+    "iolInventory": {
+      "title": "Lens Stok",
+      "purpose": "Lens stoğunu izlersiniz.",
+      "layout": "Lens listesi (müsait/ayrılmış/kullanılmış).",
+      "tasks": [
+        {
+          "title": "Stok",
+          "steps": ["Kritik lensleri görün."]
+        }
+      ]
+    },
+    "adminAnalysis": {
+      "title": "Analiz",
+      "purpose": "Klinik analiz ve raporlarına ulaşırsınız.",
+      "layout": "Analiz kartları hub’ı.",
+      "tasks": [
+        {
+          "title": "Analiz",
+          "steps": ["İlgili analiz kartını açın."]
+        }
+      ]
+    },
+    "automations": {
+      "title": "Otomasyonlar",
+      "purpose": "AI hasta asistanını yönetirsiniz.",
+      "layout": "Asistan durumu + prompt/bilgi tabanı düzenleme.",
+      "tasks": [
+        {
+          "title": "Asistan yönetimi",
+          "steps": [
+            "Asistanı açın/kapatın.",
+            "Prompt ve bilgi tabanını ekrandan düzenleyin (deploy gerekmez)."
+          ]
+        }
+      ]
+    },
+    "adminSettings": {
+      "title": "Ayarlar",
+      "purpose": "Klinik ayarlarını yönetirsiniz.",
+      "layout": "Ayar kartları hub’ı.",
+      "tasks": [
+        {
+          "title": "Ayar",
+          "steps": ["İlgili ayar kartını açıp düzenleyin."]
+        }
+      ]
+    },
+    "users": {
+      "title": "Kullanıcılar",
+      "purpose": "Personel hesaplarını yönetirsiniz.",
+      "layout": "Kullanıcı listesi + yeni kullanıcı.",
+      "tasks": [
+        {
+          "title": "Kullanıcı",
+          "steps": [
+            "Satıra tıklayıp detay/rol/mod düzenleyin.",
+            "Yeni kullanıcıyı rolüyle ekleyin."
+          ]
+        }
+      ]
+    },
+    "permissions": {
+      "title": "Yetkiler",
+      "purpose": "Rol yetkilerini görüntüler/düzenlersiniz.",
+      "layout": "Yetki matrisi.",
+      "tasks": [
+        {
+          "title": "Yetki",
+          "steps": ["Rol × yetki matrisinden değişiklik yapın."]
+        }
+      ]
+    },
+    "clinicSettings": {
+      "title": "Klinik Bilgileri",
+      "purpose": "Klinik kimlik bilgilerini düzenlersiniz.",
+      "layout": "Ad/adres/logo/vergi formu.",
+      "tasks": [
+        {
+          "title": "Düzenleme",
+          "steps": ["Bilgileri güncelleyip kaydedin."]
+        }
+      ]
+    },
+    "serviceCatalog": {
+      "title": "Hizmet Kataloğu",
+      "purpose": "Hizmet/fiyat kataloğunu yönetirsiniz.",
+      "layout": "Hizmet listesi + fiyat.",
+      "tasks": [
+        {
+          "title": "Hizmet",
+          "steps": ["Hizmet ekleyin/fiyat güncelleyin."]
+        }
+      ]
+    },
+    "consentTemplates": {
+      "title": "Onam Şablonları",
+      "purpose": "Onam belgelerini yönetirsiniz.",
+      "layout": "Şablon listesi.",
+      "tasks": [
+        {
+          "title": "Şablon",
+          "steps": ["Şablon içeriğini düzenleyin."]
+        }
+      ]
+    },
+    "messaging": {
+      "title": "Mesajlaşma",
+      "purpose": "Otomatik mesaj şablon/tetikleyicilerini yönetirsiniz.",
+      "layout": "Şablon + tetikleyici sekmeleri.",
+      "tasks": [
+        {
+          "title": "Mesaj",
+          "steps": ["Şablonları düzenleyin, tetikleyicileri açıp kapatın."]
+        }
+      ]
+    },
+    "commission": {
+      "title": "Hakediş",
+      "purpose": "Doktor hakedişlerini yönetirsiniz.",
+      "layout": "Hakediş listesi.",
+      "tasks": [
+        {
+          "title": "Hakediş",
+          "steps": ["Onaylı hakedişleri ödeyin."]
+        }
+      ]
+    },
+    "fraud": {
+      "title": "Fraud",
+      "purpose": "Şüpheli işlemleri incelersiniz.",
+      "layout": "Uyarı listesi.",
+      "tasks": [
+        {
+          "title": "İnceleme",
+          "steps": ["Uyarıyı açıp inceleyin."]
+        }
+      ]
+    },
+    "reports": {
+      "title": "Raporlar",
+      "purpose": "Klinik raporlarını görürsünüz.",
+      "layout": "Rapor listesi.",
+      "tasks": [
+        {
+          "title": "Rapor",
+          "steps": ["İlgili raporu açın."]
+        }
+      ]
+    }
+  }
+}

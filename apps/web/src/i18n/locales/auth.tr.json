@@ -1,0 +1,46 @@
+{
+  "login": {
+    "title": "Giriş yap",
+    "subtitle": "Klinik hesabınızla oturum açın.",
+    "tenantLabel": "Klinik kodu",
+    "tenantHint": "Klinik adresinizden otomatik geldi.",
+    "emailLabel": "E-posta",
+    "passwordLabel": "Parola",
+    "submit": "Giriş yap",
+    "errorFallback": "Giriş başarısız",
+    "validation": {
+      "tenantMin": "Klinik kodu en az 2 karakter",
+      "tenantPattern": "Sadece küçük harf, rakam, tire",
+      "emailInvalid": "Geçerli bir e-posta girin",
+      "passwordMin": "Parola en az 8 karakter"
+    },
+    "modeSelect": {
+      "title": "Bugün hangi modda çalışıyorsunuz?",
+      "subtitle": "Birden çok çalışma moduna yetkiniz var. Bu oturum için birini seçin.",
+      "back": "Geri"
+    },
+    "modes": {
+      "genel": "Genel",
+      "asistan": "Asistan (doktor adına)",
+      "olcum": "Ölçüm istasyonu"
+    },
+    "maintenanceTitle": "Planlı Bakım"
+  },
+  "changePassword": {
+    "title": "Parolayı değiştir",
+    "descriptionFirstLogin": "İlk girişiniz — devam etmek için parolayı güncelleyin.",
+    "descriptionStandard": "Mevcut parolanızı doğruladıktan sonra yeni parola belirleyin.",
+    "currentLabel": "Mevcut parola",
+    "newLabel": "Yeni parola",
+    "confirmLabel": "Yeni parola (tekrar)",
+    "submit": "Güncelle",
+    "cancel": "İptal",
+    "successMessage": "Parola güncellendi. Gösterge paneline yönlendiriliyorsunuz…",
+    "validation": {
+      "currentMin": "Mevcut parola en az 8 karakter",
+      "newMin": "Yeni parola en az 8 karakter",
+      "confirmMismatch": "Yeni parola tekrarı eşleşmiyor",
+      "sameAsCurrent": "Yeni parola, mevcut paroladan farklı olmalı"
+    }
+  }
+}

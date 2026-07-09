@@ -1,0 +1,36 @@
+{
+  "title": "Detaylı Raporlar",
+  "description": "Kohort + retention + doktor heatmap. Excel'e indirilebilir.",
+  "export": "Excel İndir",
+  "cohort": {
+    "title": "Hasta Kohortu (Aylık)",
+    "description": "Son N ay içinde eklenen yeni hasta sayısı.",
+    "months": "Ay",
+    "newPatients": "Yeni hasta"
+  },
+  "retention": {
+    "title": "Retention Oranı",
+    "description": "Her ay kohortundan, kayıttan sonraki M gün içinde dönen hasta oranı.",
+    "lookAhead": "Pencere (gün)",
+    "ratePct": "Dönüş %"
+  },
+  "heatmap": {
+    "title": "Randevu Yoğunluk Haritası",
+    "description": "Son N gün, gün × saat hücrelerinde randevu yoğunluğu.",
+    "days": "Gün"
+  },
+  "days": {
+    "sun": "Paz",
+    "mon": "Pzt",
+    "tue": "Sal",
+    "wed": "Çar",
+    "thu": "Per",
+    "fri": "Cum",
+    "sat": "Cmt"
+  },
+  "revenue": {
+    "title": "Aylık Ciro",
+    "description": "İade hariç tahsilatların TJS karşılığı, ay bazında."
+  },
+  "loadError": "Bazı raporlar yüklenemedi. Bağlantıyı kontrol edip tekrar deneyin."
+}

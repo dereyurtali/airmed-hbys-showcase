@@ -1,0 +1,99 @@
+{
+  "section": {
+    "title": "Prosedürler",
+    "newButton": "Yeni prosedür",
+    "loading": "Yükleniyor…",
+    "empty": "Henüz prosedür kaydı yok."
+  },
+  "listPage": {
+    "title": "Prosedürler",
+    "description": "Enjeksiyon, lazer ve minör prosedür kayıtları.",
+    "allTypes": "Tüm tipler",
+    "fromDate": "Başlangıç",
+    "toDate": "Bitiş",
+    "empty": "Filtreye uyan prosedür bulunamadı.",
+    "cols": {
+      "performedAt": "Tarih",
+      "patient": "Hasta",
+      "type": "Tip",
+      "eyeSide": "Göz",
+      "doctor": "Doktor",
+      "status": "Durum"
+    }
+  },
+  "types": {
+    "intravitreal_injection": "İntravitreal enjeksiyon",
+    "yag_capsulotomy": "YAG kapsülotomi",
+    "argon_laser": "Argon lazer",
+    "retina_laser_prp": "Retina lazer (PRP)",
+    "slt": "SLT (trabeküloplasti)",
+    "cross_linking": "Cross-linking",
+    "minor": "Minör prosedür"
+  },
+  "status": {
+    "planned": "Planlandı",
+    "performed": "Yapıldı",
+    "cancelled": "İptal"
+  },
+  "eyeSide": {
+    "od": "Sağ (OD)",
+    "os": "Sol (OS)",
+    "ou": "Çift (OU)"
+  },
+  "anesthesia": {
+    "topical": "Topikal",
+    "local": "Lokal",
+    "none": "Yok"
+  },
+  "settings": {
+    "energy_mj": "Enerji",
+    "energy_mw": "Güç",
+    "pulse_count": "Pulse sayısı",
+    "spot_count": "Spot sayısı",
+    "spot_size_um": "Spot çapı",
+    "duration_ms": "Süre",
+    "duration_min": "Süre",
+    "protocol": "Protokol",
+    "description": "Açıklama"
+  },
+  "form": {
+    "title": "Yeni prosedür",
+    "description": "Prosedür kaydını ve isteğe bağlı kontrol randevusunu oluşturun.",
+    "submit": "Kaydet",
+    "sections": {
+      "drug": "İlaç",
+      "settings": "Parametreler"
+    },
+    "fields": {
+      "type": "Tip",
+      "doctor": "Doktor",
+      "eyeSide": "Göz",
+      "anesthesia": "Anestezi",
+      "performedAt": "Tarih / saat",
+      "status": "Durum",
+      "drugUsed": "İlaç",
+      "drugDose": "Doz",
+      "findings": "Bulgular",
+      "complications": "Komplikasyon",
+      "notes": "Not",
+      "autoFollowUp": "Otomatik kontrol randevusu oluştur",
+      "followUpDays": "Kaç gün sonra:"
+    },
+    "placeholders": {
+      "drugUsed": "Lucentis / Eylea / Avastin…"
+    }
+  },
+  "list": {
+    "followUp": "Kontrol randevusu: {{date}}"
+  },
+  "toast": {
+    "created": "Prosedür kaydedildi.",
+    "savedFollowUpSkipped": "Prosedür kaydedildi; kontrol randevusu çakışma nedeniyle oluşturulmadı."
+  },
+  "errors": {
+    "unknown": "İşlem başarısız oldu.",
+    "forbidden": "Bu prosedürü yalnızca ilgili doktor veya yönetici düzenleyebilir.",
+    "notFound": "Kayıt bulunamadı.",
+    "selectDoctor": "Lütfen bir doktor seçin."
+  }
+}

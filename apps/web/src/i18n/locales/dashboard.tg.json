@@ -1,0 +1,97 @@
+{
+  "title": "Панели роҳбар",
+  "description": "Намоиши ҷории фаъолияти клиника",
+  "registerPatient": {
+    "title": "Сабти бемор",
+    "description": "Сабти нави бемор кушоед"
+  },
+  "loading": "Бор шуда истодааст…",
+  "error": "Метрикаҳо бор карда нашуданд.",
+  "filters": {
+    "dateFrom": "Оғоз",
+    "dateTo": "Анҷом",
+    "doctor": "Духтур",
+    "allDoctors": "Ҳамаи духтурон",
+    "preset": {
+      "today": "Имрӯз",
+      "week": "Ин ҳафта",
+      "month": "Ин моҳ",
+      "quarter": "3 моҳи охир"
+    }
+  },
+  "today": {
+    "title": "Имрӯз",
+    "appointments": "Сабтҳои имрӯза",
+    "examinations": "Муоинаҳои анҷомёфта",
+    "surgeries": "Ҷарроҳиҳои иҷрошуда",
+    "newPatients": "Беморони нав"
+  },
+  "kpi": {
+    "totalAppointments": "Ҳамаи сабтҳо",
+    "completed": "Анҷомёфта",
+    "noShowRate": "Ҳиссаи наомадан",
+    "examinations": "Муоинаҳо",
+    "surgeries": "Ҷарроҳиҳо",
+    "complicationRate": "Ҳиссаи мушкилот",
+    "newPatients": "Беморони нав"
+  },
+  "charts": {
+    "appointmentTrend": {
+      "title": "Тренди сабтҳо",
+      "yLabel": "Шумораи сабтҳо"
+    },
+    "doctorPerformance": {
+      "title": "Самаранокии духтурон",
+      "completed": "Анҷомёфта",
+      "noShow": "Наомад",
+      "rate": "Ҳиссаи анҷомёфта"
+    },
+    "noData": "Дар ин фосила маълумот нест."
+  },
+  "widget": {
+    "dailyHuddle": {
+      "title": "Ҷамъбасти ҳаррӯза",
+      "error": "Маълумоти ҷамъбаст гирифта нашуд",
+      "todayAppointments": "Сабтҳои имрӯз",
+      "inExam": "Дар муоина",
+      "awaitingMeasurement": "Интизори ченкунӣ",
+      "awaitingSurgerySales": "Дар фурӯш",
+      "activeBypass": "{{count}} убури фаврии фаъол"
+    },
+    "doctorLag": {
+      "title": "Вақти интизории духтурон",
+      "error": "Вақти интизорӣ гирифта нашуд",
+      "empty": "Имрӯз ташрифи фаъол нест.",
+      "avgMax": "мнт {{avg}}дақ / макс {{max}}дақ"
+    },
+    "paymentCompliance": {
+      "title": "Риояи «аввал пардохт»",
+      "error": "Маълумоти риоя гирифта нашуд",
+      "unpaidActive": "хидматҳои фаъоли пардохтнашуда",
+      "activeBypass": "Убури фаъол:",
+      "totalBypassToday": "Ҳамаи убурҳои имрӯз:",
+      "goToCash": "Ба касса →"
+    },
+    "pendingApprovals": {
+      "title": "Тасдиқҳои интизорӣ",
+      "error": "Шумораи тасдиқ гирифта нашуд",
+      "discountApproval": "тасдиқи тахфиф",
+      "awaitingResponse": "интизори ҷавоб"
+    },
+    "quickActions": {
+      "title": "Дастрасии тез",
+      "newPatient": "Бемори нав",
+      "newPatientDesc": "Сабти бемор сохтан",
+      "patientList": "Рӯйхати беморон",
+      "patientListDesc": "Ҷустуҷӯро кушодан",
+      "changePassword": "Тағйири парол",
+      "changePasswordDesc": "Бехатар бимонед"
+    },
+    "todayAppointments": {
+      "title": "Сабтҳои имрӯз",
+      "error": "Сабтҳо гирифта нашуданд",
+      "empty": "Барои имрӯз сабт нест",
+      "checkIn": "бақайдгирӣ:"
+    }
+  }
+}

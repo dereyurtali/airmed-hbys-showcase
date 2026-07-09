@@ -1,0 +1,14 @@
+{
+  "page": {
+    "title": "Geçmiş Muayeneler",
+    "description": "Yaptığınız muayeneler",
+    "empty": "Henüz muayene kaydınız yok",
+    "loadFailed": "Liste alınamadı: {{message}}"
+  },
+  "columns": {
+    "date": "Tarih",
+    "patient": "Hasta",
+    "complaint": "Şikâyet",
+    "diagnosis": "Tanı"
+  }
+}

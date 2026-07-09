@@ -1,0 +1,125 @@
+{
+  "section": {
+    "title": "Муоинаҳо",
+    "new": "Муоина илова кардан",
+    "empty": "Барои ин бемор сабти муоина нест."
+  },
+  "filter": {
+    "allTypes": "Ҳамаи навъҳо",
+    "allSources": "Клиника + берунӣ"
+  },
+  "table": {
+    "performedAt": "Сана",
+    "type": "Навъ",
+    "source": "Манбаъ",
+    "summary": "Натиҷа",
+    "createdBy": "Сабт кард"
+  },
+  "form": {
+    "createTitle": "Муоинаи нав",
+    "editTitle": "Таҳрири муоина",
+    "description": "Дохилӣ (тестҳои чашм) ё лабораторияи берунӣ.",
+    "source": "Манбаъ",
+    "testType": "Навъи тест",
+    "performedAt": "Санаи гузаронидан",
+    "od": "OD (чашми рост)",
+    "os": "OS (чашми чап)",
+    "mdPsd": "MD / PSD",
+    "externalLab": "Номи лабораторӣ",
+    "externalLabPlaceholder": "Мисол: ABC Lab Душанбе",
+    "file": "Файли ҳисобот (PDF/JPG/PNG)",
+    "notes": "Эзоҳҳо",
+    "submitCreate": "Захира кардан",
+    "submitUpdate": "Нав кардан"
+  },
+  "biometry": {
+    "axialLength": "AL (дарозии аксиалӣ, мм)",
+    "k1": "K1 (D)",
+    "k2": "K2 (D)",
+    "acd": "ACD (чуқурии камераи пеш, мм)",
+    "aConstant": "A-константа",
+    "targetRefraction": "Рефраксияи ҳадаф (D)",
+    "od": "OD (чашми рост)",
+    "os": "OS (чашми чап)",
+    "outOfRange": "Берун аз ҳудуд: {{min}}–{{max}} {{unit}}",
+    "iolPower": "Қувваи тавсияшудаи IOL: {{power}} D",
+    "iolCaveat": "MVP · ҷарроҳ тасдиқ мекунад"
+  },
+  "source": {
+    "internal": "Клиника",
+    "external": "Лабораторияи берунӣ"
+  },
+  "types": {
+    "visual_field": "Майдони биноӣ",
+    "oct_macula": "OCT — макула",
+    "oct_optic_nerve": "OCT — асаби биноӣ",
+    "topography": "Топография",
+    "pachymetry": "Пахиметрия",
+    "biometry": "Биометрия",
+    "fluorescein_angiography": "FFA",
+    "iop_curve": "Хатти ВГД",
+    "blood_test": "Таҳлили хун",
+    "ekg": "ЭКГ",
+    "chest_xray": "Рентгени сина",
+    "urinalysis": "Таҳлили пешоб",
+    "other": "Дигар"
+  },
+  "actions": {
+    "edit": "Таҳрир кардан",
+    "download": "Ҳисоботро бор кардан"
+  },
+  "toast": {
+    "created": "Муоина захира шуд",
+    "updated": "Муоина нав карда шуд",
+    "fileFailed": "Файл бор нашуд: {{message}}"
+  },
+  "errors": {
+    "unknown": "Хатои ғайричашмдошт",
+    "sameDayExpired": "Тирезаи 24-соатаи таҳрир тамом шуд",
+    "onlyOwnerOrAdmin": "Танҳо сабткунанда ё маъмур таҳрир карда метавонад",
+    "systemRecordOnlyAdmin": "Сабтҳои системавиро танҳо маъмур таҳрир мекунад",
+    "mimeNotAllowed": "Навъи файл дастгирӣ намешавад (PDF ё расм)",
+    "tooLarge": "Файл хеле калон аст (макс. 25 МБ)"
+  },
+  "thresholds": {
+    "title": "Доираҳои истинодии лабораторӣ",
+    "description": "Сарҳадҳои low/high барои клиника. Парчами abnormal дар экрани вуруди натиҷа автоматӣ.",
+    "newButton": "Сарҳади нав",
+    "saved": "Захира карда шуд",
+    "form": {
+      "testCode": "Рамзи тест",
+      "testCodePlaceholder": "мисол: CRP, HbA1c",
+      "sex": "Ҷинс",
+      "ageMin": "Синни мин",
+      "ageMax": "Синни макс",
+      "lowLimit": "Low",
+      "highLimit": "High",
+      "unit": "Воҳид",
+      "unitPlaceholder": "mg/L",
+      "notes": "Эзоҳ",
+      "submit": "Захира кардан"
+    },
+    "sex": {
+      "any": "Ҳамагӣ",
+      "male": "Мард",
+      "female": "Зан"
+    },
+    "table": {
+      "testCode": "Рамзи тест",
+      "sex": "Ҷинс",
+      "age": "Син",
+      "low": "Low",
+      "high": "High",
+      "unit": "Воҳид",
+      "notes": "Эзоҳ",
+      "actions": "Амалиёт"
+    },
+    "empty": "Ҳоло сарҳад нест. Бо \"Сарҳади нав\" илова кунед.",
+    "deleteDialog": {
+      "title": "Сарҳад нест карда шавад?",
+      "description": "Сарҳади {{testCode}} нест карда мешавад. Ин амалиёт баргардонда намешавад.",
+      "confirm": "Бале, нест кардан",
+      "cancel": "Бекор кардан"
+    }
+  }
+}

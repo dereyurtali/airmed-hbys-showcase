@@ -1,0 +1,14 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": ".",
+  "testRegex": ".e2e\\.spec\\.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "testEnvironment": "node",
+  "globalSetup": "<rootDir>/setup.ts",
+  "setupFiles": ["<rootDir>/per-worker-db.ts"],
+  "setupFilesAfterEnv": ["<rootDir>/e2e-retry.ts"],
+  "testTimeout": 90000,
+  "forceExit": true
+}

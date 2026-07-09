@@ -1,0 +1,122 @@
+{
+  "page": {
+    "title": "Ölçüm Birimi Kuyruğu",
+    "description": "Bekleyen ölçüm istekleri",
+    "empty": "Bekleyen ölçüm yok",
+    "loadFailed": "Kuyruk alınamadı: {{message}}",
+    "completedTitle": "Tamamlanan Ölçümler",
+    "completedDescription": "Bugün tamamlanan ölçüm talepleri",
+    "emptyCompleted": "Bugün tamamlanan ölçüm yok"
+  },
+  "columns": {
+    "patient": "Hasta",
+    "types": "İstenen ölçümler",
+    "status": "Durum",
+    "action": "İşlem",
+    "completedAt": "Tamamlanma"
+  },
+  "status": {
+    "requested": "İstendi",
+    "awaitingPayment": "Ödeme bekliyor",
+    "inProgress": "Devam ediyor",
+    "fulfilled": "Tamamlandı",
+    "cancelled": "İptal"
+  },
+  "order": {
+    "title": "Ölçüm iste",
+    "typesLabel": "Ölçüm tipleri",
+    "billableHint": "Ücretli ölçüm seçilirse hasta önce kasaya yönlendirilir.",
+    "submit": "İsteği oluştur",
+    "success": "Ölçüm isteği oluşturuldu"
+  },
+  "fulfill": {
+    "title": "Ölçüm sonucu gir",
+    "valuesPlaceholder": "Sonuç (örn. OD 0.8 / OS 0.6)",
+    "submit": "Sonuçları kaydet",
+    "success": "Ölçüm sonuçları kaydedildi",
+    "step": "Adım {{current}}/{{total}}",
+    "completedOf": "{{done}}/{{total}} tamamlandı",
+    "next": "İleri",
+    "prev": "Geri",
+    "noValues": "En az bir değer girin"
+  },
+  "action": {
+    "order": "Ölçüm iste",
+    "fulfill": "Sonuç gir"
+  },
+  "queue": {
+    "title": "Ölçüm Talepleri",
+    "incoming": "Gelen Talepler",
+    "empty": "Bekleyen talep yok",
+    "searchPlaceholder": "Hasta ara…",
+    "completedCard": "Bugün Tamamlanan Ölçümler",
+    "countLabel": "{{count}} ölçüm",
+    "newOrderToast": "Yeni ölçüm talebi geldi",
+    "filterAll": "Tümü",
+    "view": {
+      "active": "Aktif",
+      "deferred": "Ertelenmiş"
+    }
+  },
+  "detail": {
+    "selectPrompt": "Bir talep seçin",
+    "statusWaiting": "Ölçüm bekleniyor",
+    "statusDone": "Tamamlandı",
+    "statusSent": "Gönderildi",
+    "requestedAt": "İstendi {{time}}",
+    "requestedShort": "istendi {{time}}",
+    "completedAt": "Tamamlandı {{time}}",
+    "entryTitle": "Ölçüm Girişi",
+    "resultsTitle": "Ölçüm Sonuçları",
+    "entryHint": "{{count}} test · değerleri girip doktora gönderin",
+    "col": {
+      "test": "Test",
+      "right": "Sağ (OD)",
+      "left": "Sol (OS)",
+      "patient": "Hasta",
+      "doctor": "Doktor",
+      "tests": "Testler",
+      "requested": "İstendi",
+      "completed": "Tamamlandı",
+      "status": "Durum"
+    },
+    "flagToggle": "Patolojik işaretle",
+    "flagHint": "Bayrak = patolojik / dikkat. Doktor ekranında kırmızı görünür.",
+    "paymentBlocked": "Tahsilat sonrası giriş açılır.",
+    "send": "Doktora Gönder",
+    "unsavedConfirm": "Girilen ölçüm değerleri kaydedilmedi. Başka talebe geçilsin mi? Girilenler kaybolacak.",
+    "partialConfirm": "Bazı ölçümler boş bırakıldı. Yine de gönderilsin mi?",
+    "eye": {
+      "od": "OD (Sağ)",
+      "os": "OS (Sol)"
+    },
+    "attachDeviceOutput": "Cihaz çıktısı iliştir",
+    "notifyReception": "Resepsiyona bildir",
+    "receptionNotified": "Resepsiyon bilgilendirildi",
+    "defer": "Ertele",
+    "resume": "Geri al",
+    "deferred": "Talep ertelendi",
+    "resumed": "Talep aktif kuyruğa döndü",
+    "deferReasonPrompt": "Erteleme sebebi (hasta gelmedi, cihaz meşgul…):",
+    "deferReasonTooShort": "Lütfen en az 3 karakterlik bir sebep girin"
+  },
+  "entry": {
+    "types": {
+      "visual_acuity": "Görme keskinliği (VA)",
+      "intraocular_pressure": "Göz içi basıncı (GİB)",
+      "biometry": "Biyometri (AKG / GİL hesabı)",
+      "keratometry": "Keratometri (K1/K2)",
+      "refraction": "Refraksiyon",
+      "topography": "Topografi",
+      "pachymetry": "Pakimetri",
+      "perimetry": "Görme alanı (Perimetri)",
+      "fundus_photo": "Fundus fotoğrafı",
+      "oct": "OKT"
+    }
+  },
+  "gender": {
+    "male": "Erkek",
+    "female": "Kadın",
+    "other": "Diğer"
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "section": {
+    "title": "Tetkikler",
+    "new": "Tetkik ekle",
+    "empty": "Bu hasta için tetkik kaydı yok."
+  },
+  "filter": {
+    "allTypes": "Tüm tipler",
+    "allSources": "Klinik içi + dış"
+  },
+  "table": {
+    "performedAt": "Tarih",
+    "type": "Tip",
+    "source": "Kaynak",
+    "summary": "Sonuç",
+    "createdBy": "Kaydeden"
+  },
+  "form": {
+    "createTitle": "Yeni tetkik",
+    "editTitle": "Tetkiki düzenle",
+    "description": "Klinik içi (göz testleri) veya dış laboratuvar kaydı.",
+    "source": "Kaynak",
+    "testType": "Test tipi",
+    "performedAt": "Yapılma tarihi",
+    "od": "OD (sağ göz)",
+    "os": "OS (sol göz)",
+    "mdPsd": "MD / PSD",
+    "externalLab": "Laboratuvar adı",
+    "externalLabPlaceholder": "Örn. ABC Lab Dushanbe",
+    "file": "Rapor dosyası (PDF/JPG/PNG)",
+    "notes": "Notlar",
+    "submitCreate": "Kaydet",
+    "submitUpdate": "Güncelle"
+  },
+  "biometry": {
+    "axialLength": "AL (aksiyel uzunluk, mm)",
+    "k1": "K1 (D)",
+    "k2": "K2 (D)",
+    "acd": "ACD (ön kamara derinliği, mm)",
+    "aConstant": "A-sabiti",
+    "targetRefraction": "Hedef refraksiyon (D)",
+    "od": "OD (Sağ göz)",
+    "os": "OS (Sol göz)",
+    "outOfRange": "Aralık dışı: {{min}}–{{max}} {{unit}}",
+    "iolPower": "Önerilen IOL gücü: {{power}} D",
+    "iolCaveat": "MVP · cerrah doğrulamalı"
+  },
+  "source": {
+    "internal": "Klinik içi",
+    "external": "Dış lab"
+  },
+  "types": {
+    "visual_field": "Görme alanı",
+    "oct_macula": "OCT — Makula",
+    "oct_optic_nerve": "OCT — Optik sinir",
+    "topography": "Topografi",
+    "pachymetry": "Pakimetri",
+    "biometry": "Biyometri",
+    "fluorescein_angiography": "FFA",
+    "iop_curve": "GİB eğrisi",
+    "blood_test": "Kan tahlili",
+    "ekg": "EKG",
+    "chest_xray": "Akciğer röntgeni",
+    "urinalysis": "İdrar tahlili",
+    "other": "Diğer"
+  },
+  "actions": {
+    "edit": "Düzenle",
+    "download": "Raporu indir"
+  },
+  "toast": {
+    "created": "Tetkik kaydedildi",
+    "updated": "Tetkik güncellendi",
+    "fileFailed": "Dosya yüklenemedi: {{message}}"
+  },
+  "errors": {
+    "unknown": "Beklenmedik hata",
+    "sameDayExpired": "24 saatlik düzenleme süresi doldu",
+    "onlyOwnerOrAdmin": "Yalnızca tetkiki kaydeden veya yönetici düzenleyebilir",
+    "systemRecordOnlyAdmin": "Sistemden gelen tetkikleri yalnızca yönetici düzenleyebilir",
+    "mimeNotAllowed": "Dosya tipi desteklenmiyor (PDF veya resim olmalı)",
+    "tooLarge": "Dosya çok büyük (en fazla 25 MB)"
+  },
+  "thresholds": {
+    "title": "Lab Referans Aralıkları",
+    "description": "Klinik özel low/high eşik tanımları. Lab sonuç giriş ekranında otomatik abnormal flag.",
+    "newButton": "Yeni eşik",
+    "saved": "Kaydedildi",
+    "form": {
+      "testCode": "Test kodu",
+      "testCodePlaceholder": "örn. CRP, HbA1c",
+      "sex": "Cinsiyet",
+      "ageMin": "Yaş min",
+      "ageMax": "Yaş max",
+      "lowLimit": "Low limit",
+      "highLimit": "High limit",
+      "unit": "Birim",
+      "unitPlaceholder": "mg/L",
+      "notes": "Not",
+      "submit": "Kaydet"
+    },
+    "sex": {
+      "any": "Hepsi",
+      "male": "Erkek",
+      "female": "Kadın"
+    },
+    "table": {
+      "testCode": "Test kodu",
+      "sex": "Cinsiyet",
+      "age": "Yaş",
+      "low": "Low",
+      "high": "High",
+      "unit": "Birim",
+      "notes": "Not",
+      "actions": "İşlem"
+    },
+    "empty": "Henüz eşik tanımı yok. \"Yeni eşik\" ile ekleyin.",
+    "deleteDialog": {
+      "title": "Eşik silinsin mi?",
+      "description": "{{testCode}} eşiği silinecek. Bu işlem geri alınamaz.",
+      "confirm": "Evet, sil",
+      "cancel": "Vazgeç"
+    }
+  }
+}

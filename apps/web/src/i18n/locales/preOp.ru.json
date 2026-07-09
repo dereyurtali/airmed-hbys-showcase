@@ -1,0 +1,57 @@
+{
+  "section": {
+    "title": "Подготовка к операции",
+    "openButton": "Открыть pre-op",
+    "editButton": "Редактировать pre-op",
+    "ready": "Готов к операции",
+    "notReady": "Подготовка продолжается",
+    "progress": "{{done}}/{{total}} пунктов выполнено",
+    "markReady": "Отметить как готово",
+    "unmarkReady": "Отменить готовность"
+  },
+  "dialog": {
+    "title": "Pre-op проверка",
+    "description": "Заполните витальные показатели, дилатацию, анестезию и чек-лист. После выполнения всех обязательных пунктов можно отметить как готово.",
+    "vitalsTitle": "Витальные показатели",
+    "systolic": "Систолическое",
+    "diastolic": "Диастолическое",
+    "pulse": "Пульс",
+    "bloodSugar": "Сахар крови",
+    "temperatureC": "Температура",
+    "oxygenSaturation": "SpO₂",
+    "weightKg": "Вес",
+    "dilatationAt": "Время дилатации",
+    "anesthesiaNotes": "Заметки по анестезии",
+    "lensTitle": "Резервация IOL линзы",
+    "lensSelect": "Выберите партию",
+    "lensNone": "Без резервации линзы",
+    "checklistTitle": "Чек-лист подготовки",
+    "save": "Сохранить",
+    "close": "Закрыть"
+  },
+  "checklist": {
+    "fasting_8h": "Голодание (8 часов) подтверждено",
+    "blood_sugar": "Контроль сахара крови",
+    "blood_pressure": "Контроль давления",
+    "pupil_dilation": "Дилатация зрачка",
+    "antibiotic_prophylaxis": "Антибиотикопрофилактика",
+    "consent_signed": "Согласие подписано",
+    "lens_reserved": "IOL линза зарезервирована",
+    "surgeon_ready": "Хирург готов",
+    "anesthesia_consult_completed": "Консультация анестезиолога завершена"
+  },
+  "toast": {
+    "created": "Запись pre-op создана",
+    "updated": "Pre-op обновлён",
+    "ready": "Операция отмечена как готовая",
+    "unmarked": "Готовность отменена"
+  },
+  "errors": {
+    "unknown": "Непредвиденная ошибка",
+    "vitalsRequired": "Введите хотя бы один витальный показатель",
+    "dilatationRequired": "Время дилатации отсутствует",
+    "checklistIncomplete": "Все обязательные пункты должны быть выполнены",
+    "lensOutOfStock": "Выбранная партия не в наличии",
+    "lockedAfterReady": "Нельзя редактировать после отметки готовности"
+  }
+}

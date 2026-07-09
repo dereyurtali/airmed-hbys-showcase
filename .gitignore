@@ -1,0 +1,86 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+.next/
+.turbo/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+.env.clinic
+.env.prod
+*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+.nyc_output/
+
+# Playwright
+test-results/
+playwright-report/
+.playwright-mcp/
+# Manual debug screenshots from dev-loop verification (browser-in-the-loop pattern)
+d1-*.png
+debug-*.png
+screenshot-*.png
+playwright/.cache/
+.last-run.json
+
+# Prisma
+packages/db/prisma/migrations/dev.db*
+
+# Misc
+.cache/
+.npm/
+.eslintcache
+
+# Local file storage (photo uploads in dev/test)
+apps/api/storage/
+
+# Claude Code — per-user / ephemeral (NOT shared with team)
+.claude/settings.local.json
+.claude/agents-memory/
+.claude/projects/
+.claude/sessions/
+.claude/file-history/
+.claude/cache/
+.claude/shell-snapshots/
+
+# MCP — real config has API keys; use .mcp.json.example as template, copy locally
+.mcp.json
+.claude/scheduled_tasks.lock
+
+# Staging monitor — GitHub App secret material (box-only; use collector.env.example as template)
+*.pem
+tools/staging-monitor/collector.env
+
+# feedback-alert — Telegram bot token (box-only; use .env.example as template)
+tools/feedback-alert/.env

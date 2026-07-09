@@ -1,0 +1,38 @@
+{
+  "name": "@airmed/db",
+  "version": "0.4.2",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:reset": "prisma migrate reset",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:seed:demo": "tsx prisma/seed-demo.ts",
+    "db:seed:perf": "tsx prisma/seed-perf.ts",
+    "db:studio": "prisma studio",
+    "typecheck": "tsc --noEmit",
+    "test": "prisma migrate deploy && vitest run --passWithNoTests",
+    "db:seed:realistic": "tsx prisma/seed-realistic.ts",
+    "db:seed:s15": "tsx prisma/seed-s15.ts",
+    "db:seed:pharmacy": "tsx prisma/seed-pharmacy.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.20.0",
+    "@types/bcrypt": "^6.0.0",
+    "bcrypt": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "prisma": "^5.20.0",
+    "tsx": "^4.22.4",
+    "typescript": "^5.4.0",
+    "vitest": "^2.1.9"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  }
+}

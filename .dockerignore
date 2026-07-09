@@ -1,0 +1,50 @@
+# A15 — Docker build context excludes
+# Image küçük + build cache verimli olsun
+
+node_modules
+**/node_modules
+dist
+**/dist
+build
+**/build
+coverage
+**/coverage
+.git
+.github
+.husky
+.vscode
+.idea
+.claude
+.mcp.json
+.mcp.json.example
+*.log
+*.tsbuildinfo
+**/*.tsbuildinfo
+
+# Test results
+test-results
+playwright-report
+**/test-results
+**/playwright-report
+
+# Local dev/test artifacts
+apps/api/storage
+apps/api/coverage*
+.env
+.env.local
+.env.*.local
+.env.production
+.env.prod
+
+# Documents (not needed in container)
+gelistirme-plani
+hesaplamalar
+docs
+
+# Dev/ops tooling — uygulama değil; image'a (ve klinik kutusuna) ASLA girmez.
+# Staging monitör (collector script'leri + dashboard) burada yaşar.
+tools
+
+# README + repo metadata (image içine girmesin)
+*.md
+!apps/*/README.md

@@ -1,0 +1,131 @@
+{
+  "page": {
+    "title": "Навбати ман",
+    "description": "Беморони имрӯз ба шумо фиристодашуда",
+    "empty": "Дар навбати шумо бемор нест",
+    "loading": "Боргузорӣ…",
+    "loadFailed": "Навбат гирифта нашуд: {{message}}"
+  },
+  "columns": {
+    "patient": "Бемор",
+    "stage": "Ҳолат",
+    "waiting": "Интизорӣ",
+    "appointment": "Қабул",
+    "action": "Амал"
+  },
+  "filter": {
+    "allDoctors": "Ҳамаи духтурон",
+    "doctorLabel": "Духтур"
+  },
+  "widget": {
+    "title": "Навбати ман",
+    "empty": "Дар навбат бемор нест"
+  },
+  "stage": {
+    "registered": "Қайд кушода шуд",
+    "awaitingExamPayment": "Интизори пардохти муоина",
+    "waitingDoctor": "Интизори духтур",
+    "inExam": "Дар муоина",
+    "awaitingMeasurementPayment": "Интизори пардохти ченкунӣ",
+    "inMeasurement": "Дар ченкунӣ",
+    "measurementReady": "Ченкунӣ тайёр",
+    "awaitingSurgerySales": "Фурӯши ҷарроҳӣ",
+    "done": "Анҷом ёфт",
+    "cancelled": "Бекор шуд"
+  },
+  "queue": {
+    "title": "Навбати муоина",
+    "waitingPatients": "Беморони интизор",
+    "search": "Ҷустуҷӯи бемор",
+    "empty": "Дар ин варақа бемор нест",
+    "readyCount": "{{count}} ченкунӣ тайёр",
+    "examCap": "{{count}}/{{cap}} дар муоина",
+    "examCapHint": "Ҳудуди муоинаҳои ҳамзамон: {{cap}}",
+    "tabs": {
+      "sirada": "Дар навбат",
+      "ready": "Ченкунӣ тайёр",
+      "unpaid": "Пардохтнашуда"
+    },
+    "onlyActionable": "Танҳо ниёзманди амал"
+  },
+  "status": {
+    "inLine": "Дар навбат",
+    "inMeasurement": "Дар ченкунӣ",
+    "measurementReady": "Ченкунӣ тайёр",
+    "unpaid": "Пардохтнашуда",
+    "surgerySales": "Фурӯши ҷарроҳӣ"
+  },
+  "detail": {
+    "selectPrompt": "Аз чап беморро интихоб кунед",
+    "yearsOld": "сола",
+    "arrival": "Омад",
+    "appointmentAt": "Қабул",
+    "allergies": "Аллергия",
+    "anticoagulants": "Антикоагулянт",
+    "ready": "Тайёр",
+    "history": "Таърих ва шикоят",
+    "pastExams": "Муоинаҳои гузашта",
+    "complaint": "Шикоят",
+    "historyLabel": "Таърих",
+    "treatmentPlan": "Нақшаи табобат",
+    "prescription": "Дорухат",
+    "procedures": "Амалҳо",
+    "surgery": "Ҷарроҳӣ",
+    "measurement": "Ченкунӣ",
+    "done": "иҷрошуд",
+    "planned": "ба нақша",
+    "noExtra": "Тафсилоти иловагӣ нест",
+    "measurements": "Натиҷаҳои ченкунӣ",
+    "noHistory": "Сабти таърих нест",
+    "noMeasurements": "Натиҷаи ченкунӣ нест",
+    "col": {
+      "test": "Тест",
+      "right": "Рост",
+      "left": "Чап"
+    }
+  },
+  "meas": {
+    "va": "Тезии биноӣ (VA)",
+    "iop": "Фишори дохили чашм (ФДЧ)",
+    "refraction": "Авторефрактометрия",
+    "keratometry": "Кератометрия",
+    "biometry": "Биометрия (ДМЧ)",
+    "topography": "Топография",
+    "pachymetry": "Пахиметрия",
+    "perimetry": "Майдони биноӣ (периметрия)",
+    "fundusPhoto": "Акси таҳи чашм",
+    "oct": "ОКТ"
+  },
+  "gender": {
+    "male": "Мард",
+    "female": "Зан",
+    "other": "Дигар"
+  },
+  "reasonFallback": "Муоина",
+  "priority": {
+    "urgent": "ФАВРӢ",
+    "vip": "VIP"
+  },
+  "toast": {
+    "completed": "Муоина анҷом ёфт",
+    "examStarted": "Муоина оғоз шуд",
+    "recalled": "Бемор бозхонда шуд"
+  },
+  "action": {
+    "startExam": "Муоинаро оғоз кардан",
+    "orderMeasurement": "Ченкунӣ дархост кардан",
+    "newMeasurement": "Ченкунии нав дархост",
+    "prescription": "Дорухат навиштан",
+    "suggestSurgery": "Ҷарроҳӣ пешниҳод",
+    "complete": "Муоинаро анҷом додан",
+    "capReachedHint": "Ҳудуди муоинаҳои ҳамзамон пур шуд — аввал яктоашро анҷом диҳед",
+    "completeStageHint": "Танҳо бемори дар муоина (in_exam) анҷом дода мешавад",
+    "recall": "Бозхондан"
+  },
+  "decision": {
+    "title": "Қадами навбатӣ",
+    "prescription": "Дорухат навиштан",
+    "measurement": "Ченкунӣ дархост",
+    "surgery": "Ҷарроҳӣ (ба фурӯш)"
+  }
+}

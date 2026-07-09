@@ -1,0 +1,29 @@
+{
+  "eyeSide": {
+    "label": "Тарафи чашм",
+    "od": "Рост (OD)",
+    "os": "Чап (OS)",
+    "ou": "Ҳарду (OU)",
+    "odColumn": "Чашми рост (OD)",
+    "osColumn": "Чашми чап (OS)",
+    "linkBoth": "Ҳар ду чашм якхела (OU)"
+  },
+  "confirm": {
+    "defaultPhrase": "НЕСТ КУНЕД",
+    "typePrompt": "Барои тасдиқ \"{{phrase}}\" нависед",
+    "reasonLabel": "Сабаб",
+    "reasonPlaceholder": "Сабаб (камаш {{min}} аломат)",
+    "confirm": "Тасдиқ",
+    "undo": "Бекор кардан"
+  },
+  "banner": {
+    "allergy": "Аллергия",
+    "anticoagulant": "Лахтагудози хун",
+    "years": "сола",
+    "gender": {
+      "male": "Мард",
+      "female": "Зан",
+      "other": "Дигар"
+    }
+  }
+}

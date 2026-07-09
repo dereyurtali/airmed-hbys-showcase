@@ -1,0 +1,74 @@
+{
+  "page": {
+    "title": "Mesajlaşma",
+    "subtitle": "Şablon, tetikleyici ve gönderim geçmişi"
+  },
+  "thread": {
+    "title": "Hasta mesajları",
+    "new": "Yeni konu",
+    "create": "Konu aç",
+    "createSuccess": "Mesaj konusu açıldı",
+    "subjectPlaceholder": "Konu başlığı (opsiyonel)",
+    "initialMessagePlaceholder": "İlk mesajı yazın…",
+    "composePlaceholder": "Mesaj yazın…",
+    "empty": "Henüz mesaj konusu yok.",
+    "noSubject": "(başlıksız)",
+    "selectPrompt": "Sol taraftan bir konu seçin veya yeni konu açın."
+  },
+  "tabs": {
+    "templates": "Şablonlar",
+    "triggers": "Tetikleyiciler",
+    "deliveries": "Gönderimler"
+  },
+  "templates": {
+    "header": "Şablonlar (TR/RU/TG)",
+    "language": "Dil",
+    "channel": "Kanal",
+    "triggerKey": "Trigger",
+    "subject": "Başlık",
+    "body": "Gövde",
+    "isActive": "Aktif",
+    "edit": "Düzenle",
+    "save": "Kaydet",
+    "cancel": "Vazgeç",
+    "saved": "Kaydedildi",
+    "emptyState": "Bu filtre için şablon yok",
+    "vars": "Değişkenler"
+  },
+  "triggers": {
+    "header": "Tetikleyici Konfigürasyonu",
+    "category": "Kategori",
+    "name": "Ad",
+    "key": "Key",
+    "enabled": "Aktif",
+    "channels": "Kanallar",
+    "quietHours": "Sessiz saatler",
+    "mandatory": "Zorunlu",
+    "mandatoryHint": "Kapatılamaz (klinik güvenliği)",
+    "all": "Tümü",
+    "saved": "Konfigürasyon güncellendi",
+    "categoryRandevu": "Randevu",
+    "categoryTetkik": "Tetkik",
+    "categoryFatura": "Fatura",
+    "categoryOnam": "Onam",
+    "categoryDiger": "Diğer"
+  },
+  "deliveries": {
+    "header": "Gönderim Geçmişi",
+    "filterStatus": "Durum",
+    "filterTrigger": "Trigger",
+    "filterRecipient": "Alıcı",
+    "status": "Durum",
+    "trigger": "Trigger",
+    "recipient": "Alıcı",
+    "scheduledAt": "Planlanan",
+    "sentAt": "Gönderim",
+    "attempts": "Deneme",
+    "lastError": "Son hata",
+    "emptyState": "Bu filtre için gönderim yok",
+    "all": "Tümü"
+  },
+  "errors": {
+    "unknown": "Bilinmeyen hata"
+  }
+}

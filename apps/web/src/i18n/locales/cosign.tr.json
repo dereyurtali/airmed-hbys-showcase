@@ -1,0 +1,61 @@
+{
+  "page": {
+    "title": "Co-sign Onayları",
+    "description": "Hemşirenin senin adına yaptığı işlemleri onayla. Düşük riskli (ölçüm/foto/muayene/ölçüm siparişi) bulk onaylanır; yüksek riskli (reçete/ameliyat/iade) tek-tek incelenir."
+  },
+  "section": {
+    "lowRisk": "Düşük riskli ({{count}} kayıt)",
+    "highRisk": "Yüksek riskli (tek tek inceleyin — {{count}} kayıt)"
+  },
+  "actions": {
+    "bulkApprove": "Hepsini onayla",
+    "approve": "Onayla",
+    "reject": "Reddet",
+    "approveAria": "Onayla",
+    "rejectAria": "Reddet"
+  },
+  "rejectDialog": {
+    "title": "Co-sign reddi",
+    "placeholder": "Red sebebi (en az 10 karakter)",
+    "cancel": "Vazgeç",
+    "confirm": "Reddi onayla"
+  },
+  "empty": "Onay bekleyen kayıt yok.",
+  "toast": {
+    "bulkApproved": "{{count}} kayıt onaylandı"
+  },
+  "noPatient": "Hasta çözülemedi",
+  "hiddenWarning": "Görünen {{shown}} + gizli {{hidden}} kayıt — toplu onay tümünü kapsar.",
+  "entityType": {
+    "measurement": "Ölçüm",
+    "measurementOrder": "Ölçüm siparişi",
+    "photo": "Fotoğraf",
+    "examination": "Muayene",
+    "prescription": "Reçete",
+    "surgery": "Ameliyat",
+    "refund": "İade"
+  },
+  "action": {
+    "create": "Oluşturma",
+    "update": "Güncelleme",
+    "delete": "Silme"
+  },
+  "confirmBulk": "{{count}} düşük-riskli kayıt toplu onaylanacak (görünmeyenler dahil). Devam edilsin mi?",
+  "diff": {
+    "changeCount": "{{count}} değişiklik",
+    "field": {
+      "chiefComplaint": "Şikayet",
+      "history": "Öykü",
+      "findings": "Bulgular",
+      "diagnosis": "Tanı",
+      "treatmentPlan": "Tedavi planı",
+      "prescription": "Reçete",
+      "status": "Durum",
+      "scheduledAt": "Planlanan tarih",
+      "eyeSide": "Göz",
+      "type": "Tip",
+      "notes": "Notlar",
+      "values": "Değerler"
+    }
+  }
+}

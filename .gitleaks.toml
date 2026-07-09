@@ -1,0 +1,40 @@
+# gitleaks — AirMed-HBYS secret tarama konfigürasyonu.
+#
+# Kullanım:
+#   - Lokal pre-commit hook: `gitleaks protect --staged --config .gitleaks.toml`
+#   - CI backstop (push:main + haftalık): .github/workflows/security.yml
+#
+# Default kurallar (AWS/GCP/JWT/private-key/token vb.) korunur; aşağıdaki
+# allowlist yalnız bilinçli sahte (CI/test/seed) değerleri ve lockfile'ı hariç tutar.
+
+title = "AirMed-HBYS gitleaks"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "CI dummy secret'lar, test/e2e/seed fixture'ları, lockfile, *.example"
+paths = [
+  '''package-lock\.json''',
+  '''.*\.test\.ts$''',
+  '''.*\.spec\.ts$''',
+  '''.*\.e2e-spec\.ts$''',
+  '''apps/.*/e2e/.*''',
+  '''apps/.*/test/.*''',
+  '''scripts/seed-.*\.ts$''',
+  '''packages/db/prisma/seed.*''',
+  '''.*\.example$''',
+]
+# Bilinçli sahte değerler (CI workflow env, e2e seed parolası). Gerçek secret
+# .env / .mcp.json içinde ve ikisi de gitignored — repo'ya hiç girmez.
+regexes = [
+  '''test_[a-z_]*secret_dummy_value_for_ci_only''',
+  '''test_platform_[a-z_]*secret_dummy_value_for_ci_only''',
+  '''airmed_test''',
+  '''e2e-test-pass''',
+  # 2026-07-03 full-history triyajı (9 bulgu, hepsi false positive):
+  # messaging trigger key'leri (`key: 'APPOINTMENT_REMINDER_24H'` vb. — enum, sır değil)
+  '''APPOINTMENT_REMINDER_[0-9]+H''',
+  # hesaplamalar/09-api-whatsapp-entegrasyonu.md içindeki uydurma örnek API key
+  '''hbys_live_a8f3d2''',
+]

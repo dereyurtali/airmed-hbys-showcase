@@ -1,0 +1,75 @@
+# A4 hasta arama performans yük testi.
+#
+# Çalıştırma:
+#   1. Postgres + API çalışır olmalı (docker compose up -d && npm run dev:api)
+#   2. 10K hasta seed: npm run db:seed:perf
+#   3. Login token'ı al ve LOGIN_TOKEN env'e koy:
+#        export LOGIN_TOKEN=$(curl -s -X POST http://localhost:3001/api/auth/login \
+#          -H "Content-Type: application/json" \
+#          -d '{"tenantSlug":"demoeye-dushanbe","email":"admin@demoeye.tj","password":"admin123"}' \
+#          | jq -r .accessToken)
+#   4. Yük testini başlat:
+#        npx artillery run apps/api/perf/patient-search.yml
+#
+# Kabul kriteri:
+#   - p95 < 2000ms
+#   - p50 < 500ms
+#   - error rate < 1%
+
+config:
+  target: 'http://localhost:3001'
+  phases:
+    - name: warmup
+      duration: 5
+      arrivalRate: 5
+    - name: ramp
+      duration: 10
+      arrivalRate: 5
+      rampTo: 50
+    - name: sustained
+      duration: 30
+      arrivalRate: 50
+  defaults:
+    headers:
+      Authorization: 'Bearer {{ $processEnvironment.LOGIN_TOKEN }}'
+  ensure:
+    p95: 2000
+    p50: 500
+    maxErrorRate: 1
+  variables:
+    queries:
+      - 'ali'
+      - 'ahm'
+      - 'ivan'
+      - 'kar'
+      - 'yıl'
+      - '0001'
+      - '5678'
+      - 'PERF000'
+      - 'mehm'
+      - 'akm'
+
+scenarios:
+  - name: name-search
+    weight: 6
+    flow:
+      - get:
+          url: '/api/patients?search={{ queries }}&pageSize=20'
+          expect:
+            - statusCode: 200
+
+  - name: phone-last4-search
+    weight: 3
+    flow:
+      - get:
+          url: '/api/patients?search={{ queries }}&pageSize=20'
+          expect:
+            - statusCode: 200
+
+  - name: mrn-search
+    weight: 1
+    flow:
+      - get:
+          url: '/api/patients?search=PERF000&pageSize=20'
+          expect:
+            - statusCode: 200

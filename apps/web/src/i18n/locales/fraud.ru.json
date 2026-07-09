@@ -1,0 +1,62 @@
+{
+  "title": "Обнаружение нарушений",
+  "description": "Алармы аномалий + аудиторская проверка.",
+  "tabs": {
+    "alerts": "Активные алармы",
+    "rules": "Правила"
+  },
+  "actions": {
+    "scanNow": "Сканировать сейчас",
+    "startReview": "Взять на проверку",
+    "resolve": "Решено",
+    "markFalsePositive": "Ложное срабатывание",
+    "notePlaceholder": "Заметка (необязательно)",
+    "confirm": {
+      "resolved": "Сохранить как решено",
+      "false_positive": "Сохранить как ложное"
+    }
+  },
+  "filters": {
+    "status": "Статус",
+    "severity": "Серьёзность",
+    "rule": "Правило",
+    "all": "Все"
+  },
+  "severity": {
+    "low": "Низкая",
+    "medium": "Средняя",
+    "high": "Высокая"
+  },
+  "status": {
+    "new": "Новый",
+    "reviewing": "На проверке",
+    "resolved": "Решён",
+    "false_positive": "Ложное"
+  },
+  "rule": {
+    "night_operations": "Операции в ночное время",
+    "stock_consume_without_surgery": "Списание со склада без операции",
+    "multi_ip_login": "Множественный IP-вход",
+    "frequent_patient_appointment": "Частые приёмы одного пациента",
+    "active": "Активно",
+    "inactive": "Неактивно"
+  },
+  "ruleDescription": {
+    "night_operations": "Помечает мутации данных между 22:00 и 06:00 (Asia/Dushanbe).",
+    "stock_consume_without_surgery": "Сигнал при списании ИОЛ без связанной операции.",
+    "multi_ip_login": "Один пользователь, 2+ разных IP за час.",
+    "frequent_patient_appointment": "Один пациент, 6+ записей за 30 дней."
+  },
+  "alert": {
+    "actor": "Пользователь"
+  },
+  "emptyAlerts": "Активных алармов нет.",
+  "toast": {
+    "statusUpdated": "Статус обновлён.",
+    "ruleToggled": "Правило обновлено.",
+    "scanned": "Сканирование готово: {{count}} новых аларма."
+  },
+  "errors": {
+    "unknown": "Не удалось выполнить."
+  }
+}

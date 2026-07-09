@@ -1,0 +1,61 @@
+{
+  "name": "airmed-hbys",
+  "version": "0.4.2",
+  "private": true,
+  "description": "Hospital Information System for ophthalmology clinics — NestJS, Prisma, tRPC, React, Vite",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "dev:api": "npm run dev --workspace=@airmed/api",
+    "dev:web": "npm run dev --workspace=@airmed/web",
+    "build": "npm run build --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run pkg:build && npm run test --workspaces --if-present",
+    "test:unit": "npm run pkg:build && npm run test --workspace=@airmed/contracts && npm run test --workspace=@airmed/observability && npm run test:unit --workspace=@airmed/api && npm run test --workspace=@airmed/web && npm run test --workspace=@airmed/admin",
+    "test:coverage": "npm run pkg:build && npm run test:coverage --workspaces --if-present",
+    "typecheck": "npm run pkg:build && npm run typecheck --workspaces --if-present",
+    "db:build": "npm run build --workspace=@airmed/db",
+    "pkg:build": "npm run build --workspace=@airmed/contracts && npm run build --workspace=@airmed/db && npm run build --workspace=@airmed/observability",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "db:generate": "npm run db:generate --workspace=@airmed/db",
+    "db:migrate": "npm run db:migrate --workspace=@airmed/db",
+    "db:seed": "npm run db:seed --workspace=@airmed/db",
+    "db:seed:perf": "npm run db:seed:perf --workspace=@airmed/db",
+    "prepare": "husky install || true",
+    "db:seed:realistic": "npm run db:seed:realistic --workspace=@airmed/db",
+    "dev:up": "bash scripts/dev-up.sh",
+    "dev:up:reset": "bash scripts/dev-up.sh --reset",
+    "dev:up:run": "bash scripts/dev-up.sh --dev",
+    "admin:bootstrap": "bash scripts/admin-bootstrap.sh",
+    "platform:admin:bootstrap": "bash scripts/platform-admin-bootstrap.sh"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.1.0",
+    "@commitlint/config-conventional": "^19.0.0",
+    "@types/node": "^20.19.43",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.0.0",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.9.1",
+    "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  }
+}

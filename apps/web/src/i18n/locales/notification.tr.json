@@ -1,0 +1,10 @@
+{
+  "bell": {
+    "title": "Bildirimler",
+    "empty": "Bildirim yok",
+    "markAllRead": "Tümünü okundu işaretle"
+  },
+  "realtime": {
+    "measurementReady": "Ölçüm sonuçları hazır"
+  }
+}

@@ -1,0 +1,94 @@
+name: Docker Build
+
+# Faz 0 — prod image'ları gerçekten build oluyor mu? Mevcut CI hiç `docker build`
+# yapmıyordu → Dockerfile bozulsa (COPY path, base image, multi-stage) CI yeşil
+# kalıp deploy anında patlardı. Bu workflow onu merge ÖNCESİ yakalar.
+#
+# Dakika ekonomisi: yalnız Dockerfile / bağımlılık manifesti / compose / build
+# config değişince tetiklenir (kaynak-only PR'lar zaten CI build job'unda derlenir).
+# Haftalık schedule kaynak-kaynaklı drift'i yakalar.
+#
+# Faz 0'da push YOK (henüz canlı prod ortam yok). CD (Faz 1) açılınca aşağıdaki
+# build adımı `push: true` + GHCR login + SHA/semver tag ile genişletilir.
+
+# NOT (throughput): Önceden package.json/package-lock.json değişiminde de tetikleniyordu
+# → HER Dependabot dep-bump PR'ı (lockfile değişir) bir 78 dk'lık 3-image build başlatıyordu;
+# 13 dep-PR'lı bir gün 2 runner'ı kilitliyordu. Artık yalnız IMAGE'ı doğrudan etkileyen
+# değişiklikler (Dockerfile / compose / bu workflow) tetikler. Dep kaynaklı image drift'i
+# HAFTALIK tam build (+ CI 'build' job'u kodu zaten yeni deps ile derler) yakalar.
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/*/Dockerfile'
+      - 'docker-compose.prod.yml'
+      - '.github/workflows/docker-build.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/*/Dockerfile'
+      - 'docker-compose.prod.yml'
+      - '.github/workflows/docker-build.yml'
+  schedule:
+    - cron: '0 5 * * 1' # Pazartesi 05:00 UTC — dep/kaynak drift'i için tam build
+  workflow_dispatch:
+
+concurrency:
+  group: docker-build-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build ${{ matrix.app }} image
+    runs-on: [self-hosted, airmed]
+    # GATE (2026-06-22): web/admin Dockerfile #589 ile düzeltildi (builder'a apps/api +
+    # @airmed/db kaynağı eklendi → tRPC tipleri çözülüyor), api #580/#581 ile CI ile
+    # simetrik. Üç image de yeşil build oluyor → job artık BLOKLAYICI (continue-on-error
+    # kaldırıldı): bir Dockerfile bozulursa merge ÖNCESİ yakalanır. Push hâlâ kapalı (CD =
+    # Faz 1); GHCR push + cosign/SBOM prod wiring'de açılacak.
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [api, web, admin]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4
+      - name: Compute build metadata (#955)
+        id: meta
+        run: |
+          echo "build_time=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
+          # #1041 — buildx cache runner'ın YEREL diskinde (self-hosted'da type=gha
+          # layer'ları GitHub'a ağdan taşıyordu → api image ~20 dk). Rotate kalıbı
+          # (dest=-new → mv) buildkit local cache'in sınırsız büyümesini önler.
+          mkdir -p "$HOME/.cache/airmed-buildx"
+          echo "cache_dir=$HOME/.cache/airmed-buildx" >> "$GITHUB_OUTPUT"
+      - name: Build ${{ matrix.app }} image (no push)
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: apps/${{ matrix.app }}/Dockerfile
+          push: false
+          tags: airmed-${{ matrix.app }}:ci-${{ github.sha }}
+          # #955 — api image sürüm görünürlüğü için GIT_SHA/IMAGE_TAG/BUILD_TIME gömer.
+          # web/admin bu ARG'ları tanımlamaz → kullanılmayan build-arg sessizce yok sayılır.
+          build-args: |
+            GIT_SHA=${{ github.sha }}
+            IMAGE_TAG=${{ github.ref_name }}
+            BUILD_TIME=${{ steps.meta.outputs.build_time }}
+          cache-from: type=local,src=${{ steps.meta.outputs.cache_dir }}/${{ matrix.app }}
+          cache-to: type=local,dest=${{ steps.meta.outputs.cache_dir }}/${{ matrix.app }}-new,mode=max
+          # CD (Faz 1) buraya gelecek:
+          #   push: true
+          #   tags: ghcr.io/dna-software-solutions/airmed-${{ matrix.app }}:${{ github.sha }}
+          # + permissions.packages: write + docker/login-action (GHCR)
+      - name: Buildx cache rotate (#1041)
+        if: always()
+        run: |
+          CACHE_DIR="${{ steps.meta.outputs.cache_dir }}"
+          if [ -d "$CACHE_DIR/${{ matrix.app }}-new" ]; then
+            rm -rf "$CACHE_DIR/${{ matrix.app }}"
+            mv "$CACHE_DIR/${{ matrix.app }}-new" "$CACHE_DIR/${{ matrix.app }}"
+          fi

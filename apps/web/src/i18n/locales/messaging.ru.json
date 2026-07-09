@@ -1,0 +1,74 @@
+{
+  "page": {
+    "title": "Сообщения",
+    "subtitle": "Шаблоны, триггеры и история отправок"
+  },
+  "thread": {
+    "title": "Сообщения по пациенту",
+    "new": "Новая тема",
+    "create": "Открыть тему",
+    "createSuccess": "Тема сообщений открыта",
+    "subjectPlaceholder": "Заголовок темы (опционально)",
+    "initialMessagePlaceholder": "Напишите первое сообщение…",
+    "composePlaceholder": "Введите сообщение…",
+    "empty": "Тем сообщений пока нет.",
+    "noSubject": "(без темы)",
+    "selectPrompt": "Выберите тему слева или откройте новую."
+  },
+  "tabs": {
+    "templates": "Шаблоны",
+    "triggers": "Триггеры",
+    "deliveries": "Отправки"
+  },
+  "templates": {
+    "header": "Шаблоны (TR/RU/TG)",
+    "language": "Язык",
+    "channel": "Канал",
+    "triggerKey": "Триггер",
+    "subject": "Тема",
+    "body": "Текст",
+    "isActive": "Активен",
+    "edit": "Изменить",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "saved": "Сохранено",
+    "emptyState": "Нет шаблонов для этого фильтра",
+    "vars": "Переменные"
+  },
+  "triggers": {
+    "header": "Конфигурация триггеров",
+    "category": "Категория",
+    "name": "Название",
+    "key": "Ключ",
+    "enabled": "Активно",
+    "channels": "Каналы",
+    "quietHours": "Тихие часы",
+    "mandatory": "Обязательно",
+    "mandatoryHint": "Нельзя отключить (безопасность)",
+    "all": "Все",
+    "saved": "Конфигурация обновлена",
+    "categoryRandevu": "Приём",
+    "categoryTetkik": "Анализы",
+    "categoryFatura": "Оплата",
+    "categoryOnam": "Согласие",
+    "categoryDiger": "Прочее"
+  },
+  "deliveries": {
+    "header": "История отправок",
+    "filterStatus": "Статус",
+    "filterTrigger": "Триггер",
+    "filterRecipient": "Получатель",
+    "status": "Статус",
+    "trigger": "Триггер",
+    "recipient": "Получатель",
+    "scheduledAt": "Запланировано",
+    "sentAt": "Отправлено",
+    "attempts": "Попытки",
+    "lastError": "Последняя ошибка",
+    "emptyState": "Нет отправок для этого фильтра",
+    "all": "Все"
+  },
+  "errors": {
+    "unknown": "Неизвестная ошибка"
+  }
+}
