@@ -83,6 +83,79 @@ airmed-hbys/
 └── .github/workflows/  # CI: lint + typecheck + build + tests + security
 ```
 
+## Database layer (`packages/db`)
+
+The schema is the deepest part of the codebase: **95 Prisma models + 60 enums across 115
+hand-written, hand-reviewed migrations** covering the full clinical domain — patients,
+encounters, examinations, surgery (safety checklists, IOL lens lots, surgical kits), billing
+(invoices, payments, two-stage refunds, cash-register closures, commissions), pharmacy POS
+(batch stock, returns, cash handover), procurement, fraud rules, consent, recall, messaging,
+and the AI agent's own tables (config revisions, conversations, tool actions).
+
+Design decisions worth reading in the migrations:
+
+- **Row Level Security as the tenancy boundary** — every tenant table carries a null-safe
+  `tenant_isolation` policy (135+ RLS statements across migrations). The API runs with a
+  dedicated non-`BYPASSRLS` role inside per-request tenant transactions, so a missing `WHERE
+  tenant_id` in application code cannot leak data. Background/cross-tenant work uses a separate
+  `BYPASSRLS` non-superuser role; migrations run as a third, schema-owning role
+  (`docker/postgres/init.sh` bootstraps all three).
+- **Partitioned audit log** — `audit_logs` is monthly `PARTITION BY RANGE` with automated
+  partition creation and retention-based drops, so 180-day retention is a cheap
+  `DROP TABLE`, not a `DELETE` storm.
+- **Offline-first sync scaffolding** — `sync_outbox` / `sync_conflicts` tables (trigger-fed,
+  RLS-scoped) queue every tenant mutation for the hybrid local↔cloud replication model.
+- **Race-free counters** — patient MRNs come from an atomic
+  `INSERT … ON CONFLICT … RETURNING` counter per (tenant, year), formatted with a Verhoeff
+  check digit; invoice numbers use the same pattern.
+- **Concurrency where it matters** — IOL lens inventory uses a 3-state quantity model
+  (available/reserved/consumed) with an optimistic-concurrency `version` column and
+  conditional `updateMany`; appointment overlaps are excluded with a `btree_gist` range
+  constraint; fuzzy patient search runs on `pg_trgm` GIN indexes (every OR-branch indexed).
+- **Schema/DB drift is a CI concern** — raw-SQL indexes and partial constraints are mirrored
+  back into `schema.prisma` (or documented inline when Prisma can't model them), verified with
+  `prisma migrate diff`, so generated migrations never silently plan to drop hand-built indexes.
+
+Seeds are split by purpose (`seed.ts` dev fixtures, `seed-realistic.ts` demo data,
+domain seeds for pharmacy/S15) and are **dev-only by policy** — staging and production
+never run synthetic data.
+
+## How we build it (engineering practices)
+
+This is a two-developer team shipping ~20 PRs/day with heavy AI-agent assistance, so the
+process is designed to make mistakes structurally impossible rather than rely on discipline:
+
+- **Worktree-isolated parallel sessions** — every change lives in its own git worktree
+  (one issue = one branch = one worktree = one session). Claude Code `PreToolUse` hooks
+  physically **block** file edits and commits in the main clone, so multiple concurrent
+  AI/human sessions can never commit onto each other's branches. Branch names embed the issue
+  number, making collisions impossible by construction.
+- **Two-lane CI on self-hosted runners** — every PR gets a fast blocking gate (lint with 0
+  warnings, strict `tsc`, full build, unit tests — minutes, not hours) plus a Docker
+  build gate for all three images. The heavy suite (Jest e2e with per-worker isolated
+  databases, Playwright) runs on a schedule and on demand, with a one-variable switch to
+  make it per-merge once real patient data goes live. Local buildx layer caches keep image
+  builds fast without shipping layers over the network.
+- **Merge → staging automatically** — every squash-merge to `main` is built locally by the
+  runner and deployed to a staging box with `docker compose`. Staging is reachable **only over
+  a private Tailscale mesh** — no public DNS, no exposed ports, and by policy it never
+  receives production data (not even masked).
+- **Pull-based production deploys** — the clinic appliance is never SSH'd into by CI. It
+  pulls the last green image from the registry on an off-hours schedule and runs a deploy
+  script that does: backup → **in-box migration rehearsal against a copy** → `migrate deploy`
+  → health check → automatic rollback on failure. Activation is double-gated behind a repo
+  variable and a GitHub Environment with required reviewers.
+- **Data-residency by architecture** — the primary server lives inside the clinic (staff use
+  the LAN; no per-desk VPN or installs), with encrypted offsite backups. The only publicly
+  reachable surface of the whole system is a single allowlisted webhook path for the patient
+  assistant; both apps stay inside the mesh.
+- **AI agents with guardrails** — a CI pipeline lets a Claude Code agent turn triaged bug
+  issues into **draft** PRs from PII-scrubbed error context; merging is always human, and the
+  same red/green CI gates apply. Repo-committed agent instructions, shared memory files, and
+  hooks keep both developers' AI sessions consistent.
+- **Boring, auditable git** — conventional commits (commitlint-enforced), short-lived
+  branches, squash merges, gitleaks in pre-commit *and* CI, secret-free repo history.
+
 ## Getting started (development)
 
 ```bash
