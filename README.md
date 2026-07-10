@@ -125,6 +125,34 @@ never run synthetic data.
 This is a two-developer team shipping ~20 PRs/day with heavy AI-agent assistance, so the
 process is designed to make mistakes structurally impossible rather than rely on discipline:
 
+```
+  dev laptops (git worktrees, one per issue/session)
+        │  push → PR → review
+        ▼
+  GitHub ──► CI on self-hosted runners
+        │      fast PR gate: lint · tsc · build · unit  (+ Docker build gate)
+        │      heavy suite: e2e + Playwright on schedule
+        │
+        │ squash-merge to main
+        ├───────────────────────────────┐
+        ▼                               ▼
+  staging box (private Tailscale     container registry
+  mesh, no public exposure)          (last green image)
+    local build · docker compose        │  pull, off-hours
+        │                               ▼
+        │ telemetry ~30 s          clinic appliance (in-clinic primary, LAN)
+        ▼                            backup → migration rehearsal → deploy
+  live status panel                  → health check → auto-rollback
+  (airmed-monitor)                      │
+                                        ▼
+                                   encrypted offsite backups
+```
+
+The staging box streams telemetry to a **live status panel** —
+[airmed-monitor](https://github.com/dereyurtali/airmed-monitor), a single-file,
+dependency-free dashboard (public UI shell; the data stays in a private repo) that shows
+CI runs with per-step progress, deploys, host vitals, and the merge log at a glance.
+
 - **Worktree-isolated parallel sessions** — every change lives in its own git worktree
   (one issue = one branch = one worktree = one session). Claude Code `PreToolUse` hooks
   physically **block** file edits and commits in the main clone, so multiple concurrent
